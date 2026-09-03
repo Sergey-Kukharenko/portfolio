@@ -18,15 +18,9 @@ type Props = {
 export default function Nav({ onOpenSearch }: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [architectMode, setArchitectMode] = useState(false);
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 12));
-
-  useEffect(() => {
-    const id = window.setInterval(() => setArchitectMode((v) => !v), 3200);
-    return () => window.clearInterval(id);
-  }, []);
 
   useEffect(() => {
     if (menuOpen) document.body.style.overflow = "hidden";
@@ -65,42 +59,10 @@ export default function Nav({ onOpenSearch }: Props) {
             onClick={() => scrollTo("top")}
             className="flex items-center gap-2 text-sm font-semibold tracking-tight text-white"
           >
-            <span className="relative flex h-7 w-7 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-framer-blue via-framer-purple to-framer-pink text-xs font-bold">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={architectMode ? "A" : "SK"}
-                  initial={{ y: 14, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -14, opacity: 0 }}
-                  transition={{ duration: 0.32, ease: "easeOut" }}
-                  className="absolute"
-                >
-                  {architectMode ? "A" : "SK"}
-                </motion.span>
-              </AnimatePresence>
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-framer-blue via-framer-purple to-framer-pink text-xs font-bold">
+              SK
             </span>
-            <span className="relative hidden sm:inline-block">
-              {/* invisible sizer: reserves the width of the longer string so
-                  swapping to "Architect" never shrinks the box and shoves
-                  the nav links sideways */}
-              <span aria-hidden className="invisible whitespace-nowrap">
-                Sergey Kukharenko
-              </span>
-              <span className="absolute inset-0 overflow-hidden">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={architectMode ? "architect" : "full-name"}
-                    initial={{ y: 14, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -14, opacity: 0 }}
-                    transition={{ duration: 0.32, ease: "easeOut" }}
-                    className="absolute inset-0 whitespace-nowrap"
-                  >
-                    {architectMode ? "Architect" : "Sergey Kukharenko"}
-                  </motion.span>
-                </AnimatePresence>
-              </span>
-            </span>
+            <span className="hidden sm:inline">Sergey Kukharenko</span>
           </button>
 
           <nav className="hidden items-center gap-1 md:flex">
