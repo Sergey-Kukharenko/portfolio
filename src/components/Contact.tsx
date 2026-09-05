@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { BriefcaseIcon, GithubIcon, LinkedinIcon, MailIcon, SendIcon } from "../icons";
+import { BriefcaseIcon, DownloadIcon, GithubIcon, LinkedinIcon, MailIcon, SendIcon } from "../icons";
 import SectionHeading from "./SectionHeading";
 
 const contacts = [
@@ -61,6 +61,25 @@ export default function Contact() {
         title="Готов обсудить проект"
         description="Открыт к предложениям по удалённой работе. Отвечаю быстрее всего в Telegram."
       />
+
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.45 }}
+        className="mb-8 flex justify-center"
+      >
+        <motion.a
+          href="/Sergey-Kukharenko-CV.pdf"
+          download
+          whileHover={{ scale: 1.03, y: -2 }}
+          whileTap={{ scale: 0.97 }}
+          className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-framer-blue via-framer-purple to-framer-pink px-5 py-3 text-sm font-semibold text-white shadow-glow"
+        >
+          <DownloadIcon width={16} height={16} />
+          Скачать резюме (PDF)
+        </motion.a>
+      </motion.div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         {contacts.map((c, i) => {
