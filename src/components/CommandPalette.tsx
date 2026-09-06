@@ -574,19 +574,6 @@ const ResultRow = forwardRef<HTMLLIElement, {
             <CornerDownLeftIcon width={13} height={13} />
           </motion.span>
         )}
-
-        <AnimatePresence>
-          {justSelected && (
-            <motion.span
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 flex items-center justify-center rounded-xl bg-framer-purple/20 text-framer-teal"
-            >
-              ✓
-            </motion.span>
-          )}
-        </AnimatePresence>
       </button>
     </motion.li>
   );
