@@ -136,7 +136,7 @@ export default function Experience() {
                       </div>
                       <p className="text-sm text-gray-400">{exp.role}</p>
                     </div>
-                    <div className="text-right text-xs text-gray-500">
+                    <div className="text-left text-xs text-gray-500 sm:text-right">
                       <p>{exp.period}</p>
                       <p>{exp.duration}</p>
                     </div>
