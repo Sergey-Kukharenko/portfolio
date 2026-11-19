@@ -7,7 +7,7 @@ web_modules/
 .npm/
 .eslintcache
 .stylelintcache
-.tsbuildinfo
+*.tsbuildinfo
 
 # Логи и дампы
 logs

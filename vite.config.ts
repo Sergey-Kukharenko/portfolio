@@ -1,33 +1,44 @@
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 
-// The framer-motion feature chunk is loaded by a dynamic import in main.tsx,
-// which normally only starts downloading after the entry script has run.
-// Preloading it from the HTML lets both download in parallel, so the first
-// entrance animations aren't held back by a request waterfall.
-function preloadMotionFeatures(): Plugin {
+// Files the first screen needs but the browser would only discover late:
+// - the framer-motion feature chunk is a dynamic import in main.tsx, so it
+//   would start downloading only after the entry script has run;
+// - the Inter font files are referenced from CSS, so they'd wait for it.
+// Preloading them from the HTML lets everything download in parallel.
+function preloadCriticalAssets(): Plugin {
   return {
-    name: "preload-motion-features",
+    name: "preload-critical-assets",
     apply: "build",
     transformIndexHtml: {
       order: "post",
       handler(_, ctx) {
-        const chunk = Object.values(ctx.bundle ?? {}).find(
-          (c) => c.type === "chunk" && c.name === "motionFeatures"
+        const files = Object.values(ctx.bundle ?? {});
+        const motion = files.find((f) => f.type === "chunk" && f.name === "motionFeatures");
+        // only the subsets this (Russian + English) page actually renders
+        const fonts = files.filter((f) =>
+          /inter-(latin|cyrillic)-wght-normal-.*\.woff2$/.test(f.fileName)
         );
-        if (!chunk) return;
         return [
-          {
-            tag: "link",
-            attrs: { rel: "modulepreload", crossorigin: true, href: `/${chunk.fileName}` },
-            injectTo: "head",
-          },
-        ];
+          ...(motion
+            ? [{ rel: "modulepreload", href: `/${motion.fileName}` }]
+            : []),
+          ...fonts.map((f) => ({
+            rel: "preload",
+            as: "font",
+            type: "font/woff2",
+            href: `/${f.fileName}`,
+          })),
+        ].map((attrs) => ({
+          tag: "link",
+          attrs: { ...attrs, crossorigin: true },
+          injectTo: "head" as const,
+        }));
       },
     },
   };
 }
 
 export default defineConfig({
-  plugins: [react(), preloadMotionFeatures()],
+  plugins: [react(), preloadCriticalAssets()],
 });
