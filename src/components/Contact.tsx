@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { BriefcaseIcon, GithubIcon, LinkedinIcon, MailIcon, SendIcon } from "../icons";
 import SectionHeading from "./SectionHeading";
 
@@ -66,7 +66,7 @@ export default function Contact() {
         {contacts.map((c, i) => {
           const Icon = c.icon;
           return (
-            <motion.a
+            <m.a
               key={c.id}
               href={c.href}
               target="_blank"
@@ -78,17 +78,17 @@ export default function Contact() {
               whileHover={{ y: -5 }}
               className="group flex flex-col items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-7 text-center backdrop-blur-md transition-colors hover:border-white/20"
             >
-              <motion.span
+              <m.span
                 whileHover={{ scale: 1.1, rotate: -6 }}
                 className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${c.gradient} text-white shadow-glow`}
               >
                 <Icon width={18} height={18} />
-              </motion.span>
+              </m.span>
               <div>
                 <p className="text-xs uppercase tracking-wider text-gray-500">{c.label}</p>
                 <p className="mt-1 text-sm font-medium text-white">{c.value}</p>
               </div>
-            </motion.a>
+            </m.a>
           );
         })}
       </div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { Highlight } from "prism-react-renderer";
 import { codeSnippets } from "../data/codeSnippets";
 import { framerCodeTheme } from "../lib/prismTheme";
@@ -26,7 +26,7 @@ export default function CodeShowcase() {
             className="relative rounded-full px-3 py-1.5 text-xs font-medium transition-colors sm:text-sm"
           >
             {activeId === s.id && (
-              <motion.span
+              <m.span
                 layoutId="code-tab-pill"
                 className="absolute inset-0 rounded-full bg-gradient-to-r from-framer-blue via-framer-purple to-framer-pink"
                 transition={{ type: "spring", stiffness: 400, damping: 32 }}
@@ -52,7 +52,7 @@ export default function CodeShowcase() {
 
         <div className="results-scroll overflow-x-auto">
           <AnimatePresence mode="wait">
-            <motion.div
+            <m.div
               key={active.id}
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ export default function CodeShowcase() {
                   </pre>
                 )}
               </Highlight>
-            </motion.div>
+            </m.div>
           </AnimatePresence>
         </div>
       </div>

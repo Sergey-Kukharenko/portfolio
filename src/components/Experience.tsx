@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
+import { AnimatePresence, m, useScroll, useSpring } from "framer-motion";
 import { experience } from "../data/experience";
 import { BriefcaseIcon, ExternalLinkIcon } from "../icons";
 import SectionHeading from "./SectionHeading";
@@ -67,7 +67,7 @@ export default function Experience() {
           className="absolute left-[15px] w-px bg-white/10 sm:left-[19px]"
           style={{ top: lineInset.top, bottom: lineInset.bottom }}
         />
-        <motion.div
+        <m.div
           className="absolute left-[15px] w-px origin-top bg-gradient-to-b from-framer-blue via-framer-purple to-framer-pink sm:left-[19px]"
           style={{ top: lineInset.top, bottom: lineInset.bottom, scaleY: lineProgress }}
         />
@@ -76,7 +76,7 @@ export default function Experience() {
           {experience.map((exp, i) => {
             const isOpen = openId === exp.id;
             return (
-              <motion.li
+              <m.li
                 key={exp.id}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -84,15 +84,15 @@ export default function Experience() {
                 transition={{ duration: 0.5, delay: i * 0.05 }}
                 className="relative pl-10 sm:pl-14"
               >
-                <motion.span
+                <m.span
                   ref={i === 0 ? firstIconRef : i === experience.length - 1 ? lastIconRef : undefined}
                   className={`absolute left-0 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br ${exp.gradient} text-white shadow-glow sm:h-10 sm:w-10`}
                   whileHover={{ scale: 1.1, rotate: 8 }}
                 >
                   <BriefcaseIcon width={14} height={14} />
-                </motion.span>
+                </m.span>
 
-                <motion.button
+                <m.button
                   type="button"
                   onClick={() => setOpenId(isOpen ? null : exp.id)}
                   layout
@@ -130,7 +130,7 @@ export default function Experience() {
 
                   <AnimatePresence initial={false}>
                     {isOpen && (
-                      <motion.div
+                      <m.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -155,11 +155,11 @@ export default function Experience() {
                             </span>
                           ))}
                         </div>
-                      </motion.div>
+                      </m.div>
                     )}
                   </AnimatePresence>
-                </motion.button>
-              </motion.li>
+                </m.button>
+              </m.li>
             );
           })}
         </ul>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { AnimatePresence, m, useScroll, useMotionValueEvent } from "framer-motion";
 import { CommandIcon, SearchIcon, XIcon } from "../icons";
 
 const LINKS = [
@@ -36,7 +36,7 @@ export default function Nav({ onOpenSearch }: Props) {
   };
 
   return (
-    <motion.header
+    <m.header
       initial={{ y: -24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -78,7 +78,7 @@ export default function Nav({ onOpenSearch }: Props) {
           </nav>
 
           <div className="flex items-center gap-2">
-            <motion.button
+            <m.button
               type="button"
               onClick={onOpenSearch}
               whileHover={{ scale: 1.03 }}
@@ -90,7 +90,7 @@ export default function Nav({ onOpenSearch }: Props) {
               <span className="flex items-center gap-0.5 rounded border border-white/10 bg-white/5 px-1 py-0.5 text-[10px]">
                 <CommandIcon width={9} height={9} />K
               </span>
-            </motion.button>
+            </m.button>
 
             <button
               type="button"
@@ -115,7 +115,7 @@ export default function Nav({ onOpenSearch }: Props) {
 
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
@@ -124,7 +124,7 @@ export default function Nav({ onOpenSearch }: Props) {
           >
             <div className="mt-2 flex flex-col gap-1 rounded-2xl border border-white/10 bg-[#0B0B0F]/95 p-2 shadow-glow backdrop-blur-xl">
               {LINKS.map((link, i) => (
-                <motion.button
+                <m.button
                   key={link.id}
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -133,13 +133,13 @@ export default function Nav({ onOpenSearch }: Props) {
                   className="rounded-lg px-3 py-2.5 text-left text-sm text-gray-300 hover:bg-white/5 hover:text-white"
                 >
                   {link.label}
-                </motion.button>
+                </m.button>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </m.header>
   );
 }
 

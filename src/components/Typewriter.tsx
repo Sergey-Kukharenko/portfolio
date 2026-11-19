@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const TYPE_SPEED = 55;
 const DELETE_SPEED = 28;
@@ -39,7 +39,7 @@ export default function Typewriter({ words, className }: Props) {
   return (
     <span className={className}>
       {words[index].slice(0, subIndex)}
-      <motion.span
+      <m.span
         aria-hidden
         className="ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] bg-current align-middle"
         animate={{ opacity: [1, 1, 0, 0] }}

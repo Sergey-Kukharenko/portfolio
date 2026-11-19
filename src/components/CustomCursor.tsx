@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { m, useMotionValue, useSpring } from "framer-motion";
 
 const INTERACTIVE_SELECTOR = "a, button, [role='button'], input, textarea, summary";
 
@@ -62,7 +62,7 @@ export default function CustomCursor() {
 
   return (
     <>
-      <motion.div
+      <m.div
         aria-hidden
         className="pointer-events-none fixed left-0 top-0 z-[100] h-1.5 w-1.5 rounded-full bg-white mix-blend-difference"
         style={{ x, y }}
@@ -70,7 +70,7 @@ export default function CustomCursor() {
         animate={{ opacity: visible && !label && !inverting ? 1 : 0 }}
         transition={{ duration: 0.2 }}
       />
-      <motion.div
+      <m.div
         aria-hidden
         layout
         style={{
@@ -93,7 +93,7 @@ export default function CustomCursor() {
         }`}
       >
         {label}
-      </motion.div>
+      </m.div>
     </>
   );
 }

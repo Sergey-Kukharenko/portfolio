@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { skillGroups } from "../data/skills";
 import SectionHeading from "./SectionHeading";
 import ColorPalette from "./ColorPalette";
@@ -14,7 +14,7 @@ export default function Skills() {
 
       <div className="mb-14 grid gap-4 sm:grid-cols-2">
         {skillGroups.map((group, gi) => (
-          <motion.div
+          <m.div
             key={group.id}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -28,7 +28,7 @@ export default function Skills() {
             </div>
             <div className="flex flex-wrap gap-2">
               {group.skills.map((skill, si) => (
-                <motion.span
+                <m.span
                   key={skill}
                   initial={{ opacity: 0, scale: 0.85 }}
                   whileInView={{ opacity: 1, scale: 1 }}
@@ -38,10 +38,10 @@ export default function Skills() {
                   className="cursor-default rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-gray-200"
                 >
                   {skill}
-                </motion.span>
+                </m.span>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         ))}
       </div>
 

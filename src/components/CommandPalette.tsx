@@ -9,7 +9,7 @@ import {
   type ReactNode,
   type SVGProps,
 } from "react";
-import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
+import { AnimatePresence, m, useReducedMotion, type Variants } from "framer-motion";
 import { experience } from "../data/experience";
 import { projects, type Project } from "../data/projects";
 import {
@@ -293,16 +293,16 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
+        <m.div
           className="fixed inset-0 z-[70] flex items-start justify-center px-4 pt-[10vh] sm:pt-[14vh]"
           initial="hidden"
           animate="visible"
           exit="exit"
           variants={overlayVariants}
         >
-          <motion.div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose} />
+          <m.div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose} />
 
-          <motion.div
+          <m.div
             role="dialog"
             aria-modal="true"
             aria-label="Быстрый переход"
@@ -310,7 +310,7 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
             className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-framer-blue/25 via-framer-purple/20 to-framer-pink/20 shadow-glow backdrop-blur-2xl backdrop-saturate-150"
           >
             {!prefersReducedMotion && (
-              <motion.div
+              <m.div
                 aria-hidden
                 className="pointer-events-none absolute -inset-24 -z-10 opacity-40 blur-3xl"
                 style={{
@@ -323,13 +323,13 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
             )}
 
             <div className="relative flex items-center gap-3 border-b border-white/10 px-5 py-4">
-              <motion.div
+              <m.div
                 animate={isFocused ? { scale: 1.08, color: "#8855FF" } : { scale: 1, color: "#9CA3AF" }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 className="flex-shrink-0"
               >
                 <SearchIcon width={18} height={18} />
-              </motion.div>
+              </m.div>
 
               <div className="relative flex-1">
                 <input
@@ -346,7 +346,7 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
                 {query.length === 0 && (
                   <div className="pointer-events-none absolute inset-0 flex items-center overflow-hidden">
                     <AnimatePresence mode="wait">
-                      <motion.span
+                      <m.span
                         key={placeholderIndex}
                         initial={{ y: 14, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -355,7 +355,7 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
                         className="text-[15px] font-medium text-gray-500"
                       >
                         {PLACEHOLDERS[placeholderIndex]}
-                      </motion.span>
+                      </m.span>
                     </AnimatePresence>
                   </div>
                 )}
@@ -363,7 +363,7 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
 
               <AnimatePresence initial={false}>
                 {query.length > 0 ? (
-                  <motion.button
+                  <m.button
                     key="clear"
                     type="button"
                     initial={{ opacity: 0, scale: 0.6 }}
@@ -379,9 +379,9 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
                     aria-label="Очистить"
                   >
                     <XIcon width={13} height={13} />
-                  </motion.button>
+                  </m.button>
                 ) : (
-                  <motion.kbd
+                  <m.kbd
                     key="esc"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -389,7 +389,7 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
                     className="flex-shrink-0 rounded-md border border-white/10 bg-white/5 px-1.5 py-0.5 text-[11px] font-medium text-gray-400"
                   >
                     esc
-                  </motion.kbd>
+                  </m.kbd>
                 )}
               </AnimatePresence>
             </div>
@@ -397,23 +397,23 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
             <div className="h-[min(60vh,28rem)]">
               <div ref={listRef} className="results-scroll h-full overflow-y-auto p-2">
                 {flat.length === 0 ? (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="flex h-full flex-col items-center justify-center gap-2 px-6 text-center"
                   >
-                    <motion.div
+                    <m.div
                       animate={{ rotate: [0, -12, 12, -8, 0] }}
                       transition={{ duration: 0.6 }}
                       className="text-3xl"
                     >
                       🔎
-                    </motion.div>
+                    </m.div>
                     <p className="text-sm font-medium text-gray-300">Ничего не найдено</p>
                     <p className="text-xs text-gray-500">Попробуйте другой запрос — «{query}»</p>
-                  </motion.div>
+                  </m.div>
                 ) : (
-                  <motion.div variants={listContainerVariants} initial="hidden" animate="visible">
+                  <m.div variants={listContainerVariants} initial="hidden" animate="visible">
                     {groups.map((group) => (
                       <div key={group.category} className="mb-1 last:mb-0">
                         <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-gray-500">
@@ -435,12 +435,12 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
                         </ul>
                       </div>
                     ))}
-                  </motion.div>
+                  </m.div>
                 )}
               </div>
             </div>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.12, duration: 0.25 }}
@@ -470,9 +470,9 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
                 <Kbd>K</Kbd>
                 открыть
               </span>
-            </motion.div>
-          </motion.div>
-        </motion.div>
+            </m.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   );
@@ -525,7 +525,7 @@ const ResultRow = forwardRef<HTMLLIElement, {
 }>(function ResultRow({ item, active, justSelected, onHover, onSelect }, ref) {
   const Icon = item.icon;
   return (
-    <motion.li
+    <m.li
       ref={ref}
       data-id={item.id}
       variants={itemVariants}
@@ -535,7 +535,7 @@ const ResultRow = forwardRef<HTMLLIElement, {
       className="relative"
     >
       {active && (
-        <motion.div
+        <m.div
           layoutId="active-pill"
           className="absolute inset-0 rounded-xl bg-white/[0.07]"
           transition={{ type: "spring", stiffness: 500, damping: 40 }}
@@ -547,13 +547,13 @@ const ResultRow = forwardRef<HTMLLIElement, {
         onClick={onSelect}
         className="relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left"
       >
-        <motion.span
+        <m.span
           animate={justSelected ? { scale: [1, 1.25, 1] } : { scale: 1 }}
           transition={{ duration: 0.35 }}
           className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${item.gradient} text-white shadow-sm`}
         >
           <Icon width={15} height={15} />
-        </motion.span>
+        </m.span>
 
         <span className="min-w-0 flex-1">
           <span className="block truncate text-[13.5px] font-medium text-white">{item.title}</span>
@@ -565,16 +565,16 @@ const ResultRow = forwardRef<HTMLLIElement, {
             {item.shortcut}
           </span>
         ) : (
-          <motion.span
+          <m.span
             initial={{ opacity: 0, x: -4 }}
             animate={active ? { opacity: 1, x: 0 } : { opacity: 0, x: -4 }}
             transition={{ duration: 0.15 }}
             className="flex-shrink-0 text-gray-500"
           >
             <CornerDownLeftIcon width={13} height={13} />
-          </motion.span>
+          </m.span>
         )}
       </button>
-    </motion.li>
+    </m.li>
   );
 });

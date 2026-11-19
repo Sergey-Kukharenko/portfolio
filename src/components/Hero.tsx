@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { m, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpIcon, CommandIcon, SendIcon, SparkleIcon } from "../icons";
 import Magnetic from "./Magnetic";
 import Counter from "./Counter";
@@ -50,12 +50,12 @@ export default function Hero({ onOpenSearch }: Props) {
       id="top"
       className="relative flex min-h-[100svh] items-center overflow-hidden pt-24"
     >
-      <motion.div
+      <m.div
         className="pointer-events-none absolute inset-0"
         style={prefersReducedMotion ? undefined : { y: blobsY, opacity: blobsOpacity }}
       >
         {blobs.map((b, i) => (
-          <motion.div
+          <m.div
             key={i}
             className={`absolute rounded-full ${b.className} opacity-30 blur-3xl mix-blend-screen`}
             style={{ top: b.top, left: b.left, width: b.size, height: b.size }}
@@ -67,23 +67,23 @@ export default function Hero({ onOpenSearch }: Props) {
             transition={{ duration: 16, delay: b.delay, repeat: Infinity, ease: "easeInOut" }}
           />
         ))}
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         variants={container}
         initial="hidden"
         animate="visible"
         className="relative z-10 mx-auto flex max-w-4xl flex-col items-center gap-6 px-4 text-center sm:px-6"
       >
-        <motion.span
+        <m.span
           variants={item}
           className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-gray-400"
         >
           <SparkleIcon width={12} height={12} className="text-framer-teal" />
           Открыт для новых проектов
-        </motion.span>
+        </m.span>
 
-        <motion.h1
+        <m.h1
           variants={item}
           data-cursor-invert
           className="max-w-3xl text-4xl font-bold leading-[1.1] tracking-tight sm:text-6xl"
@@ -93,9 +93,9 @@ export default function Hero({ onOpenSearch }: Props) {
             Senior Frontend
           </span>{" "}
           Developer
-        </motion.h1>
+        </m.h1>
 
-        <motion.div
+        <m.div
           variants={item}
           className="flex min-h-[1.5em] items-center gap-2 font-mono text-sm text-framer-teal sm:text-base"
         >
@@ -103,16 +103,16 @@ export default function Hero({ onOpenSearch }: Props) {
             ➜
           </span>
           <Typewriter words={ROLES} />
-        </motion.div>
+        </m.div>
 
-        <motion.p variants={item} className="max-w-2xl text-base text-gray-400 sm:text-lg">
+        <m.p variants={item} className="max-w-2xl text-base text-gray-400 sm:text-lg">
           12+ лет создаю быстрые и аккуратные e-commerce и корпоративные интерфейсы на Vue/Nuxt
           и React. От вёрстки лендингов до архитектуры и найма команды — прошёл весь путь.
-        </motion.p>
+        </m.p>
 
-        <motion.div variants={item} className="flex flex-wrap items-center justify-center gap-3">
+        <m.div variants={item} className="flex flex-wrap items-center justify-center gap-3">
           <Magnetic strength={0.4} className="inline-block">
-            <motion.button
+            <m.button
               type="button"
               onClick={() => scrollTo("projects")}
               whileHover={{ scale: 1.03, y: -2 }}
@@ -120,11 +120,11 @@ export default function Hero({ onOpenSearch }: Props) {
               className="rounded-xl bg-gradient-to-r from-framer-blue via-framer-purple to-framer-pink px-5 py-3 text-sm font-semibold text-white shadow-glow"
             >
               Смотреть проекты
-            </motion.button>
+            </m.button>
           </Magnetic>
 
           <Magnetic strength={0.4} className="inline-block">
-            <motion.a
+            <m.a
               href="https://t.me/SergeyKukharenko"
               target="_blank"
               rel="noreferrer"
@@ -134,10 +134,10 @@ export default function Hero({ onOpenSearch }: Props) {
             >
               <SendIcon width={14} height={14} />
               Написать в Telegram
-            </motion.a>
+            </m.a>
           </Magnetic>
 
-          <motion.button
+          <m.button
             type="button"
             onClick={onOpenSearch}
             whileHover={{ scale: 1.03, y: -2 }}
@@ -148,10 +148,10 @@ export default function Hero({ onOpenSearch }: Props) {
             <span className="flex items-center gap-0.5 rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[11px]">
               <CommandIcon width={9} height={9} />K
             </span>
-          </motion.button>
-        </motion.div>
+          </m.button>
+        </m.div>
 
-        <motion.div
+        <m.div
           variants={item}
           className="mt-6 grid grid-cols-3 gap-6 rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-4 backdrop-blur-md sm:gap-10 sm:px-10"
         >
@@ -167,10 +167,10 @@ export default function Hero({ onOpenSearch }: Props) {
               <span className="text-[11px] text-gray-500 sm:text-xs">{s.label}</span>
             </div>
           ))}
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
 
-      <motion.button
+      <m.button
         type="button"
         onClick={() => scrollTo("about")}
         aria-label="Прокрутить вниз"
@@ -179,7 +179,7 @@ export default function Hero({ onOpenSearch }: Props) {
         transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
       >
         <ArrowUpIcon width={18} height={18} className="rotate-180" />
-      </motion.button>
+      </m.button>
     </section>
   );
 }

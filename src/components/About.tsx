@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 
 const facts = [
@@ -14,7 +14,7 @@ export default function About() {
       <SectionHeading eyebrow="Обо мне" title="Кто я и чем занимаюсь" />
 
       <div className="grid gap-8 md:grid-cols-5">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, x: -24 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-80px" }}
@@ -35,9 +35,9 @@ export default function About() {
             Есть опыт роли Lead: архитектура проектов, code review, найм и менторинг
             разработчиков, прямое взаимодействие с бизнесом.
           </p>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, x: 24 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-80px" }}
@@ -45,7 +45,7 @@ export default function About() {
           className="grid grid-cols-2 gap-3 md:col-span-2 md:grid-cols-1"
         >
           {facts.map((f, i) => (
-            <motion.div
+            <m.div
               key={f.label}
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -56,9 +56,9 @@ export default function About() {
             >
               <p className="text-[11px] uppercase tracking-wider text-gray-500">{f.label}</p>
               <p className="mt-1 text-sm font-semibold text-white">{f.value}</p>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );
