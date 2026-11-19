@@ -1,8 +1,13 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, m, useScroll, useSpring } from "framer-motion";
 import { experience } from "../data/experience";
 import { BriefcaseIcon, ExternalLinkIcon } from "../icons";
 import SectionHeading from "./SectionHeading";
+import { BulletList } from "./ui/BulletList";
+import { TagList } from "./ui/Tag";
+import { stats } from "../data/stats";
+import { plural } from "../lib/plural";
+import { useIsomorphicLayoutEffect } from "../lib/useIsomorphicLayoutEffect";
 
 export default function Experience() {
   const [openId, setOpenId] = useState<string | null>(experience[0]?.id ?? null);
@@ -15,7 +20,7 @@ export default function Experience() {
   // measure the real icon positions instead
   const [lineInset, setLineInset] = useState({ top: 8, bottom: 8 });
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const container = timelineRef.current;
     if (!container) return;
 
@@ -54,7 +59,7 @@ export default function Experience() {
     <section id="experience" className="relative mx-auto max-w-4xl px-4 py-24 sm:px-6">
       <SectionHeading
         eyebrow="Опыт работы"
-        title="12 лет — от вёрстки до архитектуры"
+        title={`${stats.years} ${plural(stats.years, ["год", "года", "лет"])} — от вёрстки до архитектуры`}
         description="Путь от HTML/CSS-верстальщика до Senior / Lead Frontend Developer в e-commerce."
       />
 
@@ -92,17 +97,28 @@ export default function Experience() {
                   <BriefcaseIcon width={14} height={14} />
                 </m.span>
 
-                <m.button
-                  type="button"
-                  onClick={() => setOpenId(isOpen ? null : exp.id)}
+                <m.div
                   layout
-                  className={`w-full rounded-2xl border px-4 py-4 text-left backdrop-blur-md transition-colors sm:px-5 ${
+                  className={`relative w-full rounded-2xl border px-4 py-4 text-left transition-colors sm:px-5 ${
                     isOpen
                       ? "border-white/15 bg-white/[0.06]"
                       : "border-white/10 bg-white/[0.02] hover:bg-white/[0.04]"
                   }`}
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-2">
+                  {/* "stretched button": an invisible toggle covering the whole card.
+                      The content sits above it with pointer-events off, so a click
+                      anywhere still toggles — while the external link stays a real,
+                      separately clickable <a> instead of being nested in a <button>
+                      (invalid HTML, confusing for screen readers) */}
+                  <button
+                    type="button"
+                    onClick={() => setOpenId(isOpen ? null : exp.id)}
+                    aria-expanded={isOpen}
+                    aria-controls={`exp-${exp.id}`}
+                    aria-label={`${exp.company} — ${isOpen ? "свернуть" : "подробнее"}`}
+                    className="absolute inset-0 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-framer-purple/60"
+                  />
+                  <div className="pointer-events-none relative flex flex-wrap items-center justify-between gap-2">
                     <div>
                       <div className="flex items-center gap-2">
                         <h3 className="text-base font-semibold text-white sm:text-lg">
@@ -113,8 +129,8 @@ export default function Experience() {
                             href={exp.url}
                             target="_blank"
                             rel="noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className="text-gray-500 hover:text-framer-teal"
+                            aria-label={`Сайт ${exp.company}`}
+                            className="pointer-events-auto text-gray-500 hover:text-framer-teal"
                           >
                             <ExternalLinkIcon width={12} height={12} />
                           </a>
@@ -131,34 +147,21 @@ export default function Experience() {
                   <AnimatePresence initial={false}>
                     {isOpen && (
                       <m.div
+                        id={`exp-${exp.id}`}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="overflow-hidden"
+                        className="pointer-events-none relative overflow-hidden"
                       >
-                        <ul className="mt-4 flex flex-col gap-2 border-t border-white/10 pt-4">
-                          {exp.points.map((p) => (
-                            <li key={p} className="flex gap-2 text-sm text-gray-400">
-                              <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-framer-purple" />
-                              {p}
-                            </li>
-                          ))}
-                        </ul>
-                        <div className="mt-4 flex flex-wrap gap-1.5">
-                          {exp.stack.map((s) => (
-                            <span
-                              key={s}
-                              className="rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] text-gray-300"
-                            >
-                              {s}
-                            </span>
-                          ))}
+                        <BulletList items={exp.points} className="mt-4 border-t border-white/10 pt-4" />
+                        <div className="mt-4">
+                          <TagList items={exp.stack} />
                         </div>
                       </m.div>
                     )}
                   </AnimatePresence>
-                </m.button>
+                </m.div>
               </m.li>
             );
           })}

@@ -1,20 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { LazyMotion } from "framer-motion";
-import App from "./App";
+import { createRoot, hydrateRoot } from "react-dom/client";
+import Root from "./Root";
 // self-hosted variable Inter (weight axis only); unicode-range subsets mean the
 // browser fetches just latin + cyrillic — no third-party font requests
 import "@fontsource-variable/inter/wght.css";
 import "./index.css";
 
-const loadFeatures = () => import("./lib/motionFeatures").then((mod) => mod.default);
+const container = document.getElementById("root")!;
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    {/* components use the lightweight `m.*` instead of `motion.*`; `strict`
-        throws if a heavy `motion.*` sneaks back in and defeats the split */}
-    <LazyMotion features={loadFeatures} strict>
-      <App />
-    </LazyMotion>
-  </React.StrictMode>
-);
+// production HTML is prerendered (scripts/prerender.mjs) — attach to that
+// markup instead of re-creating it; the dev server serves an empty shell
+if (container.firstElementChild) hydrateRoot(container, <Root />);
+else createRoot(container).render(<Root />);

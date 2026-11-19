@@ -1,4 +1,4 @@
-import { forwardRef, useMemo, useState, type MouseEvent } from "react";
+import { forwardRef, useEffect, useMemo, useState, type MouseEvent } from "react";
 import {
   AnimatePresence,
   m,
@@ -10,12 +10,18 @@ import {
 import { projectCategories, projects, type Project } from "../data/projects";
 import { ExternalLinkIcon, FolderIcon, XIcon } from "../icons";
 import SectionHeading from "./SectionHeading";
+import { BulletList } from "./ui/BulletList";
+import { SegmentedControl } from "./ui/SegmentedControl";
+import { TagList } from "./ui/Tag";
+import { useLockBodyScroll } from "../lib/useLockBodyScroll";
 
 type Props = {
   selected: Project | null;
   onSelect: (project: Project) => void;
   onClose: () => void;
 };
+
+const categoryOptions = projectCategories.map((c) => ({ value: c, label: c }));
 
 const MODAL_LAYOUT = { type: "tween", duration: 0.34, ease: [0.4, 0, 0.2, 1] } as const;
 
@@ -37,26 +43,12 @@ export default function Projects({ selected, onSelect, onClose }: Props) {
       />
 
       <div className="mb-8 flex justify-center">
-        <div className="relative flex gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1">
-          {projectCategories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setCategory(cat)}
-              className="relative rounded-full px-4 py-1.5 text-xs font-medium transition-colors sm:text-sm"
-            >
-              {category === cat && (
-                <m.span
-                  layoutId="filter-pill"
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-framer-blue via-framer-purple to-framer-pink"
-                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                />
-              )}
-              <span className={`relative z-10 ${category === cat ? "text-white" : "text-gray-400"}`}>
-                {cat}
-              </span>
-            </button>
-          ))}
-        </div>
+        <SegmentedControl
+          options={categoryOptions}
+          value={category}
+          onChange={setCategory}
+          layoutId="filter-pill"
+        />
       </div>
 
       <m.div layout className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -123,7 +115,7 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
       }}
       whileHover={{ y: -6 }}
       style={{ rotateX: springRotateX, rotateY: springRotateY, transformPerspective: 800 }}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-left backdrop-blur-md transition-colors hover:border-white/20"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-left transition-colors hover:border-white/20"
     >
       <m.div
         layoutId={`card-glow-${project.id}`}
@@ -142,15 +134,8 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
       </m.h3>
       <p className="mt-1 text-sm text-gray-400">{project.tagline}</p>
 
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {project.stack.slice(0, 3).map((s) => (
-          <span
-            key={s}
-            className="rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] text-gray-400"
-          >
-            {s}
-          </span>
-        ))}
+      <div className="mt-4">
+        <TagList items={project.stack.slice(0, 3)} muted />
       </div>
 
       <span className="mt-4 flex items-center gap-1 text-xs font-medium text-framer-teal opacity-0 transition-opacity group-hover:opacity-100">
@@ -161,6 +146,13 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
 });
 
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
+  useLockBodyScroll(true);
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
+
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto px-4 py-10 sm:items-center">
       <m.div
@@ -174,6 +166,9 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 
       <m.div
         layoutId={`card-${project.id}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label={project.title}
         transition={MODAL_LAYOUT}
         className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-white/10 bg-[#131318] shadow-glow"
       >
@@ -243,30 +238,16 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
                 Что реализовано
               </p>
-              <ul className="flex flex-col gap-2">
-                {project.features.map((f) => (
-                  <li key={f} className="flex gap-2 text-sm text-gray-400">
-                    <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-framer-purple" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
+              <BulletList items={project.features} />
             </m.div>
 
             <m.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.29, duration: 0.28 }}
-              className="mt-5 flex flex-wrap gap-1.5"
+              className="mt-5"
             >
-              {project.stack.map((s) => (
-                <span
-                  key={s}
-                  className="rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] text-gray-300"
-                >
-                  {s}
-                </span>
-              ))}
+              <TagList items={project.stack} />
             </m.div>
 
             <m.a

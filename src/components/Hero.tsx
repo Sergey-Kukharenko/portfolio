@@ -4,6 +4,10 @@ import { ArrowUpIcon, CommandIcon, SendIcon, SparkleIcon } from "../icons";
 import Magnetic from "./Magnetic";
 import Counter from "./Counter";
 import Typewriter from "./Typewriter";
+import { telegram } from "../data/contacts";
+import { stats } from "../data/stats";
+import { plural } from "../lib/plural";
+import { scrollToSection as scrollTo } from "../lib/navigation";
 
 const ROLES = [
   "Senior Frontend Developer",
@@ -19,15 +23,11 @@ const blobs = [
   { className: "bg-framer-teal", top: "5%", left: "72%", size: 340, delay: 0.6 },
 ];
 
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.09, delayChildren: 0.1 } },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
+// The hero's staggered entrance is plain CSS (.hero-enter in index.css), not
+// framer-motion: the page is prerendered, and a CSS animation starts with the
+// very first paint of that HTML — before any JS has loaded — whereas a motion
+// `initial` would ship the text as opacity:0 until hydration.
+const enter = (i: number) => ({ animationDelay: `${0.1 + i * 0.09}s` });
 
 type Props = {
   onOpenSearch: () => void;
@@ -45,8 +45,6 @@ export default function Hero({ onOpenSearch }: Props) {
   // out — a light parallax touch, kept to just this one section on purpose
   const blobsY = useTransform(scrollYProgress, [0, 1], ["0%", "35%"]);
   const blobsOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
     <section
@@ -77,48 +75,45 @@ export default function Hero({ onOpenSearch }: Props) {
         ))}
       </m.div>
 
-      <m.div
-        variants={container}
-        initial="hidden"
-        animate="visible"
+      <div
         className="relative z-10 mx-auto flex max-w-4xl flex-col items-center gap-6 px-4 text-center sm:px-6"
       >
-        <m.span
-          variants={item}
-          className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-gray-400"
+        <span
+          style={enter(0)}
+          className="hero-enter flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-gray-400"
         >
           <SparkleIcon width={12} height={12} className="text-framer-teal" />
           Открыт для новых проектов
-        </m.span>
+        </span>
 
-        <m.h1
-          variants={item}
+        <h1
+          style={enter(1)}
           data-cursor-invert
-          className="max-w-3xl text-4xl font-bold leading-[1.1] tracking-tight sm:text-6xl"
+          className="hero-enter max-w-3xl text-4xl font-bold leading-[1.1] tracking-tight sm:text-6xl"
         >
           Сергей Кухаренко —{" "}
           <span className="bg-gradient-to-r from-framer-blue via-framer-purple to-framer-pink bg-clip-text text-transparent">
             Senior Frontend
           </span>{" "}
           Developer
-        </m.h1>
+        </h1>
 
-        <m.div
-          variants={item}
-          className="flex min-h-[1.5em] items-center gap-2 font-mono text-sm text-framer-teal sm:text-base"
+        <div
+          style={enter(2)}
+          className="hero-enter flex min-h-[1.5em] items-center gap-2 font-mono text-sm text-framer-teal sm:text-base"
         >
           <span aria-hidden className="text-gray-500">
             ➜
           </span>
           <Typewriter words={ROLES} />
-        </m.div>
+        </div>
 
-        <m.p variants={item} className="max-w-2xl text-base text-gray-400 sm:text-lg">
-          12+ лет создаю быстрые и аккуратные e-commerce и корпоративные интерфейсы на Vue/Nuxt
+        <p style={enter(3)} className="hero-enter max-w-2xl text-base text-gray-400 sm:text-lg">
+          {stats.years}+ {plural(stats.years, ["год", "года", "лет"])} создаю быстрые и аккуратные e-commerce и корпоративные интерфейсы на Vue/Nuxt
           и React. От вёрстки лендингов до архитектуры и найма команды — прошёл весь путь.
-        </m.p>
+        </p>
 
-        <m.div variants={item} className="flex flex-wrap items-center justify-center gap-3">
+        <div style={enter(4)} className="hero-enter flex flex-wrap items-center justify-center gap-3">
           <Magnetic strength={0.4} className="inline-block">
             <m.button
               type="button"
@@ -133,7 +128,7 @@ export default function Hero({ onOpenSearch }: Props) {
 
           <Magnetic strength={0.4} className="inline-block">
             <m.a
-              href="https://t.me/SergeyKukharenko"
+              href={telegram.href}
               target="_blank"
               rel="noreferrer"
               whileHover={{ scale: 1.03, y: -2 }}
@@ -157,16 +152,28 @@ export default function Hero({ onOpenSearch }: Props) {
               <CommandIcon width={9} height={9} />K
             </span>
           </m.button>
-        </m.div>
+        </div>
 
-        <m.div
-          variants={item}
-          className="mt-6 grid grid-cols-3 gap-6 rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-4 backdrop-blur-md sm:gap-10 sm:px-10"
+        <div
+          style={enter(5)}
+          className="hero-enter mt-6 grid grid-cols-3 gap-6 rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-4 backdrop-blur-md sm:gap-10 sm:px-10"
         >
           {[
-            { value: 12, suffix: "+", label: "лет в разработке" },
-            { value: 7, suffix: "", label: "компаний" },
-            { value: 12, suffix: "", label: "pet-проектов" },
+            {
+              value: stats.years,
+              suffix: "+",
+              label: `${plural(stats.years, ["год", "года", "лет"])} в разработке`,
+            },
+            {
+              value: stats.companies,
+              suffix: "",
+              label: plural(stats.companies, ["компания", "компании", "компаний"]),
+            },
+            {
+              value: stats.projects,
+              suffix: "",
+              label: plural(stats.projects, ["pet-проект", "pet-проекта", "pet-проектов"]),
+            },
           ].map((s) => (
             <div key={s.label} className="flex flex-col items-center">
               <span className="bg-gradient-to-r from-framer-blue to-framer-teal bg-clip-text text-2xl font-bold text-transparent sm:text-3xl">
@@ -175,8 +182,8 @@ export default function Hero({ onOpenSearch }: Props) {
               <span className="text-[11px] text-gray-500 sm:text-xs">{s.label}</span>
             </div>
           ))}
-        </m.div>
-      </m.div>
+        </div>
+      </div>
 
       <m.button
         type="button"

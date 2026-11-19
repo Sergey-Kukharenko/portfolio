@@ -30,13 +30,12 @@ export default function ColorPalette() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6 }}
-      className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md sm:p-10"
+      className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-10"
     >
       {loops && (
         <m.div
           aria-hidden
-          className="pointer-events-none absolute -inset-32 -z-10 opacity-30 blur-3xl"
-          style={{ background: "conic-gradient(from 0deg, #0099FF, #8855FF, #FF55A3, #FF3366, #FF8855, #05F2C7, #0099FF)" }}
+          className="pointer-events-none absolute -inset-32 -z-10 bg-framer-conic opacity-30 blur-3xl"
           animate={{ rotate: 360 }}
           transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
         />

@@ -1,5 +1,7 @@
 import { m } from "framer-motion";
 import SectionHeading from "./SectionHeading";
+import { stats } from "../data/stats";
+import { plural } from "../lib/plural";
 
 const facts = [
   { label: "Локация", value: "Москва, удалённо" },
@@ -23,7 +25,9 @@ export default function About() {
         >
           <p className="text-base leading-relaxed text-gray-300 sm:text-lg">
             Senior / Lead Frontend Developer с более чем{" "}
-            <span className="font-semibold text-white">12 годами опыта</span> в разработке
+            <span className="font-semibold text-white">
+              {stats.years} {plural(stats.years, ["годом", "годами", "годами"])} опыта
+            </span> в разработке
             e-commerce и корпоративных веб-приложений.
           </p>
           <p className="mt-4 text-base leading-relaxed text-gray-400 sm:text-lg">
@@ -52,7 +56,7 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.15 + i * 0.08 }}
               whileHover={{ y: -3, borderColor: "rgba(136,85,255,0.4)" }}
-              className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 backdrop-blur-md"
+              className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3"
             >
               <p className="text-[11px] uppercase tracking-wider text-gray-500">{f.label}</p>
               <p className="mt-1 text-sm font-semibold text-white">{f.value}</p>

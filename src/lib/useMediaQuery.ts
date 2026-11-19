@@ -1,6 +1,10 @@
 import { useSyncExternalStore } from "react";
 
-/** Live `matchMedia` result; read synchronously on first render, so no flash. */
+/**
+ * Live `matchMedia` result. The prerendered HTML (and hydration) assume `false`,
+ * then React re-renders with the real value right after — so media-gated UI is
+ * added on the client instead of causing a hydration mismatch.
+ */
 export function useMediaQuery(query: string): boolean {
   return useSyncExternalStore(
     (onChange) => {
@@ -8,7 +12,8 @@ export function useMediaQuery(query: string): boolean {
       mq.addEventListener("change", onChange);
       return () => mq.removeEventListener("change", onChange);
     },
-    () => window.matchMedia(query).matches
+    () => window.matchMedia(query).matches,
+    () => false
   );
 }
 

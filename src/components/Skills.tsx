@@ -20,7 +20,7 @@ export default function Skills() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5, delay: gi * 0.08 }}
-            className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-md"
+            className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"
           >
             <div className="mb-4 flex items-center gap-2">
               <span className={`h-2 w-2 rounded-full bg-gradient-to-r ${group.gradient}`} />

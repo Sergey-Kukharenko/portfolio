@@ -1,16 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, m, useScroll, useMotionValueEvent } from "framer-motion";
 import { CommandIcon, SearchIcon, XIcon } from "../icons";
-import { useCanHover } from "../lib/useMediaQuery";
-
-const LINKS = [
-  { id: "about", label: "Обо мне" },
-  { id: "experience", label: "Опыт" },
-  { id: "skills", label: "Навыки" },
-  { id: "code", label: "Код" },
-  { id: "projects", label: "Проекты" },
-  { id: "contact", label: "Контакты" },
-];
+import { useVisibleSections } from "../data/sections";
+import { scrollToSection } from "../lib/navigation";
+import { useLockBodyScroll } from "../lib/useLockBodyScroll";
 
 type Props = {
   onOpenSearch: () => void;
@@ -20,31 +13,20 @@ export default function Nav({ onOpenSearch }: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
-  const canHover = useCanHover();
-  const links = canHover ? LINKS : LINKS.filter((l) => l.id !== "code");
+  const links = useVisibleSections();
 
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 12));
 
-  useEffect(() => {
-    if (menuOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [menuOpen]);
+  useLockBodyScroll(menuOpen);
 
   const scrollTo = (id: string) => {
     setMenuOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToSection(id);
   };
 
   return (
-    <m.header
-      initial={{ y: -24, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="fixed inset-x-0 top-0 z-50"
-    >
+    // CSS entrance (.nav-enter) so it plays from the prerendered HTML, before JS
+    <header className="nav-enter fixed inset-x-0 top-0 z-50">
       <div
         className={`mx-auto flex max-w-6xl items-center justify-between px-4 transition-all duration-300 sm:px-6 ${
           scrolled ? "mt-3" : "mt-0"
@@ -142,7 +124,7 @@ export default function Nav({ onOpenSearch }: Props) {
           </m.div>
         )}
       </AnimatePresence>
-    </m.header>
+    </header>
   );
 }
 

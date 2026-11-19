@@ -4,6 +4,9 @@ import { Highlight } from "prism-react-renderer";
 import { codeSnippets } from "../data/codeSnippets";
 import { framerCodeTheme } from "../lib/prismTheme";
 import SectionHeading from "./SectionHeading";
+import { SegmentedControl } from "./ui/SegmentedControl";
+
+const tabs = codeSnippets.map((s) => ({ value: s.id, label: s.label }));
 
 export default function CodeShowcase() {
   const [activeId, setActiveId] = useState(codeSnippets[0].id);
@@ -17,27 +20,14 @@ export default function CodeShowcase() {
         description="Рекурсия — потому что хорошая архитектура умеет повторять себя. Наведите на блок кода."
       />
 
-      <div className="mx-auto mb-6 flex w-fit flex-wrap justify-center gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1">
-        {codeSnippets.map((s) => (
-          <button
-            key={s.id}
-            type="button"
-            onClick={() => setActiveId(s.id)}
-            className="relative rounded-full px-3 py-1.5 text-xs font-medium transition-colors sm:text-sm"
-          >
-            {activeId === s.id && (
-              <m.span
-                layoutId="code-tab-pill"
-                className="absolute inset-0 rounded-full bg-gradient-to-r from-framer-blue via-framer-purple to-framer-pink"
-                transition={{ type: "spring", stiffness: 400, damping: 32 }}
-              />
-            )}
-            <span className={`relative z-10 ${activeId === s.id ? "text-white" : "text-gray-400"}`}>
-              {s.label}
-            </span>
-          </button>
-        ))}
-      </div>
+      <SegmentedControl
+        options={tabs}
+        value={activeId}
+        onChange={setActiveId}
+        layoutId="code-tab-pill"
+        className="mx-auto mb-6 w-fit flex-wrap justify-center"
+        itemClassName="px-3"
+      />
 
       <div
         data-cursor-label={active.pitch}

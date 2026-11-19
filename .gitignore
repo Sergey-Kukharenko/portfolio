@@ -21,6 +21,7 @@ lerna-debug.log*
 
 # Директории сборки (Build & Dist output)
 dist/
+dist-ssr/
 build/
 out/
 .next/
