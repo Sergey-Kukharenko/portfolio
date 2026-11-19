@@ -23,7 +23,7 @@ export default function About() {
         >
           <p className="text-base leading-relaxed text-gray-300 sm:text-lg">
             Senior / Lead Frontend Developer с более чем{" "}
-            <span className="font-semibold text-white">11 годами опыта</span> в разработке
+            <span className="font-semibold text-white">12 годами опыта</span> в разработке
             e-commerce и корпоративных веб-приложений.
           </p>
           <p className="mt-4 text-base leading-relaxed text-gray-400 sm:text-lg">

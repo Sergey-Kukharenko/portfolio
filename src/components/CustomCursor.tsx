@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { m, useMotionValue, useSpring } from "framer-motion";
+import { useCanHover } from "../lib/useMediaQuery";
 
 const INTERACTIVE_SELECTOR = "a, button, [role='button'], input, textarea, summary";
 
 export default function CustomCursor() {
-  const [enabled, setEnabled] = useState(false);
+  const enabled = useCanHover();
   const [hovering, setHovering] = useState(false);
   const [label, setLabel] = useState<string | null>(null);
   // a big, solid, color-inverting circle — reserved for empty space inside
@@ -17,14 +18,6 @@ export default function CustomCursor() {
   const y = useMotionValue(-100);
   const ringX = useSpring(x, { stiffness: 300, damping: 30, mass: 0.5 });
   const ringY = useSpring(y, { stiffness: 300, damping: 30, mass: 0.5 });
-
-  useEffect(() => {
-    const mq = window.matchMedia("(pointer: fine)");
-    setEnabled(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => setEnabled(e.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
 
   useEffect(() => {
     if (!enabled) return;

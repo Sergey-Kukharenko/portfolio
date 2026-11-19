@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { m, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { m, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpIcon, CommandIcon, SendIcon, SparkleIcon } from "../icons";
 import Magnetic from "./Magnetic";
 import Counter from "./Counter";
@@ -37,6 +37,10 @@ export default function Hero({ onOpenSearch }: Props) {
   const prefersReducedMotion = useReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  // four huge blurred blobs are expensive to repaint — only loop them while
+  // the hero is on screen, otherwise let them settle and go idle
+  const heroInView = useInView(heroRef);
+  const blobsAnimate = !prefersReducedMotion && heroInView;
   // background drifts down slower than the page scrolls past it, and fades
   // out — a light parallax touch, kept to just this one section on purpose
   const blobsY = useTransform(scrollYProgress, [0, 1], ["0%", "35%"]);
@@ -60,11 +64,15 @@ export default function Hero({ onOpenSearch }: Props) {
             className={`absolute rounded-full ${b.className} opacity-30 blur-3xl mix-blend-screen`}
             style={{ top: b.top, left: b.left, width: b.size, height: b.size }}
             animate={
-              prefersReducedMotion
-                ? undefined
-                : { x: [0, 40, -20, 0], y: [0, -30, 20, 0], scale: [1, 1.15, 0.95, 1] }
+              blobsAnimate
+                ? { x: [0, 40, -20, 0], y: [0, -30, 20, 0], scale: [1, 1.15, 0.95, 1] }
+                : { x: 0, y: 0, scale: 1 }
             }
-            transition={{ duration: 16, delay: b.delay, repeat: Infinity, ease: "easeInOut" }}
+            transition={
+              blobsAnimate
+                ? { duration: 16, delay: b.delay, repeat: Infinity, ease: "easeInOut" }
+                : { duration: 0.6 }
+            }
           />
         ))}
       </m.div>

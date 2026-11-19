@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, m, useScroll, useMotionValueEvent } from "framer-motion";
 import { CommandIcon, SearchIcon, XIcon } from "../icons";
+import { useCanHover } from "../lib/useMediaQuery";
 
 const LINKS = [
   { id: "about", label: "Обо мне" },
@@ -19,6 +20,8 @@ export default function Nav({ onOpenSearch }: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
+  const canHover = useCanHover();
+  const links = canHover ? LINKS : LINKS.filter((l) => l.id !== "code");
 
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 12));
 
@@ -66,7 +69,7 @@ export default function Nav({ onOpenSearch }: Props) {
           </button>
 
           <nav className="hidden items-center gap-1 md:flex">
-            {LINKS.map((link) => (
+            {links.map((link) => (
               <button
                 key={link.id}
                 onClick={() => scrollTo(link.id)}
@@ -123,7 +126,7 @@ export default function Nav({ onOpenSearch }: Props) {
             className="overflow-hidden px-4 sm:px-6 md:hidden"
           >
             <div className="mt-2 flex flex-col gap-1 rounded-2xl border border-white/10 bg-[#0B0B0F]/95 p-2 shadow-glow backdrop-blur-xl">
-              {LINKS.map((link, i) => (
+              {links.map((link, i) => (
                 <m.button
                   key={link.id}
                   initial={{ opacity: 0, x: -8 }}

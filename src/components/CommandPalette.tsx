@@ -27,6 +27,7 @@ import {
   SendIcon,
   XIcon,
 } from "../icons";
+import { useCanHover } from "../lib/useMediaQuery";
 
 type Category = "Действия" | "Разделы" | "Проекты" | "Опыт";
 
@@ -69,9 +70,10 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
+  const canHover = useCanHover();
 
-  const items: CommandItem[] = useMemo(
-    () => [
+  const items = useMemo(() => {
+    const all: CommandItem[] = [
       {
         id: "action-telegram",
         title: "Написать в Telegram",
@@ -199,9 +201,10 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
         gradient: exp.gradient,
         run: () => scrollTo("experience"),
       })),
-    ],
-    [onOpenProject]
-  );
+    ];
+    // the code section isn't rendered on touch devices (see App)
+    return canHover ? all : all.filter((item) => item.id !== "section-code");
+  }, [onOpenProject, canHover]);
 
   const { groups, flat } = useMemo(() => {
     const q = query.trim().toLowerCase();

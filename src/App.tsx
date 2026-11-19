@@ -10,6 +10,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import CustomCursor from "./components/CustomCursor";
 import type { Project } from "./data/projects";
+import { useCanHover } from "./lib/useMediaQuery";
 
 // heavy, below-the-fold or on-demand chunks — kept out of the initial bundle
 // so the hero paints as fast as possible (prism alone is a big chunk)
@@ -24,6 +25,9 @@ export default function App() {
   // exit animation still plays
   const [paletteMounted, setPaletteMounted] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  // the code showcase is a hover demo (cursor pitch, hover hints) — pointless
+  // on touch screens, so it is neither rendered nor downloaded there
+  const canHover = useCanHover();
 
   useEffect(() => {
     if (searchOpen) setPaletteMounted(true);
@@ -33,7 +37,7 @@ export default function App() {
   // section or pressing ⌘K is instant later
   useEffect(() => {
     const prefetch = () => {
-      loadCodeShowcase();
+      if (canHover) loadCodeShowcase();
       loadCommandPalette();
     };
     if ("requestIdleCallback" in window) {
@@ -42,7 +46,7 @@ export default function App() {
     }
     const t = setTimeout(prefetch, 2000);
     return () => clearTimeout(t);
-  }, []);
+  }, [canHover]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -68,9 +72,11 @@ export default function App() {
         <Skills />
         {/* placeholder keeps the #code anchor and roughly the same height,
             so nav links and scroll position don't jump while the chunk loads */}
-        <Suspense fallback={<section id="code" className="min-h-[640px]" />}>
-          <CodeShowcase />
-        </Suspense>
+        {canHover && (
+          <Suspense fallback={<section id="code" className="min-h-[640px]" />}>
+            <CodeShowcase />
+          </Suspense>
+        )}
         <Projects
           selected={selectedProject}
           onSelect={setSelectedProject}

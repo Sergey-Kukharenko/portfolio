@@ -1,10 +1,15 @@
-import { useState } from "react";
-import { AnimatePresence, m, useReducedMotion } from "framer-motion";
+import { useRef, useState } from "react";
+import { AnimatePresence, m, useInView, useReducedMotion } from "framer-motion";
 import { palette } from "../data/palette";
 import { PaletteIcon } from "../icons";
 
 export default function ColorPalette() {
   const prefersReducedMotion = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  // the rotating blurred conic glow and the shimmer loop forever — only keep
+  // them mounted while the card is (nearly) on screen
+  const nearViewport = useInView(ref, { margin: "200px" });
+  const loops = !prefersReducedMotion && nearViewport;
   const [copied, setCopied] = useState<string | null>(null);
   const [activeHex, setActiveHex] = useState(palette[1].hex);
 
@@ -20,13 +25,14 @@ export default function ColorPalette() {
 
   return (
     <m.div
+      ref={ref}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6 }}
       className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md sm:p-10"
     >
-      {!prefersReducedMotion && (
+      {loops && (
         <m.div
           aria-hidden
           className="pointer-events-none absolute -inset-32 -z-10 opacity-30 blur-3xl"
@@ -91,7 +97,7 @@ export default function ColorPalette() {
           style={{ width: "100%" }}
           initial={false}
         >
-          {!prefersReducedMotion && (
+          {loops && (
             <m.div
               className="h-full w-1/3 rounded-full bg-white/40"
               animate={{ x: ["-10%", "260%"] }}
