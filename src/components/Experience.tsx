@@ -16,47 +16,33 @@ export default function Experience() {
   const [lineInset, setLineInset] = useState({ top: 8, bottom: 8 });
 
   useLayoutEffect(() => {
+    const container = timelineRef.current;
+    if (!container) return;
+
+    // offsetTop/offsetHeight are layout values and ignore CSS transforms, so the
+    // whileInView translateY reveal doesn't skew them — measuring the final
+    // resting position directly, no scroll listener or delayed re-measures needed
+    const centerOf = (icon: HTMLElement) => {
+      const li = icon.offsetParent as HTMLElement; // icon is absolute inside its <li>
+      return li.offsetTop + icon.offsetTop + icon.offsetHeight / 2;
+    };
+
     const measure = () => {
-      const container = timelineRef.current;
       const first = firstIconRef.current;
       const last = lastIconRef.current;
-      if (!container || !first || !last) return;
-      const containerRect = container.getBoundingClientRect();
-      const firstCenter = first.getBoundingClientRect().top + first.offsetHeight / 2 - containerRect.top;
-      const lastCenter = last.getBoundingClientRect().top + last.offsetHeight / 2 - containerRect.top;
-      setLineInset({ top: firstCenter, bottom: containerRect.height - lastCenter });
+      if (!first || !last) return;
+      const top = centerOf(first);
+      const bottom = container.offsetHeight - centerOf(last);
+      // bail out when nothing changed so React skips the re-render
+      setLineInset((prev) => (prev.top === top && prev.bottom === bottom ? prev : { top, bottom }));
     };
 
     measure();
-
-    // the per-card whileInView reveal moves each icon with a transform
-    // (translateY), not a size change, so ResizeObserver never sees it —
-    // re-measure on scroll (rAF-throttled) to catch icons settling into
-    // their final position as they animate into view
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        measure();
-        ticking = false;
-      });
-    };
-    // and a few delayed re-measures to catch the entrance transition
-    // finishing even when nothing scrolls afterwards (e.g. already in view)
-    const timeouts = [100, 400, 800, 1400].map((t) => window.setTimeout(measure, t));
-
-    window.addEventListener("resize", measure);
-    window.addEventListener("scroll", onScroll, { passive: true });
+    // container height changes when a card opens/closes or the viewport resizes
     const ro = new ResizeObserver(measure);
-    if (timelineRef.current) ro.observe(timelineRef.current);
-    return () => {
-      window.removeEventListener("resize", measure);
-      window.removeEventListener("scroll", onScroll);
-      timeouts.forEach((id) => window.clearTimeout(id));
-      ro.disconnect();
-    };
-  }, [openId]);
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: timelineRef,
