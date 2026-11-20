@@ -193,8 +193,9 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
       </m.h3>
       <p className="mt-1 text-sm text-gray-400">{t(project.tagline)}</p>
 
-      <div className="mt-4">
+      <div className="mt-4 flex items-start justify-between gap-3">
         <TagList items={project.stack.slice(0, 3)} muted />
+        <span className="pt-0.5 text-xs tabular-nums text-gray-500">{project.year}</span>
       </div>
 
       <span className="mt-4 flex items-center gap-1 text-xs font-medium text-framer-teal opacity-0 transition-opacity group-hover:opacity-100">
@@ -279,7 +280,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               transition={{ delay: 0.14, duration: 0.28 }}
               className="mt-1 text-sm font-medium text-framer-teal"
             >
-              {t(project.tagline)}
+              {t(project.tagline)} <span className="text-gray-500">· {project.year}</span>
             </m.p>
 
             <m.p
@@ -323,7 +324,8 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               whileTap={{ scale: 0.98 }}
               className={`mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r px-4 py-3 text-sm font-semibold text-white ${project.gradient}`}
             >
-              {ui.projects.demo} <ExternalLinkIcon width={14} height={14} />
+              {project.linkType === "code" ? ui.projects.code : ui.projects.demo}{" "}
+              <ExternalLinkIcon width={14} height={14} />
             </m.a>
           </div>
         </m.div>

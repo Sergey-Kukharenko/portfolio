@@ -33,8 +33,9 @@ const ru = {
         в разработке e-commerce и корпоративных веб-приложений.
       </>,
       <>
-        Основной стек — <Teal>Vue / Nuxt / TypeScript</Teal>. Также есть опыт работы с{" "}
-        <Pink>React-экосистемой</Pink>: React, Next.js, Redux, Zustand.
+        В продакшене — <Teal>Vue / Nuxt / TypeScript</Teal>. <Pink>React-экосистему</Pink> (React, Next.js,
+        Redux, Zustand) применял в коммерческой работе и продолжаю развивать в своих проектах — этот сайт
+        тоже на React.
       </>,
       <>
         Есть опыт роли Lead: архитектура проектов, code review, найм и менторинг разработчиков, прямое
@@ -75,9 +76,9 @@ const ru = {
     hint: "Нажмите на цвет, чтобы скопировать hex-код — вся палитра сайта построена на этих семи оттенках Framer.",
   },
   projects: {
-    title: "Pet-проекты и практика",
+    title: "Вне работы — React / Next.js",
     description:
-      "Приложения, приближенные к реальным продуктовым сценариям: e-commerce, marketplace, community, CRM. Нажмите на карточку, чтобы узнать подробнее.",
+      "В продакшене я пишу на Vue / Nuxt, а React-экосистему развиваю в своих проектах, чтобы не стоять на месте. Нажмите на карточку, чтобы узнать подробнее.",
     all: "Все",
     showAll: (n: number) => `Показать все ${n}`,
     showLess: "Свернуть",
@@ -85,6 +86,7 @@ const ru = {
     close: "Закрыть",
     features: "Что реализовано",
     demo: "Открыть демо",
+    code: "Код на GitHub",
   },
   contact: {
     title: "Готов обсудить проект",
@@ -145,8 +147,9 @@ const en: typeof ru = {
         building e-commerce and enterprise web applications.
       </>,
       <>
-        Core stack — <Teal>Vue / Nuxt / TypeScript</Teal>. Also experienced with the{" "}
-        <Pink>React ecosystem</Pink>: React, Next.js, Redux, Zustand.
+        In production — <Teal>Vue / Nuxt / TypeScript</Teal>. The <Pink>React ecosystem</Pink> (React,
+        Next.js, Redux, Zustand) I've used in commercial work and keep growing in my own projects — this site
+        is React too.
       </>,
       <>
         Lead experience: project architecture, code review, hiring and mentoring developers, working directly with
@@ -187,9 +190,9 @@ const en: typeof ru = {
     hint: "Click a color to copy its hex code — the whole site is built on these seven Framer shades.",
   },
   projects: {
-    title: "Pet projects and practice",
+    title: "Outside work — React / Next.js",
     description:
-      "Apps modeled on real product scenarios: e-commerce, marketplace, community, CRM. Click a card for details.",
+      "In production I write Vue / Nuxt; the React ecosystem I keep growing in my own projects, so I never stand still. Click a card for details.",
     all: "All",
     showAll: (n) => `Show all ${n}`,
     showLess: "Show less",
@@ -197,6 +200,7 @@ const en: typeof ru = {
     close: "Close",
     features: "What's built",
     demo: "Open demo",
+    code: "Code on GitHub",
   },
   contact: {
     title: "Let's talk about your project",

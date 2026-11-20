@@ -10,11 +10,46 @@ export type Project = {
   features: L<string[]>;
   stack: string[];
   link: string;
+  /** what `link` opens: a live demo (default) or the source code */
+  linkType?: "demo" | "code";
+  /** year the repository went up on GitHub */
+  year: number;
   category: ProjectCategory;
   gradient: string;
 };
 
+// React / Next.js first: Vue / Nuxt is the production stack (see experience
+// and cases), React is what grows outside work — these show that, newest first
 export const projects: Project[] = [
+  {
+    id: "portfolio",
+    title: "Arc. Portfolio",
+    tagline: { ru: "Этот сайт — React + TypeScript", en: "This site — React + TypeScript" },
+    description: {
+      ru: "Сайт, который вы сейчас смотрите. В работе я пишу на Vue / Nuxt, а этот проект — моя площадка для React: архитектура, анимации, доступность и производительность доведены до продакшен-уровня.",
+      en: "The site you're looking at. At work I write Vue / Nuxt; this project is my React playground, with architecture, animation, accessibility and performance taken to production level.",
+    },
+    features: {
+      ru: [
+        "Пререндер русской и английской версий: быстрая первая отрисовка и SEO",
+        "Анимации на Framer Motion: shared layout, spring-физика, ⌘K-палитра",
+        "Доступность: клавиатура, фокус, prefers-reduced-motion",
+        "Производительность: ленивые чанки, оптимизация рендеринга под Safari / iOS",
+      ],
+      en: [
+        "Prerendered Russian and English versions: fast first paint and SEO",
+        "Framer Motion animation: shared layout, spring physics, a ⌘K palette",
+        "Accessibility: keyboard, focus, prefers-reduced-motion",
+        "Performance: lazy chunks, rendering tuned for Safari / iOS",
+      ],
+    },
+    stack: ["React", "TypeScript", "Framer Motion", "Vite", "Tailwind"],
+    link: "https://github.com/Sergey-Kukharenko/portfolio",
+    linkType: "code",
+    year: 2026,
+    category: "React / Next.js",
+    gradient: "from-framer-pink to-framer-blue",
+  },
   {
     id: "dev-flow",
     title: "Dev Flow",
@@ -29,8 +64,27 @@ export const projects: Project[] = [
     },
     stack: ["React", "Next.js"],
     link: "https://dev-flow-eight-sepia.vercel.app",
+    year: 2026,
     category: "React / Next.js",
     gradient: "from-framer-blue to-framer-purple",
+  },
+  {
+    id: "next-pizza",
+    title: "Next Pizza",
+    tagline: { ru: "SSR e-commerce с динамическими страницами", en: "SSR e-commerce with dynamic pages" },
+    description: {
+      ru: "Интернет-магазин пиццы с серверным рендерингом: каталог товаров с конструктором, динамические страницы карточек товара и корзина с подсчётом стоимости.",
+      en: "A server-rendered pizza store: a catalog with a product builder, dynamic product pages and a cart that tallies the total.",
+    },
+    features: {
+      ru: ["Server-side rendering", "Каталог и конструктор товара", "Динамические страницы", "Корзина"],
+      en: ["Server-side rendering", "Catalog and product builder", "Dynamic pages", "Cart"],
+    },
+    stack: ["Next.js", "React"],
+    link: "https://next-pizza-silk.vercel.app",
+    year: 2025,
+    category: "React / Next.js",
+    gradient: "from-framer-red to-framer-orange",
   },
   {
     id: "proshop",
@@ -46,6 +100,7 @@ export const projects: Project[] = [
     },
     stack: ["React", "Redux", "REST API"],
     link: "https://proshop-three.vercel.app",
+    year: 2022,
     category: "React / Next.js",
     gradient: "from-framer-purple to-framer-pink",
   },
@@ -63,25 +118,9 @@ export const projects: Project[] = [
     },
     stack: ["React", "Firebase"],
     link: "https://house-marketplace-kohl-tau.vercel.app",
+    year: 2022,
     category: "React / Next.js",
     gradient: "from-framer-pink to-framer-red",
-  },
-  {
-    id: "next-pizza",
-    title: "Next Pizza",
-    tagline: { ru: "SSR e-commerce с динамическими страницами", en: "SSR e-commerce with dynamic pages" },
-    description: {
-      ru: "Интернет-магазин пиццы с серверным рендерингом: каталог товаров с конструктором, динамические страницы карточек товара и корзина с подсчётом стоимости.",
-      en: "A server-rendered pizza store: a catalog with a product builder, dynamic product pages and a cart that tallies the total.",
-    },
-    features: {
-      ru: ["Server-side rendering", "Каталог и конструктор товара", "Динамические страницы", "Корзина"],
-      en: ["Server-side rendering", "Catalog and product builder", "Dynamic pages", "Cart"],
-    },
-    stack: ["Next.js", "React"],
-    link: "https://next-pizza-silk.vercel.app",
-    category: "React / Next.js",
-    gradient: "from-framer-red to-framer-orange",
   },
   {
     id: "github-finder",
@@ -97,6 +136,7 @@ export const projects: Project[] = [
     },
     stack: ["React"],
     link: "https://github-finder-app-one-woad.vercel.app",
+    year: 2022,
     category: "React / Next.js",
     gradient: "from-framer-orange to-framer-teal",
   },
@@ -114,6 +154,7 @@ export const projects: Project[] = [
     },
     stack: ["React"],
     link: "https://feedback-fed.netlify.app",
+    year: 2022,
     category: "React / Next.js",
     gradient: "from-framer-teal to-framer-blue",
   },
@@ -131,6 +172,7 @@ export const projects: Project[] = [
     },
     stack: ["Nuxt 4", "Vue 3", "Pinia", "TypeScript", "Vitest"],
     link: "https://nebus-eta.vercel.app",
+    year: 2026,
     category: "Vue / Nuxt",
     gradient: "from-framer-blue to-framer-teal",
   },
@@ -148,6 +190,7 @@ export const projects: Project[] = [
     },
     stack: ["Vue 3"],
     link: "https://vue-online-bank-e52b4.web.app",
+    year: 2021,
     category: "Vue / Nuxt",
     gradient: "from-framer-purple to-framer-blue",
   },
@@ -165,59 +208,9 @@ export const projects: Project[] = [
     },
     stack: ["Vue 3", "Firebase"],
     link: "https://live-chat-3994e.web.app",
+    year: 2021,
     category: "Vue / Nuxt",
     gradient: "from-framer-pink to-framer-purple",
-  },
-  {
-    id: "weather-widget",
-    title: "Weather Widget",
-    tagline: { ru: "Виджет погоды по городам", en: "Weather widget by city" },
-    description: {
-      ru: "Компактный виджет прогноза погоды: поиск города, вывод текущей температуры и условий через внешнее погодное API с анимированными переходами между состояниями.",
-      en: "A compact forecast widget: city search, current temperature and conditions from an external weather API, with animated transitions between states.",
-    },
-    features: {
-      ru: ["Поиск по городу", "Текущая погода и прогноз", "Интеграция с Weather API"],
-      en: ["City search", "Current weather and forecast", "Weather API integration"],
-    },
-    stack: ["Vue 3"],
-    link: "https://weather-widget-72c14.web.app",
-    category: "Vue / Nuxt",
-    gradient: "from-framer-teal to-framer-purple",
-  },
-  {
-    id: "vue-crm",
-    title: "Vue CRM",
-    tagline: { ru: "CRM для учёта категорий и записей", en: "CRM for categories and records" },
-    description: {
-      ru: "Учебная CRM-система на Vue 2: авторизация, учёт категорий с лимитами, история операций и постраничная навигация по записям.",
-      en: "A learning CRM on Vue 2: auth, categories with limits, operation history and paginated records.",
-    },
-    features: {
-      ru: ["Авторизация", "Учёт категорий и лимитов", "История операций", "Пагинация"],
-      en: ["Auth", "Categories and limits", "Operation history", "Pagination"],
-    },
-    stack: ["Vue 2"],
-    link: "https://vue-crm-51864.web.app",
-    category: "Vue / Nuxt",
-    gradient: "from-framer-orange to-framer-pink",
-  },
-  {
-    id: "vue-store",
-    title: "Vue Store",
-    tagline: { ru: "Интернет-магазин на Vue 2", en: "Online store on Vue 2" },
-    description: {
-      ru: "Классический интернет-магазин на Vue 2 с каталогом товаров, фильтрацией, корзиной и оформлением заказа — база для отработки паттернов Vuex и компонентной архитектуры.",
-      en: "A classic Vue 2 store with a product catalog, filters, cart and checkout — a playground for Vuex patterns and component architecture.",
-    },
-    features: {
-      ru: ["Каталог и фильтры", "Корзина", "Vuex store"],
-      en: ["Catalog and filters", "Cart", "Vuex store"],
-    },
-    stack: ["Vue 2"],
-    link: "https://vue-store-b2a1b.web.app",
-    category: "Vue / Nuxt",
-    gradient: "from-framer-red to-framer-blue",
   },
 ];
 
