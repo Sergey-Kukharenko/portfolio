@@ -24,6 +24,13 @@ export const sections: Section[] = [
     gradient: "from-framer-blue to-framer-purple",
   },
   {
+    id: "cases",
+    label: "Кейсы",
+    title: "Кейсы",
+    subtitle: "Flowwow, Myflowers, Inventive Retail",
+    gradient: "from-framer-teal to-framer-purple",
+  },
+  {
     id: "experience",
     label: "Опыт",
     title: "Опыт работы",

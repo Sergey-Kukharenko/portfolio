@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { m } from "framer-motion";
 
 const TYPE_SPEED = 55;
@@ -8,17 +8,25 @@ const HOLD_TIME = 1700;
 type Props = {
   words: string[];
   className?: string;
+  /** caret color; defaults to the text color (set it when the text is transparent, e.g. gradient-clipped) */
+  caretClassName?: string;
+  /** called each time a word has been typed out in full */
+  onWordTyped?: () => void;
 };
 
-export default function Typewriter({ words, className }: Props) {
+export default function Typewriter({ words, className, caretClassName = "bg-current", onWordTyped }: Props) {
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [deleting, setDeleting] = useState(false);
+  // latest callback without restarting the typing effect when it changes
+  const onWordTypedRef = useRef(onWordTyped);
+  onWordTypedRef.current = onWordTyped;
 
   useEffect(() => {
     const current = words[index];
 
     if (!deleting && subIndex === current.length) {
+      onWordTypedRef.current?.();
       const t = window.setTimeout(() => setDeleting(true), HOLD_TIME);
       return () => window.clearTimeout(t);
     }
@@ -41,7 +49,7 @@ export default function Typewriter({ words, className }: Props) {
       {words[index].slice(0, subIndex)}
       <m.span
         aria-hidden
-        className="ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] bg-current align-middle"
+        className={`ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] align-middle ${caretClassName}`}
         animate={{ opacity: [1, 1, 0, 0] }}
         transition={{ duration: 1, repeat: Infinity, times: [0, 0.5, 0.5, 1] }}
       />

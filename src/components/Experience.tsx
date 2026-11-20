@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { AnimatePresence, m, useScroll, useSpring } from "framer-motion";
 import { experience } from "../data/experience";
-import { BriefcaseIcon, ExternalLinkIcon } from "../icons";
+import { ExternalLinkIcon } from "../icons";
 import SectionHeading from "./SectionHeading";
 import { BulletList } from "./ui/BulletList";
 import { TagList } from "./ui/Tag";
@@ -90,10 +90,10 @@ export default function Experience() {
               >
                 <m.span
                   ref={i === 0 ? firstIconRef : i === experience.length - 1 ? lastIconRef : undefined}
-                  className={`absolute left-0 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br ${exp.gradient} text-white shadow-glow sm:h-10 sm:w-10`}
+                  className={`absolute left-0 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br ${exp.gradient} text-sm font-bold text-white shadow-glow sm:h-10 sm:w-10 sm:text-base`}
                   whileHover={{ scale: 1.1, rotate: 8 }}
                 >
-                  <BriefcaseIcon width={14} height={14} />
+                  <span aria-hidden>{exp.company[0].toUpperCase()}</span>
                 </m.span>
 
                 <m.div

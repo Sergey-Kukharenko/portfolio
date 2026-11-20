@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import Island from "./components/Island";
 import Hero from "./components/Hero";
 import About from "./components/About";
+import Cases from "./components/Cases";
 import Experience from "./components/Experience";
 import Skills from "./components/Skills";
 import Projects from "./components/Projects";
@@ -66,6 +67,7 @@ export default function App() {
       <main>
         <Hero />
         <About />
+        <Cases />
         <Experience />
         <Skills />
         {/* placeholder keeps the #code anchor and roughly the same height,

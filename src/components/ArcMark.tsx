@@ -46,7 +46,8 @@ export default function ArcMark({ generic = false, param = "T", className = "" }
               className="whitespace-nowrap font-mono font-semibold"
             >
               <span className="text-gray-500">&lt;</span>
-              <span className="text-framer-blue">{param}</span>
+              {/* a monospace space reads as a hole in "Обо мне" — tighten it */}
+              <span className="text-framer-blue [word-spacing:-0.35em]">{param}</span>
               <span className="text-gray-500">&gt;</span>
             </m.span>
           ) : (

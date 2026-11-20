@@ -23,10 +23,13 @@ type Props = {
 
 const categoryOptions = projectCategories.map((c) => ({ value: c, label: c }));
 
+const INITIAL_COUNT = 6; // the rest are one click away
+
 const MODAL_LAYOUT = { type: "tween", duration: 0.34, ease: [0.4, 0, 0.2, 1] } as const;
 
 export default function Projects({ selected, onSelect, onClose }: Props) {
   const [category, setCategory] = useState<(typeof projectCategories)[number]>("Все");
+  const [showAll, setShowAll] = useState(false);
 
   const filtered = useMemo(
     () => (category === "Все" ? projects : projects.filter((p) => p.category === category)),
@@ -52,7 +55,7 @@ export default function Projects({ selected, onSelect, onClose }: Props) {
 
       <m.div layout className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <AnimatePresence mode="popLayout">
-          {filtered.map((project, i) => (
+          {(showAll ? filtered : filtered.slice(0, INITIAL_COUNT)).map((project, i) => (
             <ProjectCard
               key={project.id}
               project={project}
@@ -62,6 +65,18 @@ export default function Projects({ selected, onSelect, onClose }: Props) {
           ))}
         </AnimatePresence>
       </m.div>
+
+      {filtered.length > INITIAL_COUNT && (
+        <div className="mt-8 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setShowAll((v) => !v)}
+            className="rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            {showAll ? "Свернуть" : `Показать все ${filtered.length}`}
+          </button>
+        </div>
+      )}
 
       <AnimatePresence>
         {selected && <ProjectModal project={selected} onClose={onClose} />}

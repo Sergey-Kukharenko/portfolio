@@ -1,7 +1,6 @@
 import { m } from "framer-motion";
-import { skillGroups } from "../data/skills";
+import { primarySkills, skillGroups } from "../data/skills";
 import SectionHeading from "./SectionHeading";
-import ColorPalette from "./ColorPalette";
 
 export default function Skills() {
   return (
@@ -11,7 +10,7 @@ export default function Skills() {
         description="От вёрстки до архитектуры — то, с чем я работаю каждый день."
       />
 
-      <div className="mb-14 grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         {skillGroups.map((group, gi) => (
           <m.div
             key={group.id}
@@ -34,7 +33,11 @@ export default function Skills() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: gi * 0.08 + si * 0.03 }}
                   whileHover={{ scale: 1.08, y: -2, backgroundColor: "rgba(255,255,255,0.08)" }}
-                  className="cursor-default rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-gray-200"
+                  className={`cursor-default rounded-lg border px-2.5 py-1 text-xs font-medium ${
+                    primarySkills.has(skill)
+                      ? "border-framer-teal/40 bg-framer-teal/10 text-framer-teal"
+                      : "border-white/10 bg-white/5 text-gray-200"
+                  }`}
                 >
                   {skill}
                 </m.span>
@@ -44,7 +47,6 @@ export default function Skills() {
         ))}
       </div>
 
-      <ColorPalette />
     </section>
   );
 }

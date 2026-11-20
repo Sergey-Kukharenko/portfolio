@@ -16,7 +16,7 @@ type Props = {
  */
 export default function IslandBar({ label, onOpen, onSearch }: Props) {
   return (
-    <div className="flex h-10 items-center gap-1 pl-1.5 pr-1">
+    <div className="flex h-10 items-center gap-1 pl-1.5 pr-1 md:h-11">
       <button
         type="button"
         onClick={onOpen}
@@ -25,7 +25,7 @@ export default function IslandBar({ label, onOpen, onSearch }: Props) {
         className="flex h-full items-center gap-2.5 pr-2"
       >
         <ProgressRing />
-        <ArcMark generic={!!label} param={label} className="text-[15px]" />
+        <ArcMark generic={!!label} param={label} className="text-[15px] md:text-[17px]" />
       </button>
       <span className="h-4 w-px bg-white/10" />
       <button

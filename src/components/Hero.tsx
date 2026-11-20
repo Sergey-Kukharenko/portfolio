@@ -3,15 +3,11 @@ import { m, useInView, useReducedMotion, useScroll, useTransform } from "framer-
 import { ArrowUpIcon, SendIcon, SparkleIcon } from "../icons";
 import Magnetic from "./Magnetic";
 import Counter from "./Counter";
-import Typewriter from "./Typewriter";
+import BrandLine from "./BrandLine";
 import { telegram } from "../data/contacts";
 import { stats } from "../data/stats";
 import { plural } from "../lib/plural";
 import { scrollToSection as scrollTo } from "../lib/navigation";
-
-// what the architect builds — the T in Arc<T>: code, decisions, life
-const PARAMS = ["Code", "Decisions", "Life"];
-const LONGEST = Math.max(...PARAMS.map((p) => p.length)) + "Arc<>".length + 1; // +1: the caret
 
 const blobs = [
   { className: "bg-framer-purple", top: "-10%", left: "5%", size: 520, delay: 0 },
@@ -93,19 +89,9 @@ export default function Hero() {
 
         <div
           style={enter(2)}
-          className="hero-enter flex min-h-[1.5em] flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm sm:text-base"
+          className="hero-enter flex min-h-[1.5em] flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm sm:gap-x-4 sm:text-base"
         >
-          {/* both registers of the mark, as on the LinkedIn and GitHub banners */}
-          <span className="font-medium text-gray-200">The art of structure.</span>
-          <span aria-hidden className="hidden h-4 w-px bg-white/20 sm:block" />
-          {/* fixed width (longest param, monospace) so typing doesn't sway the
-              centered line */}
-          <span className="inline-block text-left font-mono" style={{ minWidth: `${LONGEST}ch` }}>
-            <span className="text-framer-pink">Arc</span>
-            <span className="text-gray-500">&lt;</span>
-            <Typewriter words={PARAMS} className="text-framer-blue" />
-            <span className="text-gray-500">&gt;</span>
-          </span>
+          <BrandLine />
         </div>
 
         <p style={enter(3)} className="hero-enter max-w-2xl text-base text-gray-400 sm:text-lg">

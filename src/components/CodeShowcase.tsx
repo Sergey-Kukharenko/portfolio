@@ -4,6 +4,7 @@ import { Highlight } from "prism-react-renderer";
 import { codeSnippets } from "../data/codeSnippets";
 import { framerCodeTheme } from "../lib/prismTheme";
 import SectionHeading from "./SectionHeading";
+import ColorPalette from "./ColorPalette";
 import { SegmentedControl } from "./ui/SegmentedControl";
 
 const tabs = codeSnippets.map((s) => ({ value: s.id, label: s.label }));
@@ -67,6 +68,10 @@ export default function CodeShowcase() {
             </m.div>
           </AnimatePresence>
         </div>
+      </div>
+
+      <div className="mt-14">
+        <ColorPalette />
       </div>
     </section>
   );

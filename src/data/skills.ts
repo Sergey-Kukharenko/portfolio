@@ -5,6 +5,9 @@ export type SkillGroup = {
   skills: string[];
 };
 
+/** The everyday stack — highlighted among the rest. */
+export const primarySkills = new Set(["TypeScript", "Vue 2/3", "Nuxt 2–4"]);
+
 export const skillGroups: SkillGroup[] = [
   {
     id: "core",
@@ -16,7 +19,7 @@ export const skillGroups: SkillGroup[] = [
     id: "vue",
     title: "Vue-экосистема",
     gradient: "from-framer-purple to-framer-pink",
-    skills: ["Vue 2", "Vue 3", "Nuxt 2", "Nuxt 3", "Nuxt 4", "Vuex", "Pinia"],
+    skills: ["Vue 2/3", "Nuxt 2–4", "Vuex", "Pinia"],
   },
   {
     id: "react",
