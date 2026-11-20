@@ -1,6 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import ScrollProgress from "./components/ScrollProgress";
-import Nav from "./components/Nav";
+import Island from "./components/Island";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Experience from "./components/Experience";
@@ -62,8 +61,7 @@ export default function App() {
   return (
     <div className="relative min-h-screen overflow-x-hidden">
       <CustomCursor />
-      <ScrollProgress />
-      <Nav onOpenSearch={() => setSearchOpen(true)} searchOpen={searchOpen} />
+      <Island onOpenSearch={() => setSearchOpen(true)} searchOpen={searchOpen} />
 
       <main>
         <Hero onOpenSearch={() => setSearchOpen(true)} />

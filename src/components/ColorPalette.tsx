@@ -1,9 +1,8 @@
 import { useRef, useState } from "react";
-import { AnimatePresence, m, useInView, useReducedMotion } from "framer-motion";
+import { m, useInView, useReducedMotion } from "framer-motion";
 import { palette } from "../data/palette";
 import { PaletteIcon } from "../icons";
 import { flash } from "../lib/island";
-import { useIsMobile } from "../lib/useMediaQuery";
 
 export default function ColorPalette() {
   const prefersReducedMotion = useReducedMotion();
@@ -12,20 +11,15 @@ export default function ColorPalette() {
   // them mounted while the card is (nearly) on screen
   const nearViewport = useInView(ref, { margin: "200px" });
   const loops = !prefersReducedMotion && nearViewport;
-  const [copied, setCopied] = useState<string | null>(null);
-  // on phones the island reports the copy, so the inline tooltip would double it
-  const islandShown = useIsMobile();
   const [activeHex, setActiveHex] = useState(palette[1].hex);
 
   const copy = async (hex: string, name: string) => {
     try {
       await navigator.clipboard.writeText(hex);
     } catch {
-      // clipboard may be unavailable — animation still gives feedback
+      // clipboard may be unavailable — the island still gives feedback
     }
-    if (islandShown) flash({ title: `Скопировано · ${name}`, detail: hex, color: hex });
-    else setCopied(hex);
-    window.setTimeout(() => setCopied((c) => (c === hex ? null : c)), 1100);
+    flash({ title: `Скопировано · ${name}`, detail: hex, color: hex });
   };
 
   return (
@@ -71,20 +65,7 @@ export default function ColorPalette() {
               layoutId={`swatch-${swatch.hex}`}
               className={`relative flex h-16 w-full items-center justify-center rounded-2xl border border-white/10 shadow-glow sm:h-20 ${swatch.className}`}
               whileHover={{ boxShadow: `0 20px 45px -15px ${swatch.hex}88` }}
-            >
-              <AnimatePresence>
-                {copied === swatch.hex && (
-                  <m.span
-                    initial={{ opacity: 0, scale: 0.6, y: 4 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.6 }}
-                    className="absolute -top-8 rounded-md bg-black/80 px-2 py-1 text-[10px] font-medium text-white"
-                  >
-                    Скопировано
-                  </m.span>
-                )}
-              </AnimatePresence>
-            </m.span>
+            />
             <span className="text-xs font-medium text-gray-300">{swatch.name}</span>
             <span className="font-mono text-[11px] text-gray-500">{swatch.hex}</span>
           </m.button>
@@ -112,7 +93,7 @@ export default function ColorPalette() {
       </m.div>
 
       <p className="mt-4 text-center text-xs text-gray-500">
-        Наведите или нажмите на цвет, чтобы скопировать hex-код — вся палитра сайта построена на
+        Нажмите на цвет, чтобы скопировать hex-код — вся палитра сайта построена на
         этих семи оттенках Framer.
       </p>
     </m.div>
