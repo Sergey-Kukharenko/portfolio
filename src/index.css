@@ -36,6 +36,17 @@ body {
   background: rgba(136, 85, 255, 0.4);
 }
 
+/* Clips its children to the parent's rounded corners. iOS Safari ignores
+   overflow:hidden + border-radius for a child on its own compositing layer
+   (blur, transforms inside a 3D-tilted card) — a mask makes it clip. Kept on an
+   inner layer so the parent's focus outline isn't masked away with it. */
+.clip-rounded {
+  overflow: hidden;
+  border-radius: inherit;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  mask-image: radial-gradient(white, black);
+}
+
 /* replaced by CustomCursor.tsx on pointer:fine devices (touch/coarse pointers keep the native cursor) */
 html.has-custom-cursor,
 html.has-custom-cursor * {

@@ -1,5 +1,7 @@
-import { forwardRef, useMemo, useState, type MouseEvent } from "react";
+import { forwardRef, useMemo, useRef, useState, type MouseEvent } from "react";
+import { flushSync } from "react-dom";
 import {
+  animate,
   AnimatePresence,
   m,
   MotionConfig,
@@ -26,16 +28,80 @@ const INITIAL_COUNT = 6; // the rest are one click away
 
 const MODAL_LAYOUT = { type: "tween", duration: 0.34, ease: [0.4, 0, 0.2, 1] } as const;
 
+/** Show all / show less: the grid's real height glides, so everything below follows. */
+const RESIZE = { type: "tween", duration: 0.45, ease: [0.4, 0, 0.2, 1] } as const;
+
 export default function Projects({ selected, onSelect, onClose }: Props) {
   const { ui } = useLocale();
   const [category, setCategory] = useState<ProjectFilter>("all");
   const categoryOptions = projectCategories.map((c) => ({ value: c, label: c === "all" ? ui.projects.all : c }));
   const [showAll, setShowAll] = useState(false);
+  const reduceMotion = useReducedMotion();
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const resizing = useRef(false);
+  const clipUntilExit = useRef(false);
 
   const filtered = useMemo(
     () => (category === "all" ? projects : projects.filter((p) => p.category === category)),
     [category]
   );
+
+  // Animates the wrapper's height between the current and the target grid, clipping
+  // the overflow meanwhile. Collapsing keeps the toggle button under the pointer
+  // (the page scrolls along with the shrinking grid) and only drops the extra cards
+  // once they are clipped away — removing them first made everything below jump up
+  // while they faded out on top of the contacts.
+  const toggleShowAll = () => {
+    const wrap = wrapRef.current;
+    const grid = wrap?.firstElementChild as HTMLElement | null;
+    if (!wrap || !grid || resizing.current) return;
+    resizing.current = true;
+
+    const from = wrap.offsetHeight;
+    wrap.style.height = `${from}px`;
+    wrap.style.overflow = "hidden";
+    // Chrome's scroll anchoring would compensate as well, doubling the scroll
+    const root = document.documentElement;
+    root.style.overflowAnchor = "none";
+
+    let to: number;
+    if (showAll) {
+      const kept = Array.from(grid.children).slice(0, INITIAL_COUNT) as HTMLElement[];
+      to = Math.max(...kept.map((card) => card.offsetTop + card.offsetHeight));
+    } else {
+      flushSync(() => setShowAll(true));
+      to = grid.offsetHeight;
+    }
+
+    const collapsing = showAll;
+    // absolute, not scrollBy deltas: WebKit rounds each scroll step, and they add up
+    const scrollStart = window.scrollY;
+    animate(from, to, {
+      ...(reduceMotion ? { duration: 0 } : RESIZE),
+      onUpdate: (h) => {
+        wrap.style.height = `${h}px`;
+        if (collapsing) window.scrollTo({ top: scrollStart + h - from, behavior: "instant" });
+      },
+      onComplete: () => {
+        if (collapsing) {
+          clipUntilExit.current = true; // released by onExitComplete
+          // drop the cards before freeing the height, or it flashes full for a frame
+          flushSync(() => setShowAll(false));
+        } else {
+          wrap.style.overflow = "";
+        }
+        wrap.style.height = "";
+        root.style.overflowAnchor = "";
+        resizing.current = false;
+      },
+    });
+  };
+
+  const releaseClip = () => {
+    if (!clipUntilExit.current || !wrapRef.current) return;
+    clipUntilExit.current = false;
+    wrapRef.current.style.overflow = "";
+  };
 
   return (
     <MotionConfig transition={{ layout: MODAL_LAYOUT }}>
@@ -54,8 +120,9 @@ export default function Projects({ selected, onSelect, onClose }: Props) {
         />
       </div>
 
+      <div ref={wrapRef} className="relative">
       <m.div layout className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence mode="popLayout" onExitComplete={releaseClip}>
           {(showAll ? filtered : filtered.slice(0, INITIAL_COUNT)).map((project, i) => (
             <ProjectCard
               key={project.id}
@@ -66,12 +133,13 @@ export default function Projects({ selected, onSelect, onClose }: Props) {
           ))}
         </AnimatePresence>
       </m.div>
+      </div>
 
       {filtered.length > INITIAL_COUNT && (
         <div className="mt-8 flex justify-center">
           <button
             type="button"
-            onClick={() => setShowAll((v) => !v)}
+            onClick={toggleShowAll}
             className="rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
           >
             {showAll ? ui.projects.showLess : ui.projects.showAll(filtered.length)}
@@ -133,10 +201,12 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
       style={{ rotateX: springRotateX, rotateY: springRotateY, transformPerspective: 800 }}
       className="group relative isolate flex flex-col overflow-hidden rounded-2xl bg-white/[0.03] p-5 text-left"
     >
-      <m.div
-        layoutId={`card-glow-${project.id}`}
-        className={`absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br ${project.gradient} opacity-20 blur-2xl transition-opacity group-hover:opacity-40`}
-      />
+      <span aria-hidden className="clip-rounded pointer-events-none absolute inset-0">
+        <m.div
+          layoutId={`card-glow-${project.id}`}
+          className={`absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br ${project.gradient} opacity-20 blur-2xl transition-opacity group-hover:opacity-40`}
+        />
+      </span>
 
       <m.div
         layoutId={`card-icon-${project.id}`}
@@ -191,10 +261,12 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         transition={MODAL_LAYOUT}
         className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-white/10 bg-[#131318] shadow-glow"
       >
-        <m.div
-          layoutId={`card-glow-${project.id}`}
-          className={`absolute -right-16 -top-16 h-56 w-56 rounded-full bg-gradient-to-br ${project.gradient} opacity-25 blur-3xl`}
-        />
+        <span aria-hidden className="clip-rounded pointer-events-none absolute inset-0">
+          <m.div
+            layoutId={`card-glow-${project.id}`}
+            className={`absolute -right-16 -top-16 h-56 w-56 rounded-full bg-gradient-to-br ${project.gradient} opacity-25 blur-3xl`}
+          />
+        </span>
 
         {/* icon + title share a layoutId with the card, so they must stay fully opaque
             and keep animating position/size for the whole shrink-back-into-the-grid
