@@ -1,13 +1,11 @@
-import { forwardRef, useMemo, useRef, useState, type MouseEvent } from "react";
+import { forwardRef, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import {
   animate,
   AnimatePresence,
   m,
   MotionConfig,
-  useMotionValue,
   useReducedMotion,
-  useSpring,
 } from "framer-motion";
 import { projectCategories, projects, type Project, type ProjectFilter } from "../data/projects";
 import { ExternalLinkIcon, FolderIcon, XIcon } from "../icons";
@@ -161,26 +159,6 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
   onOpen: () => void;
 }>(function ProjectCard({ project, index, onOpen }, ref) {
   const { t, ui } = useLocale();
-  const prefersReducedMotion = useReducedMotion();
-  const rotateX = useMotionValue(0);
-  const rotateY = useMotionValue(0);
-  const springRotateX = useSpring(rotateX, { stiffness: 300, damping: 30 });
-  const springRotateY = useSpring(rotateY, { stiffness: 300, damping: 30 });
-
-  const handleMouseMove = (e: MouseEvent<HTMLButtonElement>) => {
-    if (prefersReducedMotion) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    rotateY.set(px * 12);
-    rotateX.set(py * -12);
-  };
-
-  const handleMouseLeave = () => {
-    rotateX.set(0);
-    rotateY.set(0);
-  };
-
   return (
     <m.button
       ref={ref}
@@ -188,8 +166,6 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
       layout
       layoutId={`card-${project.id}`}
       onClick={onOpen}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.94 }}
@@ -198,15 +174,12 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
         layout: MODAL_LAYOUT,
       }}
       whileHover={{ y: -6 }}
-      style={{ rotateX: springRotateX, rotateY: springRotateY, transformPerspective: 800 }}
       className="group relative isolate flex flex-col overflow-hidden rounded-2xl bg-white/[0.03] p-5 text-left"
     >
-      <span aria-hidden className="clip-rounded pointer-events-none absolute inset-0">
-        <m.div
-          layoutId={`card-glow-${project.id}`}
-          className={`absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br ${project.gradient} opacity-20 blur-2xl transition-opacity group-hover:opacity-40`}
-        />
-      </span>
+      <m.div
+        layoutId={`card-glow-${project.id}`}
+        className={`glow-soft absolute -right-[104px] -top-[104px] h-64 w-64 bg-gradient-to-br ${project.gradient} opacity-20 transition-opacity group-hover:opacity-40`}
+      />
 
       <m.div
         layoutId={`card-icon-${project.id}`}
@@ -261,12 +234,10 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         transition={MODAL_LAYOUT}
         className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-white/10 bg-[#131318] shadow-glow"
       >
-        <span aria-hidden className="clip-rounded pointer-events-none absolute inset-0">
-          <m.div
-            layoutId={`card-glow-${project.id}`}
-            className={`absolute -right-16 -top-16 h-56 w-56 rounded-full bg-gradient-to-br ${project.gradient} opacity-25 blur-3xl`}
-          />
-        </span>
+        <m.div
+          layoutId={`card-glow-${project.id}`}
+          className={`glow-soft absolute -right-48 -top-48 h-[480px] w-[480px] bg-gradient-to-br ${project.gradient} opacity-25`}
+        />
 
         {/* icon + title share a layoutId with the card, so they must stay fully opaque
             and keep animating position/size for the whole shrink-back-into-the-grid

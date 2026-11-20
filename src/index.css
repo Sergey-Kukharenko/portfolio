@@ -36,15 +36,12 @@ body {
   background: rgba(136, 85, 255, 0.4);
 }
 
-/* Clips its children to the parent's rounded corners. iOS Safari ignores
-   overflow:hidden + border-radius for a child on its own compositing layer
-   (blur, transforms inside a 3D-tilted card) — a mask makes it clip. Kept on an
-   inner layer so the parent's focus outline isn't masked away with it. */
-.clip-rounded {
-  overflow: hidden;
-  border-radius: inherit;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
-  mask-image: radial-gradient(white, black);
+/* A soft round glow without `filter: blur()`: a blurred element gets its own
+   compositing layer, which iOS Safari let spill past a card's rounded corner.
+   The mask traces a circle blurred by ~σ/R = 0.6 (half alpha at 44%). */
+.glow-soft {
+  -webkit-mask-image: radial-gradient(closest-side, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.84) 17%, rgba(0, 0, 0, 0.5) 44%, rgba(0, 0, 0, 0.16) 72%, transparent);
+  mask-image: radial-gradient(closest-side, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.84) 17%, rgba(0, 0, 0, 0.5) 44%, rgba(0, 0, 0, 0.16) 72%, transparent);
 }
 
 /* replaced by CustomCursor.tsx on pointer:fine devices (touch/coarse pointers keep the native cursor) */

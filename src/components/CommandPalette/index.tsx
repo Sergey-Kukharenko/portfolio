@@ -28,7 +28,9 @@ export default function CommandPalette({ open, onClose, onOpenProject }: Props) 
           exit="exit"
           variants={overlayVariants}
         >
-          <m.div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose} />
+          {/* the same light blur as the island menu: blur-md here, fading in over a
+              Retina page, was the one overlay that stuttered in Chrome on an M1 */}
+          <m.div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
           {/* all palette state lives in Panel, which mounts on open — so the
               query, selection and placeholder start fresh every time */}
@@ -108,7 +110,7 @@ function Panel({ onClose, onOpenProject }: Omit<Props, "open">) {
       aria-modal="true"
       aria-label={ui.command.label}
       variants={panelVariants}
-      className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/20 isolate bg-[#0c0c12]/55 bg-gradient-to-br from-framer-blue/25 via-framer-purple/20 to-framer-pink/20 shadow-glow"
+      className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/20 isolate bg-[#0c0c12]/90 bg-gradient-to-br from-framer-blue/25 via-framer-purple/20 to-framer-pink/20 shadow-glow"
     >
       {!prefersReducedMotion && (
         // no blur filter (see framer-conic-soft); a centered square wider than
