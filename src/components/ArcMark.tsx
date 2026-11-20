@@ -1,12 +1,10 @@
-import { useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, m } from "framer-motion";
-import { useIsomorphicLayoutEffect } from "../lib/useIsomorphicLayoutEffect";
 import { SPRING } from "../lib/springs";
+import AutoWidth from "./AutoWidth";
 
 // a spring overshoots below zero, and a negative blur() is an invalid keyframe —
 // so the blur gets a plain tween while position and scale keep the spring
 const SWAP = { ...SPRING, filter: { duration: 0.2, ease: "easeOut" } } as const;
-import { useAnimateTo } from "../lib/useAnimateTo";
 
 /*
  * The personal mark, in its two registers:
@@ -69,35 +67,6 @@ export default function ArcMark({ generic = false, param = "T", className = "" }
           )}
         </AnimatePresence>
       </AutoWidth>
-    </span>
-  );
-}
-
-/**
- * Animates its own width to the natural width of what it holds, so text next
- * to the mark glides instead of jumping when the dot becomes <T>.
- */
-function AutoWidth({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const boxRef = useRef<HTMLSpanElement>(null);
-  const [width, setWidth] = useState<number | null>(null);
-  useAnimateTo(boxRef, width === null ? null : { width }, SPRING);
-
-  useIsomorphicLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const report = () => setWidth(el.offsetWidth);
-    report();
-    const ro = new ResizeObserver(report);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  return (
-    <span ref={boxRef} className="relative inline-flex overflow-hidden">
-      <span ref={ref} className="relative inline-flex shrink-0 whitespace-nowrap">
-        {children}
-      </span>
     </span>
   );
 }

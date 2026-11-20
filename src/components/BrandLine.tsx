@@ -1,31 +1,85 @@
-import { useState } from "react";
-import { m, useReducedMotion } from "framer-motion";
-import Typewriter from "./Typewriter";
+import { useEffect, useState } from "react";
+import { AnimatePresence, m, useReducedMotion, type Variants } from "framer-motion";
+import { brandStops } from "../data/palette";
+import AutoWidth from "./AutoWidth";
 
 // what the architect builds — the T in Arc<T>: code, decisions, life
 const PARAMS = ["Code", "Decisions", "Life"];
-// fixed width (longest param, monospace) so typing doesn't sway the centered line
-const LONGEST = Math.max(...PARAMS.map((p) => p.length)) + "Arc<>".length + 1; // +1: the caret
+const HOLD = 2600; // ms each word stays
+// fixed width (longest param, monospace) so the centered line never sways
+const LONGEST = Math.max(...PARAMS.map((p) => p.length)) + "Arc<>".length;
+
+/*
+ * Each character carries its own color sampled from the brand gradient:
+ * background-clip:text stops painting letters once they move with transforms,
+ * and in a monospace face per-character colors read as one smooth gradient.
+ */
+const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+// pink → purple → blue, like the mark (brandStops runs the other way)
+const STOPS = [...brandStops].reverse().map(rgb);
+function tint(index: number) {
+  const t = Math.min(1, index / (LONGEST - 1)) * (STOPS.length - 1);
+  const seg = Math.min(Math.floor(t), STOPS.length - 2);
+  const [a, b] = [STOPS[seg], STOPS[seg + 1]];
+  return `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * (t - seg))).join(",")})`;
+}
+
+// letters roll through the window: out the top, in from below, in a cascade
+const word: Variants = {
+  in: { transition: { staggerChildren: 0.04, delayChildren: 0.08 } },
+  out: { transition: { staggerChildren: 0.025 } },
+};
+const letter: Variants = {
+  hidden: { y: "0.9em", opacity: 0, filter: "blur(3px)" },
+  in: {
+    y: 0,
+    opacity: 1,
+    filter: "blur(0px)",
+    // the spring may overshoot; blur must not go negative, so it gets a tween
+    transition: { type: "spring", stiffness: 420, damping: 26, filter: { duration: 0.25 } },
+  },
+  out: { y: "-0.9em", opacity: 0, filter: "blur(3px)", transition: { duration: 0.2, ease: "easeIn" } },
+};
 
 /**
  * Both registers of the mark side by side, as on the LinkedIn and GitHub
- * banners: the business line, a divider, the developer type. Its own component
- * so the divider's pulse re-renders this line only, not the whole hero.
+ * banners: the business line, a divider, the developer type.
  */
 export default function BrandLine() {
-  const [pulse, setPulse] = useState(0);
+  const [index, setIndex] = useState(0);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (reduceMotion) return; // a still "Arc<Code>" for reduced motion
+    const id = window.setInterval(() => setIndex((i) => (i + 1) % PARAMS.length), HOLD);
+    return () => window.clearInterval(id);
+  }, [reduceMotion]);
+
+  const param = PARAMS[index];
 
   return (
     <>
       <span className="font-medium text-framer-teal">The art of structure.</span>
-      <Divider pulse={pulse} />
-      <span
-        className="inline-block bg-gradient-to-r from-framer-pink via-framer-purple to-framer-blue bg-clip-text text-left font-mono text-transparent"
-        style={{ minWidth: `${LONGEST}ch` }}
-      >
-        Arc&lt;
-        <Typewriter words={PARAMS} caretClassName="bg-framer-blue" onWordTyped={() => setPulse((p) => p + 1)} />
-        &gt;
+      <Divider pulse={index} />
+      <span className="sr-only">Arc&lt;{PARAMS.join(", ")}&gt;</span>
+      <span aria-hidden className="inline-flex items-baseline font-mono" style={{ minWidth: `${LONGEST}ch` }}>
+        {[..."Arc<"].map((ch, i) => (
+          <span key={i} style={{ color: tint(i) }}>
+            {ch}
+          </span>
+        ))}
+        <AutoWidth className="py-1">
+          <AnimatePresence mode="popLayout" initial={false}>
+            <m.span key={param} className="inline-flex" initial="hidden" animate="in" exit="out" variants={word}>
+              {[...param].map((ch, i) => (
+                <m.span key={i} variants={letter} className="inline-block" style={{ color: tint(4 + i) }}>
+                  {ch}
+                </m.span>
+              ))}
+            </m.span>
+          </AnimatePresence>
+        </AutoWidth>
+        <span style={{ color: tint(4 + param.length) }}>&gt;</span>
       </span>
     </>
   );
@@ -33,8 +87,8 @@ export default function BrandLine() {
 
 /**
  * Teal → pink, bridging the teal business line and the gradient type. Every
- * time a word lands, a spark runs down it — a signal passed from "structure"
- * to Arc<…>.
+ * time a new word rolls in, a spark runs down it — a signal passed from
+ * "structure" to Arc<…>.
  */
 function Divider({ pulse }: { pulse: number }) {
   const reduceMotion = useReducedMotion();
