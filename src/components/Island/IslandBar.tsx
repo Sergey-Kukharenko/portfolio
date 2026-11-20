@@ -21,9 +21,9 @@ export default function IslandBar({ label, onOpen, onSearch }: Props) {
         type="button"
         onClick={onOpen}
         aria-expanded={false}
-        aria-label={`Навигация, сейчас: ${label ?? "начало страницы"}`}
         className="flex h-full items-center gap-2.5 pr-2"
       >
+        <span className="sr-only">Навигация: </span>
         <ProgressRing />
         <ArcMark generic={!!label} param={label} className="text-[15px] md:text-[17px]" />
       </button>
@@ -48,7 +48,7 @@ function ProgressRing() {
   const pathLength = useSpring(scrollYProgress, { stiffness: 320, damping: 40, mass: 0.3 });
 
   return (
-    <span className="relative flex h-7 w-7 shrink-0 items-center justify-center">
+    <span aria-hidden className="relative flex h-7 w-7 shrink-0 items-center justify-center">
       <svg viewBox="0 0 28 28" className="absolute inset-0 -rotate-90" aria-hidden>
         <defs>
           <linearGradient id="island-ring" x1="0" y1="0" x2="1" y2="1">

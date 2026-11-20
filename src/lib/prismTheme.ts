@@ -9,7 +9,7 @@ export const framerCodeTheme: PrismTheme = {
     backgroundColor: "transparent",
   },
   styles: [
-    { types: ["comment", "prolog", "doctype", "cdata"], style: { color: "#6B7280", fontStyle: "italic" } },
+    { types: ["comment", "prolog", "doctype", "cdata"], style: { color: "#848b98", fontStyle: "italic" } },
     { types: ["punctuation"], style: { color: "#8A8F98" } },
     { types: ["keyword", "operator", "rule"], style: { color: "#FF55A3" } },
     { types: ["boolean", "number"], style: { color: "#FF8855" } },

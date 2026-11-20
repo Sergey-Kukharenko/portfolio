@@ -4,7 +4,7 @@ import { stats } from "../data/stats";
 import { plural } from "../lib/plural";
 
 const facts = [
-  { label: "Локация", value: "Москва, удалённо" },
+  { label: "Формат", value: "Удалённо · МСК (UTC+3)" },
   { label: "Специализация", value: "Vue / Nuxt, React" },
   { label: "Роль", value: "Senior / Lead Frontend" },
   { label: "Английский", value: "B1 — Intermediate" },

@@ -129,7 +129,7 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
       }}
       whileHover={{ y: -6 }}
       style={{ rotateX: springRotateX, rotateY: springRotateY, transformPerspective: 800 }}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-left transition-colors hover:border-white/20"
+      className="group relative isolate flex flex-col overflow-hidden rounded-2xl bg-white/[0.03] p-5 text-left"
     >
       <m.div
         layoutId={`card-glow-${project.id}`}
@@ -155,6 +155,13 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
       <span className="mt-4 flex items-center gap-1 text-xs font-medium text-framer-teal opacity-0 transition-opacity group-hover:opacity-100">
         Подробнее <ExternalLinkIcon width={11} height={11} />
       </span>
+
+      {/* the border sits on top: drawn on the card itself it vanished under the
+          corner glow (and Safari let the blur bleed over the rounded corner) */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-2xl border border-white/10 transition-colors group-hover:border-white/20"
+      />
     </m.button>
   );
 });

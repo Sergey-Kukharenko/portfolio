@@ -27,13 +27,6 @@ export const FileIcon = (props: IconProps) => (
   </svg>
 );
 
-export const LayersIcon = (props: IconProps) => (
-  <svg {...base} {...props}>
-    <path d="m12 2 9 5-9 5-9-5 9-5Z" />
-    <path d="m3 12 9 5 9-5" />
-    <path d="m3 17 9 5 9-5" />
-  </svg>
-);
 
 export const FolderIcon = (props: IconProps) => (
   <svg {...base} {...props}>
@@ -41,12 +34,6 @@ export const FolderIcon = (props: IconProps) => (
   </svg>
 );
 
-export const UserIcon = (props: IconProps) => (
-  <svg {...base} {...props}>
-    <circle cx="12" cy="8" r="4" />
-    <path d="M4 21c1.5-4.5 5-6 8-6s6.5 1.5 8 6" />
-  </svg>
-);
 
 export const BoltIcon = (props: IconProps) => (
   <svg {...base} {...props}>
@@ -81,14 +68,6 @@ export const XIcon = (props: IconProps) => (
   </svg>
 );
 
-export const HashIcon = (props: IconProps) => (
-  <svg {...base} {...props}>
-    <path d="M4 9h16" />
-    <path d="M4 15h16" />
-    <path d="M10 3 8 21" />
-    <path d="m16 3-2 18" />
-  </svg>
-);
 
 export const ExternalLinkIcon = (props: IconProps) => (
   <svg {...base} {...props}>
@@ -119,13 +98,6 @@ export const MailIcon = (props: IconProps) => (
   </svg>
 );
 
-export const DownloadIcon = (props: IconProps) => (
-  <svg {...base} {...props}>
-    <path d="M12 3v12" />
-    <path d="m7 10 5 5 5-5" />
-    <path d="M5 21h14" />
-  </svg>
-);
 
 export const SparkleIcon = (props: IconProps) => (
   <svg {...base} {...props}>

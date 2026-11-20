@@ -59,7 +59,7 @@ export default function ColorPalette() {
             onClick={() => copy(swatch.hex, swatch.name)}
             whileHover={{ y: -6 }}
             whileTap={{ scale: 0.95 }}
-            className="group relative flex flex-col items-center gap-2 focus:outline-none"
+            className="group relative flex flex-col items-center gap-2 rounded-2xl"
           >
             <m.span
               layoutId={`swatch-${swatch.hex}`}

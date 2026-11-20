@@ -9,7 +9,7 @@ export default function Footer() {
           <ArcMark className="text-sm" />
           <span className="text-gray-400">Building things that last.</span>
         </p>
-        <p>© {new Date().getFullYear()} Сергей Кухаренко · Москва, удалённо</p>
+        <p>© {new Date().getFullYear()} Сергей Кухаренко · Удалённо, UTC+3</p>
       </div>
     </footer>
   );

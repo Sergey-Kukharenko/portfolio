@@ -49,7 +49,7 @@ export default function Typewriter({ words, className, caretClassName = "bg-curr
       {words[index].slice(0, subIndex)}
       <m.span
         aria-hidden
-        className={`ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] align-middle ${caretClassName}`}
+        className={`ml-0.5 inline-block h-[1.1em] w-[2px] align-[-0.2em] ${caretClassName}`}
         animate={{ opacity: [1, 1, 0, 0] }}
         transition={{ duration: 1, repeat: Infinity, times: [0, 0.5, 0.5, 1] }}
       />

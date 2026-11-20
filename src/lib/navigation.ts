@@ -1,6 +1,7 @@
-/** Smooth-scrolls to a page section by its id. */
+/** Scrolls to a page section by its id — smoothly, unless the OS asks for reduced motion. */
 export function scrollToSection(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.getElementById(id)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
 }
 
 /**

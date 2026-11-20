@@ -4,6 +4,10 @@ export default {
   theme: {
     extend: {
       colors: {
+        // the site's "muted text" tone: Tailwind's #6b7280 fails WCAG AA on our
+        // dark surfaces (3.4–4.3:1); this one keeps ≥4.8:1 on black, cards and
+        // the island while staying a step below gray-400
+        gray: { 500: "#848b98" },
         framer: {
           blue: "#0099FF",
           purple: "#8855FF",

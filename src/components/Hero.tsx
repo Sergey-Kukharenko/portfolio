@@ -152,7 +152,7 @@ export default function Hero() {
               <span className="bg-gradient-to-r from-framer-blue to-framer-teal bg-clip-text text-2xl font-bold text-transparent sm:text-3xl">
                 <Counter value={s.value} suffix={s.suffix} />
               </span>
-              <span className="text-[11px] text-gray-500 sm:text-xs">{s.label}</span>
+              <span className="text-[11px] text-gray-300 sm:text-xs">{s.label}</span>
             </div>
           ))}
         </div>

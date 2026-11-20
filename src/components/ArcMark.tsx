@@ -25,8 +25,8 @@ export default function ArcMark({ generic = false, param = "T", className = "" }
   return (
     <span
       className={`inline-flex items-baseline font-bold tracking-tight ${className}`}
-      aria-label={generic ? `Arc<${param}>` : "Arc."}
     >
+      <span className="sr-only">{generic ? `Arc<${param}>` : "Arc."}</span>
       <span
         aria-hidden
         className="bg-gradient-to-r from-framer-pink via-framer-purple to-framer-blue bg-clip-text text-transparent"
