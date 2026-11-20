@@ -7,7 +7,6 @@ export default function Skills() {
   return (
     <section id="skills" className="relative mx-auto max-w-5xl px-4 py-24 sm:px-6">
       <SectionHeading
-        eyebrow="Навыки"
         title="Стек и инструменты"
         description="От вёрстки до архитектуры — то, с чем я работаю каждый день."
       />

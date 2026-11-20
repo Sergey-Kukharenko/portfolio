@@ -13,7 +13,7 @@ const facts = [
 export default function About() {
   return (
     <section id="about" className="relative mx-auto max-w-5xl px-4 py-24 sm:px-6">
-      <SectionHeading eyebrow="Обо мне" title="Кто я и чем занимаюсь" />
+      <SectionHeading title="Кто я и чем занимаюсь" />
 
       <div className="grid gap-8 md:grid-cols-5">
         <m.div

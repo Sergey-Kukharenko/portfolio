@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { m, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpIcon, CommandIcon, SendIcon, SparkleIcon } from "../icons";
+import { ArrowUpIcon, SendIcon, SparkleIcon } from "../icons";
 import Magnetic from "./Magnetic";
 import Counter from "./Counter";
 import Typewriter from "./Typewriter";
@@ -11,6 +11,7 @@ import { scrollToSection as scrollTo } from "../lib/navigation";
 
 // what the architect builds — the T in Arc<T>: code, decisions, life
 const PARAMS = ["Code", "Decisions", "Life"];
+const LONGEST = Math.max(...PARAMS.map((p) => p.length)) + "Arc<>".length + 1; // +1: the caret
 
 const blobs = [
   { className: "bg-framer-purple", top: "-10%", left: "5%", size: 520, delay: 0 },
@@ -25,11 +26,7 @@ const blobs = [
 // `initial` would ship the text as opacity:0 until hydration.
 const enter = (i: number) => ({ animationDelay: `${0.1 + i * 0.09}s` });
 
-type Props = {
-  onOpenSearch: () => void;
-};
-
-export default function Hero({ onOpenSearch }: Props) {
+export default function Hero() {
   const prefersReducedMotion = useReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -96,12 +93,14 @@ export default function Hero({ onOpenSearch }: Props) {
 
         <div
           style={enter(2)}
-          className="hero-enter flex min-h-[1.5em] items-center gap-2 font-mono text-sm sm:text-base"
+          className="hero-enter flex min-h-[1.5em] flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm sm:text-base"
         >
-          <span aria-hidden className="text-gray-500">
-            ➜
-          </span>
-          <span>
+          {/* both registers of the mark, as on the LinkedIn and GitHub banners */}
+          <span className="font-medium text-gray-200">The art of structure.</span>
+          <span aria-hidden className="hidden h-4 w-px bg-white/20 sm:block" />
+          {/* fixed width (longest param, monospace) so typing doesn't sway the
+              centered line */}
+          <span className="inline-block text-left font-mono" style={{ minWidth: `${LONGEST}ch` }}>
             <span className="text-framer-pink">Arc</span>
             <span className="text-gray-500">&lt;</span>
             <Typewriter words={PARAMS} className="text-framer-blue" />
@@ -140,19 +139,6 @@ export default function Hero({ onOpenSearch }: Props) {
               Написать в Telegram
             </m.a>
           </Magnetic>
-
-          <m.button
-            type="button"
-            onClick={onOpenSearch}
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.97 }}
-            className="hidden items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm text-gray-400 sm:flex"
-          >
-            Быстрый переход
-            <span className="flex items-center gap-0.5 rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[11px]">
-              <CommandIcon width={9} height={9} />K
-            </span>
-          </m.button>
         </div>
 
         <div

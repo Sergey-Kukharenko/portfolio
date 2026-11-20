@@ -58,7 +58,6 @@ export default function Experience() {
   return (
     <section id="experience" className="relative mx-auto max-w-4xl px-4 py-24 sm:px-6">
       <SectionHeading
-        eyebrow="Опыт работы"
         title={`${stats.years} ${plural(stats.years, ["год", "года", "лет"])} — от вёрстки до архитектуры`}
         description="Путь от HTML/CSS-верстальщика до Senior / Lead Frontend Developer в e-commerce."
       />

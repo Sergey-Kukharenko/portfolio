@@ -1,5 +1,5 @@
 import type { ComponentType, SVGProps } from "react";
-import { BriefcaseIcon, GithubIcon, LinkedinIcon, MailIcon, SendIcon } from "../icons";
+import { BriefcaseIcon, GithubIcon, LinkedinIcon, MailIcon, SendIcon, WhatsappIcon } from "../icons";
 
 export type Contact = {
   id: string;
@@ -36,7 +36,7 @@ export const contacts: Contact[] = [
     label: "WhatsApp",
     value: "+7 (967) 112-45-92",
     href: "https://wa.me/79671124592",
-    icon: SendIcon,
+    icon: WhatsappIcon,
     gradient: "from-framer-pink to-framer-red",
   },
   {

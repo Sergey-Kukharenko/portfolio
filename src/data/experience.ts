@@ -13,7 +13,7 @@ export type ExperienceItem = {
 export const experience: ExperienceItem[] = [
   {
     id: "flowwow",
-    company: "ФЛАУВАУ",
+    company: "Flowwow",
     role: "Senior Frontend Developer",
     period: "Октябрь 2025 — настоящее время",
     duration: "1 год",

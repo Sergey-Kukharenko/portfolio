@@ -37,7 +37,6 @@ export default function Projects({ selected, onSelect, onClose }: Props) {
     <MotionConfig transition={{ layout: MODAL_LAYOUT }}>
     <section id="projects" className="relative mx-auto max-w-6xl px-4 py-24 sm:px-6">
       <SectionHeading
-        eyebrow="Проекты"
         title="Pet-проекты и практика"
         description="Приложения, приближенные к реальным продуктовым сценариям: e-commerce, marketplace, community, CRM. Нажмите на карточку, чтобы узнать подробнее."
       />

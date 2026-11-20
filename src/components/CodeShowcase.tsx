@@ -15,7 +15,6 @@ export default function CodeShowcase() {
   return (
     <section id="code" className="relative mx-auto max-w-4xl px-4 py-24 sm:px-6">
       <SectionHeading
-        eyebrow="Framer Motion в деле"
         title="JS, TS, Vue, React, Nuxt, Next — один стиль мышления"
         description="Рекурсия — потому что хорошая архитектура умеет повторять себя. Наведите на блок кода."
       />

@@ -64,7 +64,7 @@ export default function App() {
       <Island onOpenSearch={() => setSearchOpen(true)} />
 
       <main>
-        <Hero onOpenSearch={() => setSearchOpen(true)} />
+        <Hero />
         <About />
         <Experience />
         <Skills />
