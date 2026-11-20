@@ -6,18 +6,20 @@ import { framerCodeTheme } from "../lib/prismTheme";
 import SectionHeading from "./SectionHeading";
 import ColorPalette from "./ColorPalette";
 import { SegmentedControl } from "./ui/SegmentedControl";
+import { useLocale } from "../i18n";
 
 const tabs = codeSnippets.map((s) => ({ value: s.id, label: s.label }));
 
 export default function CodeShowcase() {
+  const { t, ui } = useLocale();
   const [activeId, setActiveId] = useState(codeSnippets[0].id);
   const active = codeSnippets.find((s) => s.id === activeId)!;
 
   return (
     <section id="code" className="relative mx-auto max-w-4xl px-4 py-24 sm:px-6">
       <SectionHeading
-        title="JS, TS, Vue, React, Nuxt, Next — один стиль мышления"
-        description="Рекурсия — потому что хорошая архитектура умеет повторять себя. Наведите на блок кода."
+        title={ui.code.title}
+        description={ui.code.description}
       />
 
       <SegmentedControl
@@ -30,7 +32,7 @@ export default function CodeShowcase() {
       />
 
       <div
-        data-cursor-label={active.pitch}
+        data-cursor-label={t(active.pitch)}
         className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#0B0B0F] shadow-glow"
       >
         <div className="flex items-center gap-1.5 border-b border-white/10 px-4 py-3">

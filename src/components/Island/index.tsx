@@ -7,6 +7,7 @@ import { useActiveSection } from "../../lib/useActiveSection";
 import { useFlash } from "../../lib/island";
 import { BURST, MORPH } from "../../lib/springs";
 import { useAnimateTo } from "../../lib/useAnimateTo";
+import { useLocale } from "../../i18n";
 import IslandView, { type Size } from "./IslandView";
 import IslandBar from "./IslandBar";
 import IslandMenu from "./IslandMenu";
@@ -29,7 +30,9 @@ type Props = {
  */
 export default function Island({ onOpenSearch }: Props) {
   const active = useActiveSection();
-  const label = useVisibleSections().find((s) => s.id === active)?.label;
+  const { t } = useLocale();
+  const section = useVisibleSections().find((s) => s.id === active);
+  const label = section && t(section.label);
   const [flash, dismissFlash] = useFlash();
   const [open, setOpen] = useState(false);
   // natural size of the view shown; null until measured (prerender → "auto")

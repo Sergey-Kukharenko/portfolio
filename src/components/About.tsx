@@ -1,19 +1,14 @@
 import { m } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 import { stats } from "../data/stats";
-import { plural } from "../lib/plural";
+import { useLocale } from "../i18n";
 
-const facts = [
-  { label: "Формат", value: "Удалённо · МСК (UTC+3)" },
-  { label: "Специализация", value: "Vue / Nuxt, React" },
-  { label: "Роль", value: "Senior / Lead Frontend" },
-  { label: "Английский", value: "B1 — Intermediate" },
-];
 
 export default function About() {
+  const { ui } = useLocale();
   return (
     <section id="about" className="relative mx-auto max-w-5xl px-4 py-24 sm:px-6">
-      <SectionHeading title="Кто я и чем занимаюсь" />
+      <SectionHeading title={ui.about.title} />
 
       <div className="grid gap-8 md:grid-cols-5">
         <m.div
@@ -23,22 +18,14 @@ export default function About() {
           transition={{ duration: 0.6 }}
           className="md:col-span-3"
         >
-          <p className="text-base leading-relaxed text-gray-300 sm:text-lg">
-            Senior / Lead Frontend Developer с более чем{" "}
-            <span className="font-semibold text-white">
-              {stats.years} {plural(stats.years, ["годом", "годами", "годами"])} опыта
-            </span> в разработке
-            e-commerce и корпоративных веб-приложений.
-          </p>
-          <p className="mt-4 text-base leading-relaxed text-gray-400 sm:text-lg">
-            Основной стек — <span className="text-framer-teal">Vue / Nuxt / TypeScript</span>.
-            Также есть опыт работы с <span className="text-framer-pink">React-экосистемой</span>:
-            React, Next.js, Redux, Zustand.
-          </p>
-          <p className="mt-4 text-base leading-relaxed text-gray-400 sm:text-lg">
-            Есть опыт роли Lead: архитектура проектов, code review, найм и менторинг
-            разработчиков, прямое взаимодействие с бизнесом.
-          </p>
+          {ui.about.paragraphs(stats.years).map((text, i) => (
+            <p
+              key={i}
+              className={`text-base leading-relaxed sm:text-lg ${i === 0 ? "text-gray-300" : "mt-4 text-gray-400"}`}
+            >
+              {text}
+            </p>
+          ))}
         </m.div>
 
         {/* one quiet card of facts instead of four boxes: lighter, and it
@@ -50,7 +37,7 @@ export default function About() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="divide-y divide-white/10 self-start rounded-2xl border border-white/10 bg-white/[0.03] px-5 md:col-span-2"
         >
-          {facts.map((f) => (
+          {ui.about.facts.map((f) => (
             <div key={f.label} className="flex items-baseline justify-between gap-4 py-3">
               <dt className="text-[11px] uppercase tracking-wider text-gray-500">{f.label}</dt>
               <dd className="text-right text-sm font-semibold text-white">{f.value}</dd>

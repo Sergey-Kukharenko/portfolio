@@ -1,13 +1,15 @@
 import { m } from "framer-motion";
 import { primarySkills, skillGroups } from "../data/skills";
 import SectionHeading from "./SectionHeading";
+import { useLocale } from "../i18n";
 
 export default function Skills() {
+  const { t, ui } = useLocale();
   return (
     <section id="skills" className="relative mx-auto max-w-5xl px-4 py-24 sm:px-6">
       <SectionHeading
-        title="Стек и инструменты"
-        description="От вёрстки до архитектуры — то, с чем я работаю каждый день."
+        title={ui.skills.title}
+        description={ui.skills.description}
       />
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -22,7 +24,7 @@ export default function Skills() {
           >
             <div className="mb-4 flex items-center gap-2">
               <span className={`h-2 w-2 rounded-full bg-gradient-to-r ${group.gradient}`} />
-              <h3 className="text-sm font-semibold text-white">{group.title}</h3>
+              <h3 className="text-sm font-semibold text-white">{t(group.title)}</h3>
             </div>
             <div className="flex flex-wrap gap-2">
               {group.skills.map((skill, si) => (

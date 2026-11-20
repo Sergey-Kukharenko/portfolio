@@ -1,4 +1,5 @@
 import type { Language } from "prism-react-renderer";
+import type { L } from "../i18n";
 
 export type CodeSnippet = {
   id: string;
@@ -6,7 +7,7 @@ export type CodeSnippet = {
   filename: string;
   language: Language;
   code: string;
-  pitch: string;
+  pitch: L;
 };
 
 export const codeSnippets: CodeSnippet[] = [
@@ -16,12 +17,12 @@ export const codeSnippets: CodeSnippet[] = [
     filename: "flatten.js",
     language: "javascript",
     code: `
-// рекурсивный обход дерева категорий каталога
+// walk the catalog category tree recursively
 function flatten(node) {
   return [node, ...node.children.flatMap(flatten)];
 }
     `,
-    pitch: "Идея → код → результат",
+    pitch: { ru: "Идея → код → результат", en: "Idea → code → result" },
   },
   {
     id: "ts",
@@ -35,7 +36,7 @@ function flatten(node: TreeNode): TreeNode[] {
   return [node, ...node.children.flatMap(flatten)];
 }
     `,
-    pitch: "Требования → типы → ноль багов в проде",
+    pitch: { ru: "Требования → типы → ноль багов в проде", en: "Requirements → types → zero bugs in prod" },
   },
   {
     id: "vue",
@@ -43,7 +44,7 @@ function flatten(node: TreeNode): TreeNode[] {
     filename: "TreeItem.vue",
     language: "typescript",
     code: `
-// <script setup lang="ts"> — компонент рендерит сам себя в template
+// <script setup lang="ts"> — the component renders itself in its template
 const props = defineProps<{ node: TreeNode }>()
 
 function countDescendants(node: TreeNode): number {
@@ -53,7 +54,7 @@ function countDescendants(node: TreeNode): number {
   )
 }
     `,
-    pitch: "Задача → компонент → готовый интерфейс",
+    pitch: { ru: "Задача → компонент → готовый интерфейс", en: "Task → component → finished interface" },
   },
   {
     id: "react",
@@ -76,7 +77,7 @@ function TreeItem({ node }: { node: TreeNode }) {
   );
 }
     `,
-    pitch: "Продукт → чистая архитектура → счастливые пользователи",
+    pitch: { ru: "Продукт → чистая архитектура → счастливые пользователи", en: "Product → clean architecture → happy users" },
   },
   {
     id: "nuxt",
@@ -95,7 +96,7 @@ async function buildBreadcrumbs(id: string): Promise<string[]> {
   return [...(await buildBreadcrumbs(category.parentId)), category.name];
 }
     `,
-    pitch: "Бизнес → архитектура → рост без переделок",
+    pitch: { ru: "Бизнес → архитектура → рост без переделок", en: "Business → architecture → growth without rewrites" },
   },
   {
     id: "next",
@@ -115,6 +116,6 @@ async function CommentThread({ id }: { id: string }) {
   );
 }
     `,
-    pitch: "Идея → продукт → довольные клиенты",
+    pitch: { ru: "Идея → продукт → довольные клиенты", en: "Idea → product → happy customers" },
   },
 ];

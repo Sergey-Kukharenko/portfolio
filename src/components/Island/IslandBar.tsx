@@ -2,6 +2,7 @@ import { m, useScroll, useSpring } from "framer-motion";
 import { SearchIcon } from "../../icons";
 import { brandStops } from "../../data/palette";
 import ArcMark from "../ArcMark";
+import { useLocale } from "../../i18n";
 
 type Props = {
   /** current section label; undefined above the first section */
@@ -15,6 +16,7 @@ type Props = {
  * section as the T in Arc<T> (plain "Arc." on the first screen).
  */
 export default function IslandBar({ label, onOpen, onSearch }: Props) {
+  const { ui } = useLocale();
   return (
     <div className="flex h-10 items-center gap-1 pl-1.5 pr-1 md:h-11">
       <button
@@ -23,7 +25,7 @@ export default function IslandBar({ label, onOpen, onSearch }: Props) {
         aria-expanded={false}
         className="flex h-full items-center gap-2.5 pr-2"
       >
-        <span className="sr-only">Навигация: </span>
+        <span className="sr-only">{ui.island.navigation}</span>
         <ProgressRing />
         <ArcMark generic={!!label} param={label} className="text-[15px] md:text-[17px]" />
       </button>
@@ -31,7 +33,7 @@ export default function IslandBar({ label, onOpen, onSearch }: Props) {
       <button
         type="button"
         onClick={onSearch}
-        aria-label="Открыть поиск"
+        aria-label={ui.island.openSearch}
         className="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 active:bg-white/10"
       >
         <SearchIcon width={14} height={14} />

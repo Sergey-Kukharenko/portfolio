@@ -7,13 +7,14 @@ import {
   useReducedMotion,
   useSpring,
 } from "framer-motion";
-import { projectCategories, projects, type Project } from "../data/projects";
+import { projectCategories, projects, type Project, type ProjectFilter } from "../data/projects";
 import { ExternalLinkIcon, FolderIcon, XIcon } from "../icons";
 import SectionHeading from "./SectionHeading";
 import { BulletList } from "./ui/BulletList";
 import { SegmentedControl } from "./ui/SegmentedControl";
 import { TagList } from "./ui/Tag";
 import { useOverlay } from "../lib/useOverlay";
+import { useLocale } from "../i18n";
 
 type Props = {
   selected: Project | null;
@@ -21,18 +22,18 @@ type Props = {
   onClose: () => void;
 };
 
-const categoryOptions = projectCategories.map((c) => ({ value: c, label: c }));
-
 const INITIAL_COUNT = 6; // the rest are one click away
 
 const MODAL_LAYOUT = { type: "tween", duration: 0.34, ease: [0.4, 0, 0.2, 1] } as const;
 
 export default function Projects({ selected, onSelect, onClose }: Props) {
-  const [category, setCategory] = useState<(typeof projectCategories)[number]>("Все");
+  const { ui } = useLocale();
+  const [category, setCategory] = useState<ProjectFilter>("all");
+  const categoryOptions = projectCategories.map((c) => ({ value: c, label: c === "all" ? ui.projects.all : c }));
   const [showAll, setShowAll] = useState(false);
 
   const filtered = useMemo(
-    () => (category === "Все" ? projects : projects.filter((p) => p.category === category)),
+    () => (category === "all" ? projects : projects.filter((p) => p.category === category)),
     [category]
   );
 
@@ -40,8 +41,8 @@ export default function Projects({ selected, onSelect, onClose }: Props) {
     <MotionConfig transition={{ layout: MODAL_LAYOUT }}>
     <section id="projects" className="relative mx-auto max-w-6xl px-4 py-24 sm:px-6">
       <SectionHeading
-        title="Pet-проекты и практика"
-        description="Приложения, приближенные к реальным продуктовым сценариям: e-commerce, marketplace, community, CRM. Нажмите на карточку, чтобы узнать подробнее."
+        title={ui.projects.title}
+        description={ui.projects.description}
       />
 
       <div className="mb-8 flex justify-center">
@@ -73,7 +74,7 @@ export default function Projects({ selected, onSelect, onClose }: Props) {
             onClick={() => setShowAll((v) => !v)}
             className="rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
           >
-            {showAll ? "Свернуть" : `Показать все ${filtered.length}`}
+            {showAll ? ui.projects.showLess : ui.projects.showAll(filtered.length)}
           </button>
         </div>
       )}
@@ -91,6 +92,7 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
   index: number;
   onOpen: () => void;
 }>(function ProjectCard({ project, index, onOpen }, ref) {
+  const { t, ui } = useLocale();
   const prefersReducedMotion = useReducedMotion();
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
@@ -146,14 +148,14 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
       <m.h3 layoutId={`card-title-${project.id}`} className="text-base font-semibold text-white">
         {project.title}
       </m.h3>
-      <p className="mt-1 text-sm text-gray-400">{project.tagline}</p>
+      <p className="mt-1 text-sm text-gray-400">{t(project.tagline)}</p>
 
       <div className="mt-4">
         <TagList items={project.stack.slice(0, 3)} muted />
       </div>
 
       <span className="mt-4 flex items-center gap-1 text-xs font-medium text-framer-teal opacity-0 transition-opacity group-hover:opacity-100">
-        Подробнее <ExternalLinkIcon width={11} height={11} />
+        {ui.projects.more} <ExternalLinkIcon width={11} height={11} />
       </span>
 
       {/* the border sits on top: drawn on the card itself it vanished under the
@@ -167,6 +169,7 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
 });
 
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
+  const { t, ui } = useLocale();
   useOverlay(true, onClose);
 
   return (
@@ -221,7 +224,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
             type="button"
             onClick={onClose}
             className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/10 text-gray-300 hover:bg-white/20"
-            aria-label="Закрыть"
+            aria-label={ui.projects.close}
           >
             <XIcon width={14} height={14} />
           </button>
@@ -233,7 +236,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               transition={{ delay: 0.14, duration: 0.28 }}
               className="mt-1 text-sm font-medium text-framer-teal"
             >
-              {project.tagline}
+              {t(project.tagline)}
             </m.p>
 
             <m.p
@@ -242,7 +245,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               transition={{ delay: 0.19, duration: 0.28 }}
               className="mt-5 text-sm leading-relaxed text-gray-300"
             >
-              {project.description}
+              {t(project.description)}
             </m.p>
 
             <m.div
@@ -252,9 +255,9 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               className="mt-5"
             >
               <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                Что реализовано
+                {ui.projects.features}
               </p>
-              <BulletList items={project.features} />
+              <BulletList items={t(project.features)} />
             </m.div>
 
             <m.div
@@ -277,7 +280,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               whileTap={{ scale: 0.98 }}
               className={`mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r px-4 py-3 text-sm font-semibold text-white ${project.gradient}`}
             >
-              Открыть демо <ExternalLinkIcon width={14} height={14} />
+              {ui.projects.demo} <ExternalLinkIcon width={14} height={14} />
             </m.a>
           </div>
         </m.div>

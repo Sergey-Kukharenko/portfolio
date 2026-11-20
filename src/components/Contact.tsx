@@ -3,22 +3,25 @@ import { contacts, telegram } from "../data/contacts";
 import SectionHeading from "./SectionHeading";
 import { CopyIcon } from "../icons";
 import { flash } from "../lib/island";
-
-const copy = async (label: string, value: string) => {
-  try {
-    await navigator.clipboard.writeText(value);
-    flash({ title: `Скопировано · ${label}`, detail: value });
-  } catch {
-    flash({ title: "Не удалось скопировать", detail: value });
-  }
-};
+import { useLocale } from "../i18n";
 
 export default function Contact() {
+  const { t, ui } = useLocale();
+
+  const copy = async (label: string, value: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      flash({ title: ui.copied(label), detail: value });
+    } catch {
+      flash({ title: ui.copyFailed, detail: value });
+    }
+  };
+
   return (
     <section id="contact" className="relative mx-auto max-w-4xl px-4 py-24 sm:px-6">
       <SectionHeading
-        title="Готов обсудить проект"
-        description="Открыт к предложениям по удалённой работе. Отвечаю быстрее всего в Telegram."
+        title={ui.contact.title}
+        description={ui.contact.description}
       />
 
       <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -59,15 +62,15 @@ export default function Contact() {
                   >
                     {c.label}
                   </span>
-                  <span className="block truncate text-sm text-white">{c.value}</span>
+                  <span className="block truncate text-sm text-white">{t(c.value)}</span>
                 </span>
               </a>
               {/* a sibling, not inside the link: a button nested in <a> is invalid */}
               {c.copyable && (
                 <button
                   type="button"
-                  onClick={() => copy(c.label, c.value)}
-                  aria-label={`Скопировать ${c.label}: ${c.value}`}
+                  onClick={() => copy(c.label, t(c.value))}
+                  aria-label={ui.contact.copy(c.label, t(c.value))}
                   className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-white/10 hover:text-white"
                 >
                   <CopyIcon width={14} height={14} />

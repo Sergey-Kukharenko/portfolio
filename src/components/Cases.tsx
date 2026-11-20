@@ -3,13 +3,15 @@ import { cases, type Case } from "../data/cases";
 import { ExternalLinkIcon } from "../icons";
 import SectionHeading from "./SectionHeading";
 import { TagList } from "./ui/Tag";
+import { useLocale } from "../i18n";
 
 export default function Cases() {
+  const { ui } = useLocale();
   return (
     <section id="cases" className="relative mx-auto max-w-5xl px-4 py-24 sm:px-6">
       <SectionHeading
-        title="Кейсы"
-        description="Три истории из коммерческой работы: задача, решение, результат."
+        title={ui.cases.title}
+        description={ui.cases.description}
       />
 
       <div className="flex flex-col gap-5">
@@ -22,6 +24,7 @@ export default function Cases() {
 }
 
 function CaseCard({ item, index }: { item: Case; index: number }) {
+  const { t, ui } = useLocale();
   return (
     <m.article
       id={`case-${item.id}`}
@@ -37,9 +40,9 @@ function CaseCard({ item, index }: { item: Case; index: number }) {
       <header className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <div>
           <p className="text-xs uppercase tracking-wider text-gray-500">
-            {item.company} · {item.role} · {item.period}
+            {item.company} · {item.role} · {t(item.period)}
           </p>
-          <h3 className="mt-1 text-xl font-semibold text-white sm:text-2xl">{item.title}</h3>
+          <h3 className="mt-1 text-xl font-semibold text-white sm:text-2xl">{t(item.title)}</h3>
         </div>
         <div className="flex flex-wrap gap-3">
           {item.links.map((l) => (
@@ -57,11 +60,11 @@ function CaseCard({ item, index }: { item: Case; index: number }) {
         </div>
       </header>
 
-      <p className="mt-4 text-sm leading-relaxed text-gray-300 sm:text-base">{item.task}</p>
+      <p className="mt-4 text-sm leading-relaxed text-gray-300 sm:text-base">{t(item.task)}</p>
 
       <div className="mt-5 grid gap-5 md:grid-cols-2">
-        <Column title="Решение" items={item.solution} />
-        <Column title="Результат" items={item.result} accent />
+        <Column title={ui.cases.solution} items={t(item.solution)} />
+        <Column title={ui.cases.result} items={t(item.result)} accent />
       </div>
 
       <div className="mt-5">

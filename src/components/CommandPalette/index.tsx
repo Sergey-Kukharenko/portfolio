@@ -6,13 +6,8 @@ import { useLockBodyScroll } from "../../lib/useLockBodyScroll";
 import { Kbd, ResultRow } from "./ResultRow";
 import { searchItems, useCommandItems, type CommandItem } from "./useCommandItems";
 import { useActiveItem } from "./useActiveItem";
+import { useLocale } from "../../i18n";
 
-const PLACEHOLDERS = [
-  "Найти проект…",
-  "Перейти в раздел…",
-  "Найти компанию из опыта…",
-  "Написать в Telegram…",
-];
 
 type Props = {
   open: boolean;
@@ -53,6 +48,8 @@ function Panel({ onClose, onOpenProject }: Omit<Props, "open">) {
   const listRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
+  const { ui } = useLocale();
+  const placeholders = ui.command.placeholders;
   const items = useCommandItems(onOpenProject);
   const { groups, flat } = useMemo(() => searchItems(items, query), [items, query]);
   const { activeId, setActiveId, active, move } = useActiveItem(flat);
@@ -67,10 +64,10 @@ function Panel({ onClose, onOpenProject }: Omit<Props, "open">) {
   useEffect(() => {
     if (!isFocused || query.length > 0) return;
     const interval = window.setInterval(() => {
-      setPlaceholderIndex((i) => (i + 1) % PLACEHOLDERS.length);
+      setPlaceholderIndex((i) => (i + 1) % placeholders.length);
     }, 2200);
     return () => window.clearInterval(interval);
-  }, [isFocused, query]);
+  }, [isFocused, query, placeholders.length]);
 
   // keep the keyboard-selected row in view
   useEffect(() => {
@@ -105,7 +102,7 @@ function Panel({ onClose, onOpenProject }: Omit<Props, "open">) {
     <m.div
       role="dialog"
       aria-modal="true"
-      aria-label="Быстрый переход"
+      aria-label={ui.command.label}
       variants={panelVariants}
       className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-framer-blue/25 via-framer-purple/20 to-framer-pink/20 shadow-glow backdrop-blur-2xl backdrop-saturate-150"
     >
@@ -150,7 +147,7 @@ function Panel({ onClose, onOpenProject }: Omit<Props, "open">) {
                   transition={{ duration: 0.32, ease: "easeOut" }}
                   className="text-[15px] font-medium text-gray-500"
                 >
-                  {PLACEHOLDERS[placeholderIndex]}
+                  {placeholders[placeholderIndex]}
                 </m.span>
               </AnimatePresence>
             </div>
@@ -172,7 +169,7 @@ function Panel({ onClose, onOpenProject }: Omit<Props, "open">) {
                 inputRef.current?.focus();
               }}
               className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-gray-300 hover:bg-white/20"
-              aria-label="Очистить"
+              aria-label={ui.command.clear}
             >
               <XIcon width={13} height={13} />
             </m.button>
@@ -205,15 +202,15 @@ function Panel({ onClose, onOpenProject }: Omit<Props, "open">) {
               >
                 🔎
               </m.div>
-              <p className="text-sm font-medium text-gray-300">Ничего не найдено</p>
-              <p className="text-xs text-gray-500">Попробуйте другой запрос — «{query}»</p>
+              <p className="text-sm font-medium text-gray-300">{ui.command.empty}</p>
+              <p className="text-xs text-gray-500">{ui.command.tryAnother(query)}</p>
             </m.div>
           ) : (
             <m.div variants={listContainerVariants} initial="hidden" animate="visible">
               {groups.map((group) => (
                 <div key={group.category} className="mb-1 last:mb-0">
                   <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-gray-500">
-                    {group.category}
+                    {group.label}
                   </p>
                   <ul>
                     <AnimatePresence initial={false} mode="popLayout">
@@ -250,13 +247,13 @@ function Panel({ onClose, onOpenProject }: Omit<Props, "open">) {
             <Kbd className="rotate-180">
               <ArrowUpIcon width={11} height={11} />
             </Kbd>
-            для навигации
+            {ui.command.navigate}
           </span>
           <span className="flex items-center gap-1">
             <Kbd>
               <CornerDownLeftIcon width={11} height={11} />
             </Kbd>
-            выбрать
+            {ui.command.select}
           </span>
         </div>
         <span className="flex items-center gap-1">
@@ -264,7 +261,7 @@ function Panel({ onClose, onOpenProject }: Omit<Props, "open">) {
             <CommandIcon width={10} height={10} />
           </Kbd>
           <Kbd>K</Kbd>
-          открыть
+          {ui.command.open}
         </span>
       </m.div>
     </m.div>

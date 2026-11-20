@@ -3,8 +3,10 @@ import { m, useInView, useReducedMotion } from "framer-motion";
 import { palette } from "../data/palette";
 import { PaletteIcon } from "../icons";
 import { flash } from "../lib/island";
+import { useLocale } from "../i18n";
 
 export default function ColorPalette() {
+  const { ui } = useLocale();
   const prefersReducedMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   // the rotating blurred conic glow and the shimmer loop forever — only keep
@@ -19,7 +21,7 @@ export default function ColorPalette() {
     } catch {
       // clipboard may be unavailable — the island still gives feedback
     }
-    flash({ title: `Скопировано · ${name}`, detail: hex, color: hex });
+    flash({ title: ui.copied(name), detail: hex, color: hex });
   };
 
   return (
@@ -42,7 +44,7 @@ export default function ColorPalette() {
 
       <div className="mb-8 flex items-center gap-2">
         <PaletteIcon width={18} height={18} className="text-framer-pink" />
-        <h3 className="text-lg font-semibold text-white">Палитра Framer Motion</h3>
+        <h3 className="text-lg font-semibold text-white">{ui.palette.title}</h3>
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-7">
@@ -93,8 +95,7 @@ export default function ColorPalette() {
       </m.div>
 
       <p className="mt-4 text-center text-xs text-gray-500">
-        Нажмите на цвет, чтобы скопировать hex-код — вся палитра сайта построена на
-        этих семи оттенках Framer.
+        {ui.palette.hint}
       </p>
     </m.div>
   );

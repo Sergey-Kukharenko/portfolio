@@ -2,6 +2,10 @@ import { useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import { useIsomorphicLayoutEffect } from "../lib/useIsomorphicLayoutEffect";
 import { SPRING } from "../lib/springs";
+
+// a spring overshoots below zero, and a negative blur() is an invalid keyframe —
+// so the blur gets a plain tween while position and scale keep the spring
+const SWAP = { ...SPRING, filter: { duration: 0.2, ease: "easeOut" } } as const;
 import { useAnimateTo } from "../lib/useAnimateTo";
 
 /*
@@ -42,7 +46,7 @@ export default function ArcMark({ generic = false, param = "T", className = "" }
               initial={{ opacity: 0, y: "0.35em", filter: "blur(4px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               exit={{ opacity: 0, y: "-0.35em", filter: "blur(4px)" }}
-              transition={SPRING}
+              transition={SWAP}
               className="whitespace-nowrap font-mono font-semibold"
             >
               <span className="text-gray-500">&lt;</span>
@@ -57,7 +61,7 @@ export default function ArcMark({ generic = false, param = "T", className = "" }
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0 }}
-              transition={SPRING}
+              transition={SWAP}
               className="inline-block origin-bottom text-framer-teal"
             >
               .

@@ -6,8 +6,8 @@ import Counter from "./Counter";
 import BrandLine from "./BrandLine";
 import { telegram } from "../data/contacts";
 import { stats } from "../data/stats";
-import { plural } from "../lib/plural";
 import { scrollToSection as scrollTo } from "../lib/navigation";
+import { useLocale } from "../i18n";
 
 const blobs = [
   { className: "bg-framer-purple", top: "-10%", left: "5%", size: 520, delay: 0 },
@@ -23,6 +23,7 @@ const blobs = [
 const enter = (i: number) => ({ animationDelay: `${0.1 + i * 0.09}s` });
 
 export default function Hero() {
+  const { ui } = useLocale();
   const prefersReducedMotion = useReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -72,7 +73,7 @@ export default function Hero() {
           className="hero-enter flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-gray-400"
         >
           <SparkleIcon width={12} height={12} className="text-framer-teal" />
-          Открыт для новых проектов
+          {ui.hero.status}
         </span>
 
         <h1
@@ -80,7 +81,7 @@ export default function Hero() {
           data-cursor-invert
           className="hero-enter max-w-3xl text-4xl font-bold leading-[1.1] tracking-tight sm:text-6xl"
         >
-          Сергей Кухаренко —{" "}
+          {ui.name} —{" "}
           <span className="bg-gradient-to-r from-framer-blue via-framer-purple to-framer-pink bg-clip-text text-transparent">
             Senior Frontend
           </span>{" "}
@@ -95,8 +96,7 @@ export default function Hero() {
         </div>
 
         <p style={enter(3)} className="hero-enter max-w-2xl text-base text-gray-400 sm:text-lg">
-          {stats.years}+ {plural(stats.years, ["год", "года", "лет"])} создаю быстрые и аккуратные e-commerce и корпоративные интерфейсы на Vue/Nuxt
-          и React. От вёрстки лендингов до архитектуры и найма команды — прошёл весь путь.
+          {ui.hero.intro(stats.years)}
         </p>
 
         <div style={enter(4)} className="hero-enter flex flex-wrap items-center justify-center gap-3">
@@ -108,7 +108,7 @@ export default function Hero() {
               whileTap={{ scale: 0.97 }}
               className="rounded-xl bg-gradient-to-r from-framer-blue via-framer-purple to-framer-pink px-5 py-3 text-sm font-semibold text-white shadow-glow"
             >
-              Смотреть проекты
+              {ui.hero.viewProjects}
             </m.button>
           </Magnetic>
 
@@ -122,7 +122,7 @@ export default function Hero() {
               className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white backdrop-blur-md"
             >
               <SendIcon width={14} height={14} />
-              Написать в Telegram
+              {ui.hero.telegram}
             </m.a>
           </Magnetic>
         </div>
@@ -135,17 +135,17 @@ export default function Hero() {
             {
               value: stats.years,
               suffix: "+",
-              label: `${plural(stats.years, ["год", "года", "лет"])} в разработке`,
+              label: ui.hero.statYears(stats.years),
             },
             {
               value: stats.companies,
               suffix: "",
-              label: plural(stats.companies, ["компания", "компании", "компаний"]),
+              label: ui.hero.statCompanies(stats.companies),
             },
             {
               value: stats.leadYears,
               suffix: "",
-              label: `${plural(stats.leadYears, ["год", "года", "лет"])} в роли Lead`,
+              label: ui.hero.statLead(stats.leadYears),
             },
           ].map((s) => (
             <div key={s.label} className="flex flex-col items-center">
@@ -161,7 +161,7 @@ export default function Hero() {
       <m.button
         type="button"
         onClick={() => scrollTo("about")}
-        aria-label="Прокрутить вниз"
+        aria-label={ui.hero.scrollDown}
         className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-gray-500"
         animate={prefersReducedMotion ? undefined : { y: [0, 8, 0] }}
         transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
