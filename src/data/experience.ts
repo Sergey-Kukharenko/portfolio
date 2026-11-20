@@ -24,12 +24,16 @@ export const experience: ExperienceItem[] = [
     url: "https://flowwow.com",
     points: {
       ru: [
-        "Развитие и поддержка frontend-части e-commerce продукта с выходом на международный рынок",
-        "Рефакторинг сложных участков legacy-кода, глубокая оптимизация клиентской логики",
+        "Развиваю frontend e-commerce продукта, который выходит на международный рынок: разделил его на русскую и международную версии",
+        "Мигрирую продукт с Nuxt 2 на Nuxt 4 и закладываю новую масштабируемую архитектуру",
+        "Рефакторинг сложного legacy-кода и глубокая оптимизация клиентской логики",
+        "Внедрил тех. груминги и формализованные контракты API между Frontend, Backend и QA",
       ],
       en: [
-        "Developing and maintaining the frontend of an e-commerce product expanding internationally",
+        "Developing the frontend of an e-commerce product going international: split it into Russian and international versions",
+        "Migrating the product from Nuxt 2 to Nuxt 4 and laying down a new, scalable architecture",
         "Refactoring complex legacy code, deep optimization of client-side logic",
+        "Introduced technical grooming and formalized API contracts between Frontend, Backend and QA",
       ],
     },
     stack: ["Nuxt 2", "Nuxt 4", "Vue", "TypeScript", "JavaScript"],
@@ -44,10 +48,16 @@ export const experience: ExperienceItem[] = [
     url: "https://myflowers.co.uk",
     points: {
       ru: [
-        "Взаимодействовал с backend-разработчиками, дизайнерами и бизнесом",
+        "Разработал интернет-магазин на Nuxt 3 для рынка Великобритании — myflowers.co.uk",
+        "Принимал архитектурные решения по frontend-части",
+        "Участвовал в миграции русской версии на Nuxt 3",
+        "Code review и контроль качества кода в команде, участие в найме frontend-разработчиков",
       ],
       en: [
-        "Worked closely with backend developers, designers and the business",
+        "Built the Nuxt 3 online store for the UK market — myflowers.co.uk",
+        "Made the frontend architecture decisions",
+        "Took part in migrating the Russian version to Nuxt 3",
+        "Code review and code quality across the team, helped hire frontend developers",
       ],
     },
     stack: ["Nuxt 3", "Vue 3", "TypeScript", "JavaScript", "REST API"],
@@ -62,11 +72,15 @@ export const experience: ExperienceItem[] = [
     url: "https://inventive.ru",
     points: {
       ru: [
-        "Плотно взаимодействовал с backend-командой, дизайнерами и бизнесом",
+        "Руководил frontend-разработкой крупных интернет-магазинов группы в команде из 4 инженеров",
+        "Спроектировал архитектуру Vue-приложений и руководил миграцией legacy-проектов на Vue",
+        "Выстроил code review, декомпозицию задач и техническое планирование; нанимал и менторил разработчиков",
         "Дополнительно разработал внутренний корпоративный портал сотрудников на React",
       ],
       en: [
-        "Worked closely with the backend team, designers and the business",
+        "Led frontend development of the group's major online stores in a team of 4 engineers",
+        "Designed the Vue application architecture and led the migration of legacy projects to Vue",
+        "Put code review, task breakdown and technical planning in place; hired and mentored developers",
         "Also built an internal employee portal in React",
       ],
     },
@@ -83,14 +97,12 @@ export const experience: ExperienceItem[] = [
     points: {
       ru: [
         "Разрабатывал и поддерживал клиентские сайты и промо-проекты",
-        "Реализовывал адаптивные и кроссбраузерные интерфейсы",
-        "Создавал интерактивные элементы, калькуляторы и конфигураторы",
+        "Создавал интерактивные элементы: калькуляторы и конфигураторы",
         "Интегрировал frontend с CMS (WordPress, Bitrix)",
       ],
       en: [
         "Built and maintained client websites and promo projects",
-        "Delivered responsive, cross-browser interfaces",
-        "Created interactive elements, calculators and configurators",
+        "Created interactive elements: calculators and configurators",
         "Integrated the frontend with CMSs (WordPress, Bitrix)",
       ],
     },
@@ -106,16 +118,12 @@ export const experience: ExperienceItem[] = [
     url: "https://www.ventra.ru",
     points: {
       ru: [
-        "Работал над внутренним проектом Samsung",
-        "Разрабатывал новые страницы и UI-компоненты, улучшал пользовательские сценарии",
+        "Работал над внутренним проектом Samsung: новые страницы, UI-компоненты и пользовательские сценарии",
         "Проводил рефакторинг структуры и логики страниц",
-        "Обеспечивал адаптивность и кроссбраузерную работу интерфейсов",
       ],
       en: [
-        "Worked on an internal Samsung project",
-        "Built new pages and UI components, improved user flows",
+        "Worked on an internal Samsung project: new pages, UI components and user flows",
         "Refactored page structure and logic",
-        "Kept interfaces responsive and cross-browser",
       ],
     },
     stack: ["HTML5", "CSS3", "JavaScript", "SVG animation"],
@@ -130,13 +138,11 @@ export const experience: ExperienceItem[] = [
     url: "https://mokselle.ru",
     points: {
       ru: [
-        "Разрабатывал сайты и landing-pages для коммерческих клиентов",
-        "Реализовывал адаптивные интерфейсы и интерактивную логику, анимации",
-        "Участвовал в полном цикле разработки: от вёрстки до внедрения логики интерфейса",
+        "Разрабатывал сайты и лендинги для коммерческих клиентов: адаптивная вёрстка, интерактив и анимации",
+        "Полный цикл разработки: от вёрстки до логики интерфейса",
       ],
       en: [
-        "Built websites and landing pages for commercial clients",
-        "Implemented responsive interfaces, interactive logic and animations",
+        "Built websites and landing pages for commercial clients: responsive layouts, interactivity and animation",
         "Worked across the full cycle: from markup to interface logic",
       ],
     },
@@ -152,15 +158,11 @@ export const experience: ExperienceItem[] = [
     url: "http://www.nc9.ru",
     points: {
       ru: [
-        "Верстал коммерческие сайты и лендинги по дизайн-макетам",
-        "Обеспечивал кроссбраузерную совместимость (включая IE8+)",
-        "Реализовывал адаптивную и блочную вёрстку, подключал JS-логику",
-        "Первый коммерческий опыт разработки в реальных клиентских проектах",
+        "Верстал коммерческие сайты и лендинги по макетам, с кроссбраузерностью вплоть до IE8",
+        "Первый коммерческий опыт на реальных клиентских проектах",
       ],
       en: [
-        "Built commercial websites and landing pages from design mockups",
-        "Ensured cross-browser compatibility (including IE8+)",
-        "Built responsive, component-based markup and wired up JS logic",
+        "Built commercial websites and landing pages from mockups, cross-browser down to IE8",
         "First commercial experience on real client projects",
       ],
     },

@@ -6,6 +6,9 @@ const enYears = (n: number) => (n === 1 ? "year" : "years");
 
 const Teal = ({ children }: { children: ReactNode }) => <span className="text-framer-teal">{children}</span>;
 const Pink = ({ children }: { children: ReactNode }) => <span className="text-framer-pink">{children}</span>;
+const Mono = ({ children }: { children: ReactNode }) => (
+  <span className="font-mono text-[0.95em] text-violet-300">{children}</span>
+);
 const Strong = ({ children }: { children: ReactNode }) => <span className="font-semibold text-white">{children}</span>;
 
 /** Interface strings. `en` is typed as `typeof ru`, so a missing translation fails the build. */
@@ -40,6 +43,10 @@ const ru = {
       <>
         Есть опыт роли Lead: архитектура проектов, code review, найм и менторинг разработчиков, прямое
         взаимодействие с бизнесом.
+      </>,
+      <>
+        <Strong>Arc.</Strong> — сокращение от Architect: сначала структура, потом код. Отсюда и{" "}
+        <Mono>Arc&lt;T&gt;</Mono> — тот же знак как дженерик, где T — то, что строится: код, решения, жизнь.
       </>,
     ],
     facts: [
@@ -154,6 +161,10 @@ const en: typeof ru = {
       <>
         Lead experience: project architecture, code review, hiring and mentoring developers, working directly with
         the business.
+      </>,
+      <>
+        <Strong>Arc.</Strong> is short for Architect: structure first, then code. Hence <Mono>Arc&lt;T&gt;</Mono> —
+        the same mark as a generic, where T is whatever is being built: code, decisions, life.
       </>,
     ],
     facts: [
