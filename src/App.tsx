@@ -61,7 +61,7 @@ export default function App() {
   return (
     <div className="relative min-h-screen overflow-x-hidden">
       <CustomCursor />
-      <Island onOpenSearch={() => setSearchOpen(true)} searchOpen={searchOpen} />
+      <Island onOpenSearch={() => setSearchOpen(true)} />
 
       <main>
         <Hero onOpenSearch={() => setSearchOpen(true)} />

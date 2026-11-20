@@ -6,10 +6,19 @@ export type Size = { w: number; h: number };
 
 const BORDER = 2; // the island's 1px border, both sides
 
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+
+// the old view clears out fast; the new one surfaces once the island has
+// mostly grown into its shape, so the content never fights the morph
 const fade = {
-  initial: { opacity: 0, filter: "blur(6px)" },
-  animate: { opacity: 1, filter: "blur(0px)", transition: { delay: 0.08, duration: 0.2 } },
-  exit: { opacity: 0, filter: "blur(6px)", transition: { duration: 0.1 } },
+  initial: { opacity: 0, scale: 0.96, filter: "blur(8px)" },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { delay: 0.12, duration: 0.35, ease: EASE_OUT },
+  },
+  exit: { opacity: 0, scale: 0.98, filter: "blur(6px)", transition: { duration: 0.12 } },
 };
 
 type Props = {
@@ -37,13 +46,12 @@ export default function IslandView({ onSize, className = "", children }: Props) 
     return () => ro.disconnect();
   }, [present, onSize]);
 
+  // a leaving view is centered with inset + auto margins, not translate:
+  // framer owns `transform` here (the scale in `fade`)
+  const position = present ? "relative" : "pointer-events-none absolute inset-0 m-auto h-fit";
+
   return (
-    <m.div
-      ref={ref}
-      {...fade}
-      className={`w-max shrink-0 ${
-        present ? "relative" : "pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-      } ${className}`}
+    <m.div ref={ref} {...fade} className={`w-max shrink-0 ${position} ${className}`}
     >
       {children}
     </m.div>

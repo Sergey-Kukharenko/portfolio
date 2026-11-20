@@ -2,6 +2,7 @@ import { useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import { useIsomorphicLayoutEffect } from "../lib/useIsomorphicLayoutEffect";
 import { SPRING } from "../lib/springs";
+import { useAnimateTo } from "../lib/useAnimateTo";
 
 /*
  * The personal mark, in its two registers:
@@ -73,7 +74,9 @@ export default function ArcMark({ generic = false, param = "T", className = "" }
  */
 function AutoWidth({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLSpanElement>(null);
+  const boxRef = useRef<HTMLSpanElement>(null);
   const [width, setWidth] = useState<number | null>(null);
+  useAnimateTo(boxRef, width === null ? null : { width }, SPRING);
 
   useIsomorphicLayoutEffect(() => {
     const el = ref.current;
@@ -86,15 +89,10 @@ function AutoWidth({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <m.span
-      initial={false}
-      animate={{ width: width ?? "auto" }}
-      transition={SPRING}
-      className="relative inline-flex overflow-hidden"
-    >
+    <span ref={boxRef} className="relative inline-flex overflow-hidden">
       <span ref={ref} className="relative inline-flex shrink-0 whitespace-nowrap">
         {children}
       </span>
-    </m.span>
+    </span>
   );
 }

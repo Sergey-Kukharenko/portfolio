@@ -1,4 +1,3 @@
-import type { MouseEvent } from "react";
 import { m, useScroll, useSpring } from "framer-motion";
 import { SearchIcon } from "../../icons";
 import { brandStops } from "../../data/palette";
@@ -7,7 +6,7 @@ import ArcMark from "../ArcMark";
 type Props = {
   /** current section label; undefined above the first section */
   label?: string;
-  onOpen: (e: MouseEvent<HTMLButtonElement>) => void;
+  onOpen: () => void;
   onSearch: () => void;
 };
 

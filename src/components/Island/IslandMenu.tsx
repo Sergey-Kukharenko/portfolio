@@ -34,12 +34,15 @@ export default function IslandMenu({ active, onNavigate, onSearch, onClose }: Pr
       </div>
 
       <nav aria-label="Разделы" className="flex flex-col">
-        {sections.map((s) => {
+        {sections.map((s, i) => {
           const current = s.id === active;
           return (
             <button
               key={s.id}
               type="button"
+              // focus lands on the current section (or the first), so the
+              // menu is usable from the keyboard right away
+              autoFocus={current || (active === "top" && i === 0)}
               onClick={() => onNavigate(s.id)}
               aria-current={current ? "location" : undefined}
               className={`flex items-center gap-3 rounded-2xl px-3 py-2.5 text-left transition-colors ${
