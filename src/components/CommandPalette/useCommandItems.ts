@@ -1,6 +1,6 @@
 import { useMemo, type ComponentType, type SVGProps } from "react";
 import { contacts } from "../../data/contacts";
-import { experience } from "../../data/experience";
+import { experience, periodOf } from "../../data/experience";
 import { projects, type Project } from "../../data/projects";
 import { useVisibleSections } from "../../data/sections";
 import { BoltIcon, BriefcaseIcon, FileIcon, FolderIcon } from "../../icons";
@@ -74,7 +74,7 @@ export function useCommandItems(onOpenProject: (project: Project) => void): Comm
       ...experience.map<CommandItem>((exp) => ({
         id: `exp-${exp.id}`,
         title: exp.company,
-        subtitle: `${exp.role} · ${exp.period}`,
+        subtitle: `${exp.role} · ${periodOf(exp)}`,
         category: "Опыт",
         icon: BriefcaseIcon,
         gradient: exp.gradient,

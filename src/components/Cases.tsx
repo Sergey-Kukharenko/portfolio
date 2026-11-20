@@ -24,11 +24,12 @@ export default function Cases() {
 function CaseCard({ item, index }: { item: Case; index: number }) {
   return (
     <m.article
+      id={`case-${item.id}`}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5, delay: index * 0.06 }}
-      className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-7"
+      className="relative scroll-mt-24 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-7"
     >
       {/* brand-colored edge: the one accent per card */}
       <span aria-hidden className={`absolute inset-y-0 left-0 w-1 bg-gradient-to-b ${item.gradient}`} />

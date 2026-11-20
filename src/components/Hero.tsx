@@ -143,9 +143,9 @@ export default function Hero() {
               label: plural(stats.companies, ["компания", "компании", "компаний"]),
             },
             {
-              value: stats.projects,
+              value: stats.leadYears,
               suffix: "",
-              label: plural(stats.projects, ["pet-проект", "pet-проекта", "pet-проектов"]),
+              label: `${plural(stats.leadYears, ["год", "года", "лет"])} в роли Lead`,
             },
           ].map((s) => (
             <div key={s.label} className="flex flex-col items-center">

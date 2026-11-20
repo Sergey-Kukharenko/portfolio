@@ -10,6 +10,8 @@ export type Contact = {
   gradient: string;
   /** when set, the contact is also offered as a command palette action */
   action?: string;
+  /** the value is worth copying as text (an address or a number) */
+  copyable?: boolean;
 };
 
 export const contacts: Contact[] = [
@@ -27,6 +29,7 @@ export const contacts: Contact[] = [
     label: "Email",
     value: "iamksergey@mail.ru",
     href: "mailto:iamksergey@mail.ru",
+    copyable: true,
     icon: MailIcon,
     gradient: "from-framer-purple to-framer-pink",
     action: "Написать на почту",
@@ -36,6 +39,7 @@ export const contacts: Contact[] = [
     label: "WhatsApp",
     value: "+7 (967) 112-45-92",
     href: "https://wa.me/79671124592",
+    copyable: true,
     icon: WhatsappIcon,
     gradient: "from-framer-pink to-framer-red",
   },

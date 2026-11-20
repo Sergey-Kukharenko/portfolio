@@ -1,6 +1,17 @@
 import { m } from "framer-motion";
 import { contacts, telegram } from "../data/contacts";
 import SectionHeading from "./SectionHeading";
+import { CopyIcon } from "../icons";
+import { flash } from "../lib/island";
+
+const copy = async (label: string, value: string) => {
+  try {
+    await navigator.clipboard.writeText(value);
+    flash({ title: `Скопировано · ${label}`, detail: value });
+  } catch {
+    flash({ title: "Не удалось скопировать", detail: value });
+  }
+};
 
 export default function Contact() {
   return (
@@ -23,12 +34,13 @@ export default function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.45, delay: i * 0.06 }}
+              className="relative"
             >
               <a
                 href={c.href}
                 target="_blank"
                 rel="noreferrer"
-                className={`flex h-full items-center gap-3 rounded-xl p-2.5 pr-4 transition ${
+                className={`flex h-full items-center gap-3 rounded-xl p-2.5 transition ${c.copyable ? "pr-12" : "pr-4"} ${
                   primary
                     ? "bg-gradient-to-r from-framer-blue via-framer-purple to-framer-pink shadow-glow hover:brightness-110"
                     : "border border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.06]"
@@ -50,6 +62,17 @@ export default function Contact() {
                   <span className="block truncate text-sm text-white">{c.value}</span>
                 </span>
               </a>
+              {/* a sibling, not inside the link: a button nested in <a> is invalid */}
+              {c.copyable && (
+                <button
+                  type="button"
+                  onClick={() => copy(c.label, c.value)}
+                  aria-label={`Скопировать ${c.label}: ${c.value}`}
+                  className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <CopyIcon width={14} height={14} />
+                </button>
+              )}
             </m.li>
           );
         })}

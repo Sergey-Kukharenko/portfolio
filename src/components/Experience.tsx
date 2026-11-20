@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import { AnimatePresence, m, useScroll, useSpring } from "framer-motion";
-import { experience } from "../data/experience";
+import { durationOf, experience, periodOf } from "../data/experience";
+import { cases } from "../data/cases";
+import { scrollToSection } from "../lib/navigation";
 import { ExternalLinkIcon } from "../icons";
 import SectionHeading from "./SectionHeading";
 import { BulletList } from "./ui/BulletList";
@@ -8,6 +10,8 @@ import { TagList } from "./ui/Tag";
 import { stats } from "../data/stats";
 import { plural } from "../lib/plural";
 import { useIsomorphicLayoutEffect } from "../lib/useIsomorphicLayoutEffect";
+
+const caseFor = (id: string) => cases.find((c) => c.id === id);
 
 export default function Experience() {
   const [openId, setOpenId] = useState<string | null>(experience[0]?.id ?? null);
@@ -138,8 +142,9 @@ export default function Experience() {
                       <p className="text-sm text-gray-400">{exp.role}</p>
                     </div>
                     <div className="text-left text-xs text-gray-500 sm:text-right">
-                      <p>{exp.period}</p>
-                      <p>{exp.duration}</p>
+                      <p>{periodOf(exp)}</p>
+                      {/* counted to the current month: the prerendered HTML may be a month behind */}
+                      <p suppressHydrationWarning>{durationOf(exp)}</p>
                     </div>
                   </div>
 
@@ -154,6 +159,16 @@ export default function Experience() {
                         className="pointer-events-none relative overflow-hidden"
                       >
                         <BulletList items={exp.points} className="mt-4 border-t border-white/10 pt-4" />
+                        {/* the full story lives in the case study — link instead of repeating it */}
+                        {caseFor(exp.id) && (
+                          <button
+                            type="button"
+                            onClick={() => scrollToSection(`case-${exp.id}`)}
+                            className="pointer-events-auto mt-3 text-sm text-framer-teal hover:underline"
+                          >
+                            Кейс: «{caseFor(exp.id)!.title}» →
+                          </button>
+                        )}
                         <div className="mt-4">
                           <TagList items={exp.stack} />
                         </div>

@@ -1,14 +1,17 @@
 import { experience } from "./experience";
 import { projects } from "./projects";
+import { monthsBetween } from "../lib/dates";
 
-// first job (see the last entry in experience.ts) — years are derived from it,
-// so the site never goes stale or contradicts itself between sections
-const CAREER_START = new Date(2014, 8); // September 2014
-
-const msPerYear = 365.25 * 24 * 60 * 60 * 1000;
+// everything derived from the dates in experience.ts, so the site never goes
+// stale or contradicts itself between sections
+const careerStart = experience[experience.length - 1].start;
+const leadMonths = experience
+  .filter((e) => e.role.includes("Lead"))
+  .reduce((sum, e) => sum + monthsBetween(e.start, e.end), 0);
 
 export const stats = {
-  years: Math.floor((Date.now() - CAREER_START.getTime()) / msPerYear),
+  years: Math.floor(monthsBetween(careerStart) / 12),
+  leadYears: Math.floor(leadMonths / 12),
   companies: experience.length,
   projects: projects.length,
 };
