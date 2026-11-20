@@ -9,7 +9,7 @@ export default function ColorPalette() {
   const { ui } = useLocale();
   const prefersReducedMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
-  // the rotating blurred conic glow and the shimmer loop forever — only keep
+  // the rotating conic glow and the shimmer loop forever — only keep
   // them mounted while the card is (nearly) on screen
   const nearViewport = useInView(ref, { margin: "200px" });
   const loops = !prefersReducedMotion && nearViewport;
@@ -34,9 +34,11 @@ export default function ColorPalette() {
       className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-10"
     >
       {loops && (
+        // a centered square wider than the card's diagonal, so no corner shows
+        // mid-turn (centered by margins: framer owns transform for the rotation)
         <m.div
           aria-hidden
-          className="pointer-events-none absolute -inset-32 -z-10 bg-framer-conic opacity-30 blur-3xl"
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 -ml-[34rem] -mt-[34rem] h-[68rem] w-[68rem] bg-framer-conic-soft opacity-30"
           animate={{ rotate: 360 }}
           transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
         />

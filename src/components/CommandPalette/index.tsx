@@ -99,17 +99,24 @@ function Panel({ onClose, onOpenProject }: Omit<Props, "open">) {
   };
 
   return (
+    // no backdrop-filter of its own: the overlay behind already blurs the page, and a
+    // second 40px blur re-rendered on every frame of the scale-in made weaker GPUs
+    // (M1) stutter. A dark tint keeps the page from showing through; `isolate`
+    // keeps the -z-10 conic glow inside the panel (backdrop-filter used to do that).
     <m.div
       role="dialog"
       aria-modal="true"
       aria-label={ui.command.label}
       variants={panelVariants}
-      className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-framer-blue/25 via-framer-purple/20 to-framer-pink/20 shadow-glow backdrop-blur-2xl backdrop-saturate-150"
+      className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/20 isolate bg-[#0c0c12]/55 bg-gradient-to-br from-framer-blue/25 via-framer-purple/20 to-framer-pink/20 shadow-glow"
     >
       {!prefersReducedMotion && (
+        // no blur filter (see framer-conic-soft); a centered square wider than
+        // the panel's diagonal keeps the corners filled mid-turn, which the blur
+        // used to smear over (margins, not translate: framer owns transform)
         <m.div
           aria-hidden
-          className="pointer-events-none absolute -inset-24 -z-10 bg-framer-conic opacity-40 blur-3xl"
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 -ml-[30rem] -mt-[30rem] h-[60rem] w-[60rem] bg-framer-conic-soft opacity-40"
           animate={{ rotate: 360 }}
           transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
         />

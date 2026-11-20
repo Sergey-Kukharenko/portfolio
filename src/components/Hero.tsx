@@ -10,11 +10,28 @@ import { scrollToSection as scrollTo } from "../lib/navigation";
 import { useLocale } from "../i18n";
 
 const blobs = [
-  { className: "bg-framer-purple", top: "-10%", left: "5%", size: 520, delay: 0 },
-  { className: "bg-framer-pink", top: "35%", left: "62%", size: 480, delay: 1.2 },
-  { className: "bg-framer-blue", top: "60%", left: "-5%", size: 460, delay: 2.4 },
-  { className: "bg-framer-teal", top: "5%", left: "72%", size: 340, delay: 0.6 },
+  { color: "#8855FF", top: "-10%", left: "5%", size: 520, delay: 0 }, // framer-purple
+  { color: "#FF55A3", top: "35%", left: "62%", size: 480, delay: 1.2 }, // framer-pink
+  { color: "#0099FF", top: "60%", left: "-5%", size: 460, delay: 2.4 }, // framer-blue
+  { color: "#05F2C7", top: "5%", left: "72%", size: 340, delay: 0.6 }, // framer-teal
 ];
+
+// A blob's soft edge is a radial gradient, not `filter: blur()`: a blur on an
+// element that moves is redone every frame, which pinned Safari (iOS too) at a
+// few fps on the hero and made every overlay opened over it stutter. The stops
+// trace a circle blurred by blur-3xl (σ = 64px): ½ alpha at its rim, fading
+// over ±2σ, so the box grows by the blur's reach to keep the whole glow.
+const SIGMA = 64;
+const REACH = 2.5 * SIGMA;
+const FALLOFF: [number, number][] = [[-2, 0.98], [-1, 0.84], [0, 0.5], [1, 0.16], [2, 0.02]];
+const blobBackground = (color: string, size: number) => {
+  const r = size / 2;
+  const stops = FALLOFF.map(([d, a]) => {
+    const alpha = Math.round(a * 255).toString(16).padStart(2, "0");
+    return `${color}${alpha} ${(((r + d * SIGMA) / (r + REACH)) * 100).toFixed(1)}%`;
+  });
+  return `radial-gradient(closest-side, ${stops.join(", ")}, transparent)`;
+};
 
 // The hero's staggered entrance is plain CSS (.hero-enter in index.css), not
 // framer-motion: the page is prerendered, and a CSS animation starts with the
@@ -49,8 +66,15 @@ export default function Hero() {
         {blobs.map((b, i) => (
           <m.div
             key={i}
-            className={`absolute rounded-full ${b.className} opacity-30 blur-3xl mix-blend-screen`}
-            style={{ top: b.top, left: b.left, width: b.size, height: b.size }}
+            className="absolute opacity-30 mix-blend-screen"
+            style={{
+              top: b.top,
+              left: b.left,
+              width: b.size + 2 * REACH,
+              height: b.size + 2 * REACH,
+              margin: -REACH,
+              background: blobBackground(b.color, b.size),
+            }}
             animate={
               blobsAnimate
                 ? { x: [0, 40, -20, 0], y: [0, -30, 20, 0], scale: [1, 1.15, 0.95, 1] }

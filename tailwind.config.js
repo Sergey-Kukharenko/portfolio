@@ -34,6 +34,12 @@ export default {
       backgroundImage: {
         "framer-conic":
           "conic-gradient(from 0deg, #0099FF, #8855FF, #FF55A3, #FF3366, #FF8855, #05F2C7, #0099FF)",
+        // the conic as a spinning glow, without `filter: blur()`: blurring a
+        // rotating layer is redone every frame and dropped Safari/iOS to ~15 fps.
+        // Around the circle the conic is smooth already; only its center pinches
+        // to a point, so a soft disc of the colors' average (#977DB0) covers it.
+        "framer-conic-soft":
+          "radial-gradient(closest-side, #977DB0 0%, #977DB0cc 12%, #977DB000 45%), conic-gradient(from 0deg, #0099FF, #8855FF, #FF55A3, #FF3366, #FF8855, #05F2C7, #0099FF)",
       },
     },
   },
