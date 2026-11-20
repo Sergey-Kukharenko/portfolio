@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { AnimatePresence, m, useInView, useReducedMotion } from "framer-motion";
 import { palette } from "../data/palette";
 import { PaletteIcon } from "../icons";
+import { flash } from "../lib/island";
+import { useMediaQuery } from "../lib/useMediaQuery";
 
 export default function ColorPalette() {
   const prefersReducedMotion = useReducedMotion();
@@ -11,15 +13,18 @@ export default function ColorPalette() {
   const nearViewport = useInView(ref, { margin: "200px" });
   const loops = !prefersReducedMotion && nearViewport;
   const [copied, setCopied] = useState<string | null>(null);
+  // on phones the island reports the copy, so the inline tooltip would double it
+  const islandShown = useMediaQuery("(max-width: 767px)");
   const [activeHex, setActiveHex] = useState(palette[1].hex);
 
-  const copy = async (hex: string) => {
+  const copy = async (hex: string, name: string) => {
     try {
       await navigator.clipboard.writeText(hex);
     } catch {
       // clipboard may be unavailable — animation still gives feedback
     }
-    setCopied(hex);
+    if (islandShown) flash({ title: `Скопировано · ${name}`, detail: hex, color: hex });
+    else setCopied(hex);
     window.setTimeout(() => setCopied((c) => (c === hex ? null : c)), 1100);
   };
 
@@ -57,7 +62,7 @@ export default function ColorPalette() {
             transition={{ duration: 0.35, delay: i * 0.06, ease: "easeOut" }}
             onHoverStart={() => setActiveHex(swatch.hex)}
             onFocus={() => setActiveHex(swatch.hex)}
-            onClick={() => copy(swatch.hex)}
+            onClick={() => copy(swatch.hex, swatch.name)}
             whileHover={{ y: -6 }}
             whileTap={{ scale: 0.95 }}
             className="group relative flex flex-col items-center gap-2 focus:outline-none"

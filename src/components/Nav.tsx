@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { AnimatePresence, m, useScroll, useMotionValueEvent } from "framer-motion";
-import { CommandIcon, SearchIcon, XIcon } from "../icons";
+import { m, useScroll, useMotionValueEvent } from "framer-motion";
+import { CommandIcon, SearchIcon } from "../icons";
 import { useVisibleSections } from "../data/sections";
 import { scrollToSection } from "../lib/navigation";
-import { useLockBodyScroll } from "../lib/useLockBodyScroll";
+import MobileIsland from "./MobileIsland";
 
 type Props = {
   onOpenSearch: () => void;
@@ -11,24 +11,23 @@ type Props = {
 
 export default function Nav({ onOpenSearch }: Props) {
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const links = useVisibleSections();
 
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 12));
 
-  useLockBodyScroll(menuOpen);
-
-  const scrollTo = (id: string) => {
-    setMenuOpen(false);
-    scrollToSection(id);
-  };
+  const scrollTo = scrollToSection;
 
   return (
-    // CSS entrance (.nav-enter) so it plays from the prerendered HTML, before JS
-    <header className="nav-enter fixed inset-x-0 top-0 z-50">
+    // the header itself must stay transform-free: a transformed ancestor would
+    // turn the island's `position: fixed` backdrop into page-relative
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
+      {/* phones get a compact island instead of a full-width bar + hamburger */}
+      <MobileIsland onOpenSearch={onOpenSearch} />
+
+      {/* CSS entrance (.nav-enter) so it plays from the prerendered HTML, before JS */}
       <div
-        className={`mx-auto flex max-w-6xl items-center justify-between px-4 transition-all duration-300 sm:px-6 ${
+        className={`nav-enter pointer-events-auto mx-auto hidden max-w-6xl items-center md:flex justify-between px-4 transition-all duration-300 sm:px-6 ${
           scrolled ? "mt-3" : "mt-0"
         }`}
       >
@@ -47,10 +46,10 @@ export default function Nav({ onOpenSearch }: Props) {
             <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-framer-blue via-framer-purple to-framer-pink text-xs font-bold">
               SK
             </span>
-            <span className="hidden sm:inline">Sergey Kukharenko</span>
+            <span>Sergey Kukharenko</span>
           </button>
 
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="flex items-center gap-1">
             {links.map((link) => (
               <button
                 key={link.id}
@@ -68,7 +67,7 @@ export default function Nav({ onOpenSearch }: Props) {
               onClick={onOpenSearch}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="hidden items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-gray-400 sm:flex"
+              className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-gray-400"
             >
               <SearchIcon width={13} height={13} />
               <span>Поиск</span>
@@ -76,62 +75,9 @@ export default function Nav({ onOpenSearch }: Props) {
                 <CommandIcon width={9} height={9} />K
               </span>
             </m.button>
-
-            <button
-              type="button"
-              onClick={onOpenSearch}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-gray-300 sm:hidden"
-              aria-label="Открыть поиск"
-            >
-              <SearchIcon width={15} height={15} />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setMenuOpen((o) => !o)}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-gray-300 md:hidden"
-              aria-label="Меню"
-            >
-              {menuOpen ? <XIcon width={15} height={15} /> : <MenuGlyph />}
-            </button>
           </div>
         </div>
       </div>
-
-      <AnimatePresence>
-        {menuOpen && (
-          <m.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="overflow-hidden px-4 sm:px-6 md:hidden"
-          >
-            <div className="mt-2 flex flex-col gap-1 rounded-2xl border border-white/10 bg-[#0B0B0F]/95 p-2 shadow-glow backdrop-blur-xl">
-              {links.map((link, i) => (
-                <m.button
-                  key={link.id}
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.04 }}
-                  onClick={() => scrollTo(link.id)}
-                  className="rounded-lg px-3 py-2.5 text-left text-sm text-gray-300 hover:bg-white/5 hover:text-white"
-                >
-                  {link.label}
-                </m.button>
-              ))}
-            </div>
-          </m.div>
-        )}
-      </AnimatePresence>
     </header>
-  );
-}
-
-function MenuGlyph() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
-      <path d="M4 7h16M4 12h16M4 17h16" />
-    </svg>
   );
 }
