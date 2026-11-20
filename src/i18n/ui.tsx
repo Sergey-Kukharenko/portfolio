@@ -17,7 +17,7 @@ const ru = {
   hero: {
     status: "Открыт для новых проектов",
     intro: (n: number) =>
-      `${n}+ ${years(n)} создаю быстрые и аккуратные e-commerce и корпоративные интерфейсы на Vue/Nuxt и React. От вёрстки лендингов до архитектуры и найма команды — прошёл весь путь.`,
+      `${n}+ ${years(n)} создаю быстрые и аккуратные e-commerce и корпоративные интерфейсы на Vue/Nuxt и React. Сейчас — архитектура, миграции и процессы в команде.`,
     viewProjects: "Смотреть проекты",
     telegram: "Написать в Telegram",
     statYears: (n: number) => `${years(n)} в разработке`,
@@ -72,15 +72,15 @@ const ru = {
   },
   skills: {
     title: "Стек и инструменты",
-    description: "От вёрстки до архитектуры — то, с чем я работаю каждый день.",
+    description: "То, с чем я работаю каждый день.",
   },
   code: {
     title: "JS, TS, Vue, React, Nuxt, Next — один стиль мышления",
     description: "Рекурсия — потому что хорошая архитектура умеет повторять себя. Наведите на блок кода.",
   },
   palette: {
-    title: "Палитра Framer Motion",
-    hint: "Нажмите на цвет, чтобы скопировать hex-код — вся палитра сайта построена на этих семи оттенках Framer.",
+    title: "Палитра Arc.",
+    hint: "Нажмите на цвет, чтобы скопировать hex-код — весь сайт построен на этих семи оттенках.",
   },
   projects: {
     title: "Вне работы — React / Next.js",
@@ -135,7 +135,7 @@ const en: typeof ru = {
   hero: {
     status: "Open to new projects",
     intro: (n) =>
-      `${n}+ years building fast, polished e-commerce and enterprise interfaces with Vue/Nuxt and React. From landing pages to architecture and hiring a team — I've walked the whole path.`,
+      `${n}+ years building fast, polished e-commerce and enterprise interfaces with Vue/Nuxt and React. These days — architecture, migrations and team processes.`,
     viewProjects: "View projects",
     telegram: "Message on Telegram",
     statYears: (n) => `${enYears(n)} in frontend`,
@@ -190,15 +190,15 @@ const en: typeof ru = {
   },
   skills: {
     title: "Stack and tools",
-    description: "From markup to architecture — what I work with every day.",
+    description: "What I work with every day.",
   },
   code: {
     title: "JS, TS, Vue, React, Nuxt, Next — one way of thinking",
     description: "Recursion — because good architecture knows how to repeat itself. Hover over the code.",
   },
   palette: {
-    title: "The Framer Motion palette",
-    hint: "Click a color to copy its hex code — the whole site is built on these seven Framer shades.",
+    title: "The Arc. palette",
+    hint: "Click a color to copy its hex code — the whole site is built on these seven shades.",
   },
   projects: {
     title: "Outside work — React / Next.js",

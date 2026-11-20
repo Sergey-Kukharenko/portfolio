@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="mx-auto mt-6 flex max-w-6xl flex-col items-center gap-3 text-center text-xs text-gray-500 sm:flex-row sm:justify-between sm:text-left">
         <p className="flex items-baseline gap-2">
           <ArcMark className="text-sm" />
-          <span className="text-gray-400">Building things that last.</span>
+          <span className="text-gray-400">The art of structure.</span>
         </p>
         <p className="flex items-center gap-3">
           <span>{ui.footer.line(new Date().getFullYear())}</span>
