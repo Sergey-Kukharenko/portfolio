@@ -14,3 +14,6 @@ export const palette: Swatch[] = [
   { name: "Teal", hex: "#05F2C7", className: "bg-framer-teal", textClassName: "text-framer-teal" },
   { name: "Ink", hex: "#0B0B0F", className: "bg-framer-ink", textClassName: "text-white" },
 ];
+
+/** The signature blue → purple → pink run, for SVG gradients and inline styles. */
+export const brandStops = palette.slice(0, 3).map((s) => s.hex);

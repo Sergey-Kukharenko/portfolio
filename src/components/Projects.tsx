@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useMemo, useState, type MouseEvent } from "react";
+import { forwardRef, useMemo, useState, type MouseEvent } from "react";
 import {
   AnimatePresence,
   m,
@@ -13,7 +13,7 @@ import SectionHeading from "./SectionHeading";
 import { BulletList } from "./ui/BulletList";
 import { SegmentedControl } from "./ui/SegmentedControl";
 import { TagList } from "./ui/Tag";
-import { useLockBodyScroll } from "../lib/useLockBodyScroll";
+import { useOverlay } from "../lib/useOverlay";
 
 type Props = {
   selected: Project | null;
@@ -146,12 +146,7 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
 });
 
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
-  useLockBodyScroll(true);
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [onClose]);
+  useOverlay(true, onClose);
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto px-4 py-10 sm:items-center">

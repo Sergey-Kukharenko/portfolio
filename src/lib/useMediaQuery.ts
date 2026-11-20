@@ -19,3 +19,6 @@ export function useMediaQuery(query: string): boolean {
 
 /** A real mouse/trackpad — hover effects, custom cursor and hover-only demos make sense. */
 export const useCanHover = () => useMediaQuery("(hover: hover) and (pointer: fine)");
+
+/** Below Tailwind's `md` breakpoint — where the mobile island replaces the header bar. */
+export const useIsMobile = () => useMediaQuery("(max-width: 767px)");

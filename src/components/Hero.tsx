@@ -9,12 +9,8 @@ import { stats } from "../data/stats";
 import { plural } from "../lib/plural";
 import { scrollToSection as scrollTo } from "../lib/navigation";
 
-const ROLES = [
-  "Senior Frontend Developer",
-  "Vue / Nuxt Architect",
-  "React & Next.js Engineer",
-  "whoami → Architect",
-];
+// what the architect builds — the T in Arc<T>: code, decisions, life
+const PARAMS = ["Code", "Decisions", "Life"];
 
 const blobs = [
   { className: "bg-framer-purple", top: "-10%", left: "5%", size: 520, delay: 0 },
@@ -100,12 +96,17 @@ export default function Hero({ onOpenSearch }: Props) {
 
         <div
           style={enter(2)}
-          className="hero-enter flex min-h-[1.5em] items-center gap-2 font-mono text-sm text-framer-teal sm:text-base"
+          className="hero-enter flex min-h-[1.5em] items-center gap-2 font-mono text-sm sm:text-base"
         >
           <span aria-hidden className="text-gray-500">
             ➜
           </span>
-          <Typewriter words={ROLES} />
+          <span>
+            <span className="text-framer-pink">Arc</span>
+            <span className="text-gray-500">&lt;</span>
+            <Typewriter words={PARAMS} className="text-framer-blue" />
+            <span className="text-gray-500">&gt;</span>
+          </span>
         </div>
 
         <p style={enter(3)} className="hero-enter max-w-2xl text-base text-gray-400 sm:text-lg">

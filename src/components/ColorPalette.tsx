@@ -3,7 +3,7 @@ import { AnimatePresence, m, useInView, useReducedMotion } from "framer-motion";
 import { palette } from "../data/palette";
 import { PaletteIcon } from "../icons";
 import { flash } from "../lib/island";
-import { useMediaQuery } from "../lib/useMediaQuery";
+import { useIsMobile } from "../lib/useMediaQuery";
 
 export default function ColorPalette() {
   const prefersReducedMotion = useReducedMotion();
@@ -14,7 +14,7 @@ export default function ColorPalette() {
   const loops = !prefersReducedMotion && nearViewport;
   const [copied, setCopied] = useState<string | null>(null);
   // on phones the island reports the copy, so the inline tooltip would double it
-  const islandShown = useMediaQuery("(max-width: 767px)");
+  const islandShown = useIsMobile();
   const [activeHex, setActiveHex] = useState(palette[1].hex);
 
   const copy = async (hex: string, name: string) => {

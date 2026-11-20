@@ -63,7 +63,7 @@ export default function App() {
     <div className="relative min-h-screen overflow-x-hidden">
       <CustomCursor />
       <ScrollProgress />
-      <Nav onOpenSearch={() => setSearchOpen(true)} />
+      <Nav onOpenSearch={() => setSearchOpen(true)} searchOpen={searchOpen} />
 
       <main>
         <Hero onOpenSearch={() => setSearchOpen(true)} />
