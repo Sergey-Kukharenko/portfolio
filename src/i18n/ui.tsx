@@ -6,10 +6,29 @@ const enYears = (n: number) => (n === 1 ? "year" : "years");
 
 const Teal = ({ children }: { children: ReactNode }) => <span className="text-framer-teal">{children}</span>;
 const Pink = ({ children }: { children: ReactNode }) => <span className="text-framer-pink">{children}</span>;
-const Mono = ({ children }: { children: ReactNode }) => (
-  <span className="font-mono text-[0.95em] text-violet-300">{children}</span>
-);
 const Strong = ({ children }: { children: ReactNode }) => <span className="font-semibold text-white">{children}</span>;
+
+// the mark inside prose, colored like the logo (ArcMark): gradient "Arc", teal dot / blue T
+const ArcWord = () => (
+  <span className="bg-gradient-to-r from-framer-pink via-framer-purple to-framer-blue bg-clip-text text-transparent">
+    Arc
+  </span>
+);
+const ArcDot = () => (
+  <span className="whitespace-nowrap font-bold">
+    <ArcWord />
+    <span className="text-framer-teal">.</span>
+  </span>
+);
+const TypeT = () => <span className="font-mono text-[0.95em] font-semibold text-framer-blue">T</span>;
+const ArcGeneric = () => (
+  <span className="whitespace-nowrap font-mono text-[0.95em] font-semibold">
+    <ArcWord />
+    <span className="text-gray-500">&lt;</span>
+    <span className="text-framer-blue">T</span>
+    <span className="text-gray-500">&gt;</span>
+  </span>
+);
 
 /** Interface strings. `en` is typed as `typeof ru`, so a missing translation fails the build. */
 const ru = {
@@ -45,8 +64,8 @@ const ru = {
         взаимодействие с бизнесом.
       </>,
       <>
-        <Strong>Arc.</Strong> — сокращение от Architect: сначала структура, потом код. Отсюда и{" "}
-        <Mono>Arc&lt;T&gt;</Mono> — тот же знак как дженерик, где T — то, что строится: код, решения, жизнь.
+        <ArcDot /> — сокращение от <Strong>Architect</Strong>: сначала структура, потом код. Отсюда и{" "}
+        <ArcGeneric /> — тот же знак как дженерик, где <TypeT /> — то, что строится: код, решения, жизнь.
       </>,
     ],
     facts: [
@@ -163,8 +182,8 @@ const en: typeof ru = {
         the business.
       </>,
       <>
-        <Strong>Arc.</Strong> is short for Architect: structure first, then code. Hence <Mono>Arc&lt;T&gt;</Mono> —
-        the same mark as a generic, where T is whatever is being built: code, decisions, life.
+        <ArcDot /> is short for <Strong>Architect</Strong>: structure first, then code. Hence <ArcGeneric /> —
+        the same mark as a generic, where <TypeT /> is whatever is being built: code, decisions, life.
       </>,
     ],
     facts: [
