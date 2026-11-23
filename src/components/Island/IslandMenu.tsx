@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { m } from "framer-motion";
 import { SearchIcon, XIcon } from "../../icons";
 import { useVisibleSections } from "../../data/sections";
 import ArcMark from "../ArcMark";
@@ -16,6 +18,10 @@ type Props = {
 export default function IslandMenu({ active, onNavigate, onSearch, onClose }: Props) {
   const sections = useVisibleSections();
   const { locale, t, ui } = useLocale();
+  // the pill follows the mouse or keyboard focus, like the palette's rows,
+  // and rests on the current section otherwise
+  const [pointed, setPointed] = useState<string | null>(null);
+  const highlighted = pointed ?? active;
 
   return (
     <div className="w-[min(calc(100vw-24px),24rem)] p-2">
@@ -47,13 +53,20 @@ export default function IslandMenu({ active, onNavigate, onSearch, onClose }: Pr
           type="button"
           onClick={onClose}
           aria-label={ui.island.close}
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-gray-300"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-gray-300 transition-colors hover:bg-white/15 hover:text-white"
         >
           <XIcon width={14} height={14} />
         </button>
       </div>
 
-      <nav aria-label={ui.island.sections} className="flex flex-col">
+      <nav
+        aria-label={ui.island.sections}
+        className="flex flex-col"
+        onMouseLeave={() => setPointed(null)}
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget)) setPointed(null);
+        }}
+      >
         {sections.map((s, i) => {
           const current = s.id === active;
           return (
@@ -64,17 +77,25 @@ export default function IslandMenu({ active, onNavigate, onSearch, onClose }: Pr
               // menu is usable from the keyboard right away
               autoFocus={current || (active === "top" && i === 0)}
               onClick={() => onNavigate(s.id)}
+              onMouseMove={() => setPointed(s.id)}
+              onFocus={() => setPointed(s.id)}
               aria-current={current ? "location" : undefined}
-              className={`flex items-center gap-3 rounded-2xl px-3 py-2.5 text-left transition-colors ${
-                current ? "bg-white/[0.08]" : "active:bg-white/5"
-              }`}
+              className="relative flex items-center gap-3 rounded-2xl px-3 py-2.5 text-left outline-none focus-visible:ring-1 focus-visible:ring-white/20"
             >
-              <span className={`h-2 w-2 shrink-0 rounded-full bg-gradient-to-br ${s.gradient}`} />
-              <span className="min-w-0 flex-1">
+              {s.id === highlighted && (
+                <m.span
+                  aria-hidden
+                  layoutId="island-menu-pill"
+                  className="absolute inset-0 rounded-2xl bg-white/[0.08]"
+                  transition={{ type: "spring", stiffness: 500, damping: 40 }}
+                />
+              )}
+              <span className={`relative h-2 w-2 shrink-0 rounded-full bg-gradient-to-br ${s.gradient}`} />
+              <span className="relative min-w-0 flex-1">
                 <span className="block text-sm text-white">{t(s.title)}</span>
                 <span className="block truncate text-xs text-gray-500">{t(s.subtitle)}</span>
               </span>
-              {current && <span className="text-[10px] uppercase tracking-wider text-gray-500">{ui.island.here}</span>}
+              {current && <span className="relative text-[10px] uppercase tracking-wider text-gray-500">{ui.island.here}</span>}
             </button>
           );
         })}
@@ -83,7 +104,7 @@ export default function IslandMenu({ active, onNavigate, onSearch, onClose }: Pr
       <button
         type="button"
         onClick={onSearch}
-        className="mt-2 flex w-full items-center justify-center gap-2 rounded-2xl bg-white/[0.06] py-3 text-sm text-gray-300 active:bg-white/10"
+        className="mt-2 flex w-full items-center justify-center gap-2 rounded-2xl bg-white/[0.06] py-3 text-sm text-gray-300 transition-colors hover:bg-white/10 hover:text-white active:bg-white/10"
       >
         <SearchIcon width={14} height={14} />
         {ui.island.search}
