@@ -44,10 +44,13 @@ body {
   mask-image: radial-gradient(closest-side, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.84) 17%, rgba(0, 0, 0, 0.5) 44%, rgba(0, 0, 0, 0.16) 72%, transparent);
 }
 
-/* replaced by CustomCursor.tsx on pointer:fine devices (touch/coarse pointers keep the native cursor) */
-html.has-custom-cursor,
-html.has-custom-cursor * {
-  cursor: none !important;
+/* CustomCursor.tsx takes over only inside its two zones on pointer:fine devices;
+   links and buttons there keep the native cursor, as does the rest of the page */
+html.has-custom-cursor :is([data-cursor-invert], [data-cursor-label]),
+html.has-custom-cursor
+  :is([data-cursor-invert], [data-cursor-label])
+  :not(:is(a, button, [role="button"], input, textarea, summary), :is(a, button, [role="button"], input, textarea, summary) *) {
+  cursor: none;
 }
 
 .results-scroll::-webkit-scrollbar,
