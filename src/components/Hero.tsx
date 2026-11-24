@@ -57,7 +57,7 @@ export default function Hero() {
     <section
       ref={heroRef}
       id="top"
-      className="relative flex min-h-[100svh] items-center overflow-hidden pt-24"
+      className="relative flex min-h-[100svh] flex-col overflow-hidden pt-24"
     >
       <m.div
         className="pointer-events-none absolute inset-0"
@@ -90,7 +90,7 @@ export default function Hero() {
       </m.div>
 
       <div
-        className="relative z-10 mx-auto flex max-w-4xl flex-col items-center gap-6 px-4 text-center sm:px-6"
+        className="relative z-10 mx-auto flex max-w-4xl flex-1 flex-col items-center justify-center gap-6 px-4 text-center sm:px-6"
       >
         <span
           style={enter(0)}
@@ -182,11 +182,14 @@ export default function Hero() {
         </div>
       </div>
 
+      {/* in the flow, not absolute: on a tall phone it rests at the bottom of the
+          first screen, on a short one it simply ends up below the content
+          instead of sitting on top of the stats */}
       <m.button
         type="button"
         onClick={() => scrollTo("about")}
         aria-label={ui.hero.scrollDown}
-        className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-gray-500"
+        className="relative z-10 mx-auto mb-8 mt-8 text-gray-500"
         animate={prefersReducedMotion ? undefined : { y: [0, 8, 0] }}
         transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
       >
