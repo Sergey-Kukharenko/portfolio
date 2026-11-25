@@ -176,9 +176,12 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
       whileHover={{ y: -6 }}
       className="group relative isolate flex flex-col overflow-hidden rounded-2xl bg-white/[0.03] p-5 text-left"
     >
+      {/* no opacity class: framer-motion owns this one's opacity through the
+          shared-layout crossfade (inline 1 until the first open), and a class
+          that kicked in only after a modal had closed made the glow fade out */}
       <m.div
         layoutId={`card-glow-${project.id}`}
-        className={`glow-soft absolute -right-[104px] -top-[104px] h-64 w-64 bg-gradient-to-br ${project.gradient} opacity-20 transition-opacity group-hover:opacity-40`}
+        className={`glow-soft absolute -right-[104px] -top-[104px] h-64 w-64 bg-gradient-to-br ${project.gradient}`}
       />
 
       <ProjectPreview project={project} className="mb-4" />
@@ -209,11 +212,14 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
   useOverlay(true, onClose);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto px-4 py-10 sm:items-center">
+    // h-lvh, not inset-0: iOS Safari stops a fixed bottom:0 above its toolbar, so the
+    // page showed through underneath; the extra bottom padding (lvh − dvh, the toolbar)
+    // lets the end of a long modal scroll clear of it
+    <div className="fixed inset-x-0 top-0 z-50 flex h-lvh items-start justify-center overflow-y-auto px-4 pb-[calc(2.5rem+100lvh-100dvh)] pt-10 sm:items-center">
       {/* fixed, not absolute: a long modal scrolls the overlay, and an absolute
-          backdrop scrolled away with it, uncovering the page below the dialog */}
+          backdrop would scroll away with it */}
       <m.div
-        className="fixed inset-0 bg-black/70 backdrop-blur-md"
+        className="fixed inset-x-0 top-0 h-lvh bg-black/70 backdrop-blur-md"
         onClick={onClose}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
