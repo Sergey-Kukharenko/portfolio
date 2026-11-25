@@ -1,15 +1,22 @@
 import type { ComponentType, SVGProps } from "react";
 import { m } from "framer-motion";
-import { CodeIcon, ReactIcon, VueIcon, WrenchIcon } from "../icons";
+import { CodeIcon, ReactLogo, VueLogo, WrenchIcon } from "../icons";
 import { primarySkills, skillGroups } from "../data/skills";
 import SectionHeading from "./SectionHeading";
 import { useLocale } from "../i18n";
 
-const groupIcons: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
+type Icon = ComponentType<SVGProps<SVGSVGElement>>;
+
+const groupIcons: Record<string, Icon> = {
   core: CodeIcon,
-  vue: VueIcon,
-  react: ReactIcon,
   tools: WrenchIcon,
+};
+
+/** The two framework groups wear their own brand instead of the site gradient:
+    the real logos on the dark tiles their sites use. */
+const brandTiles: Record<string, { Icon: Icon; className: string; size: number }> = {
+  vue: { Icon: VueLogo, className: "border border-[#41B883]/30 bg-[#1a1a1a]", size: 18 },
+  react: { Icon: ReactLogo, className: "border border-[#58C4DC]/30 bg-[#23272f]", size: 20 },
 };
 
 export default function Skills() {
@@ -23,7 +30,9 @@ export default function Skills() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         {skillGroups.map((group, gi) => {
-          const Icon = groupIcons[group.id] ?? CodeIcon;
+          const brand = brandTiles[group.id];
+          const Icon = brand?.Icon ?? groupIcons[group.id] ?? CodeIcon;
+          const size = brand?.size ?? 17;
           return (
           <m.div
             key={group.id}
@@ -35,9 +44,11 @@ export default function Skills() {
           >
             <div className="mb-4 flex items-center gap-3">
               <span
-                className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${group.gradient} text-white shadow-sm`}
+                className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl shadow-sm ${
+                  brand ? brand.className : `bg-gradient-to-br ${group.gradient} text-white`
+                }`}
               >
-                <Icon width={17} height={17} />
+                <Icon width={size} height={size} />
               </span>
               <h3 className="text-sm font-semibold text-white">{t(group.title)}</h3>
               <span className="ml-auto text-xs tabular-nums text-gray-500">{group.skills.length}</span>

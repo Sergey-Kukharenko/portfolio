@@ -146,26 +146,29 @@ export const CodeIcon = (props: IconProps) => (
   </svg>
 );
 
-/** the Vue "V", outlined to match the rest of the set */
-export const VueIcon = (props: IconProps) => (
-  <svg {...base} {...props}>
-    <path d="M2 4l10 17L22 4" />
-    <path d="M6.5 4 12 13.5 17.5 4" />
-  </svg>
-);
-
-/** the React atom */
-export const ReactIcon = (props: IconProps) => (
-  <svg {...base} strokeWidth={1.6} {...props}>
-    <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
-    <ellipse cx="12" cy="12" rx="10" ry="4" />
-    <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
-    <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
-  </svg>
-);
-
 export const WrenchIcon = (props: IconProps) => (
   <svg {...base} {...props}>
     <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+  </svg>
+);
+
+/** The official two-tone Vue mark, in its brand colors (not currentColor). */
+export const VueLogo = (props: IconProps) => (
+  <svg width={16} height={16} viewBox="0 0 256 221" {...props}>
+    <path fill="#41B883" d="M204.8 0H256L128 220.8 0 0h97.92L128 51.2 157.44 0h47.36Z" />
+    <path fill="#41B883" d="m0 0 128 220.8L256 0h-51.2L128 132.48 50.56 0H0Z" />
+    <path fill="#35495E" d="M50.56 0 128 133.12 204.8 0h-47.36L128 51.2 97.92 0H50.56Z" />
+  </svg>
+);
+
+/** The React atom in react.dev's cyan. */
+export const ReactLogo = (props: IconProps) => (
+  <svg width={16} height={16} viewBox="-11.5 -10.232 23 20.463" {...props}>
+    <circle r="2.05" fill="#58C4DC" />
+    <g fill="none" stroke="#58C4DC" strokeWidth="1">
+      <ellipse rx="11" ry="4.2" />
+      <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+      <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+    </g>
   </svg>
 );
