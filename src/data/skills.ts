@@ -7,8 +7,8 @@ export type SkillGroup = {
   skills: string[];
 };
 
-/** The everyday stack — highlighted among the rest. */
-export const primarySkills = new Set(["TypeScript", "Vue 2/3", "Nuxt 2–4"]);
+/** The main stack — highlighted among the rest: Vue / Nuxt in production, React / Next.js in my own projects. */
+export const primarySkills = new Set(["TypeScript", "Vue 2/3", "Nuxt 2–4", "React", "Next.js"]);
 
 export const skillGroups: SkillGroup[] = [
   {

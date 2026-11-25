@@ -91,8 +91,7 @@ const ru = {
   },
   skills: {
     title: "Стек и инструменты",
-    description: "То, с чем я работаю каждый день.",
-    primary: "основной стек в продакшене",
+    description: "То, с чем я работаю каждый день. Бирюзовым выделен основной стек.",
   },
   code: {
     title: "JS, TS, Vue, React, Nuxt, Next — один стиль мышления",
@@ -209,8 +208,7 @@ const en: typeof ru = {
   },
   skills: {
     title: "Stack and tools",
-    description: "What I work with every day.",
-    primary: "main production stack",
+    description: "What I work with every day. The main stack is highlighted in teal.",
   },
   code: {
     title: "JS, TS, Vue, React, Nuxt, Next — one way of thinking",

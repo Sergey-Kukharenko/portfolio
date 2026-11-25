@@ -60,7 +60,21 @@ function CaseCard({ item, index }: { item: Case; index: number }) {
         </div>
       </header>
 
-      <p className="mt-4 text-sm leading-relaxed text-gray-300 sm:text-base">{t(item.task)}</p>
+      {/* the case at a glance: scale facts in the weight of the hero stats */}
+      <dl className="mt-5 grid grid-cols-3 gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-3 py-3 sm:gap-6 sm:px-5 sm:py-4">
+        {item.highlights.map((h) => (
+          <div key={h.value} className="flex min-w-0 flex-col gap-1">
+            <dt
+              className={`bg-gradient-to-r ${item.gradient} bg-clip-text text-base font-bold leading-tight text-transparent sm:text-2xl`}
+            >
+              {h.value}
+            </dt>
+            <dd className="text-[11px] leading-snug text-gray-400 sm:text-xs">{t(h.label)}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <p className="mt-5 text-sm leading-relaxed text-gray-300 sm:text-base">{t(item.task)}</p>
 
       <div className="mt-5 grid gap-5 md:grid-cols-2">
         <Column title={ui.cases.solution} items={t(item.solution)} />

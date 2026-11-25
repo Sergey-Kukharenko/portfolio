@@ -10,6 +10,8 @@ export type Case = {
   role: string;
   period: L;
   title: L;
+  /** facts of scale shown as big figures up top — taken from the resume, not invented */
+  highlights: { value: string; label: L }[];
   task: L;
   solution: L<string[]>;
   result: L<string[]>;
@@ -25,6 +27,11 @@ export const cases: Case[] = [
     role: "Senior Frontend Developer",
     period: { ru: "2025 — сейчас", en: "2025 — now" },
     title: { ru: "Один продукт — два рынка", en: "One product, two markets" },
+    highlights: [
+      { value: "2", label: { ru: "рынка: RU и международный", en: "markets: RU and international" } },
+      { value: "Nuxt 2 → 4", label: { ru: "миграция продукта", en: "product migration" } },
+      { value: "API", label: { ru: "контракты Frontend · Backend · QA", en: "contracts across Frontend · Backend · QA" } },
+    ],
     task: {
       ru: "E-commerce продукт выходит на международный рынок: нужны отдельные русская и международная версии и архитектура, готовая к росту.",
       en: "An e-commerce product is going international: it needs separate Russian and international versions and an architecture ready to grow.",
@@ -63,6 +70,11 @@ export const cases: Case[] = [
     role: "Senior Frontend Developer",
     period: { ru: "2023 — 2025", en: "2023 — 2025" },
     title: { ru: "Интернет-магазин для Великобритании", en: "An online store for the UK" },
+    highlights: [
+      { value: "UK", label: { ru: "новый рынок", en: "a new market" } },
+      { value: "Nuxt 3", label: { ru: "новый магазин и миграция RU-версии", en: "new store, RU version migrated" } },
+      { value: "2+", label: { ru: "года в проекте", en: "years on the project" } },
+    ],
     task: {
       ru: "Запустить интернет-магазин для рынка Великобритании и перевести русскую версию проекта на современный стек.",
       en: "Launch an online store for the UK market and move the Russian version of the project to a modern stack.",
@@ -101,6 +113,11 @@ export const cases: Case[] = [
     role: "Lead Frontend Developer",
     period: { ru: "2018 — 2023", en: "2018 — 2023" },
     title: { ru: "Фронтенд крупных ритейл-магазинов", en: "Frontend for major retail stores" },
+    highlights: [
+      { value: "3", label: { ru: "магазина группы", en: "stores in the group" } },
+      { value: "4", label: { ru: "инженера в команде", en: "engineers on the team" } },
+      { value: "5", label: { ru: "лет в роли Lead", en: "years as Lead" } },
+    ],
     task: {
       ru: "Развивать крупные интернет-магазины группы и перевести legacy-проекты на современный стек.",
       en: "Grow the group's major online stores and move legacy projects to a modern stack.",

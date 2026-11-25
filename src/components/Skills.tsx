@@ -66,11 +66,6 @@ export default function Skills() {
         })}
       </div>
 
-      <p className="mt-5 flex items-center justify-center gap-2 text-xs text-gray-500">
-        <span aria-hidden className="h-2 w-2 rounded-sm border border-framer-teal/40 bg-framer-teal/20" />
-        {ui.skills.primary}
-      </p>
-
     </section>
   );
 }
