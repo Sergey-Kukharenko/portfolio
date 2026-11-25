@@ -87,7 +87,8 @@ const ru = {
     present: "настоящее время",
     toggle: (company: string, open: boolean) => `${company} — ${open ? "свернуть" : "подробнее"}`,
     site: (company: string) => `Сайт ${company}`,
-    caseLink: (title: string) => `Кейс: «${title}» →`,
+    caseLink: "Читать кейс →",
+    caseLabel: (title: string) => `Читать кейс «${title}»`,
   },
   skills: {
     title: "Стек и инструменты",
@@ -204,7 +205,8 @@ const en: typeof ru = {
     present: "present",
     toggle: (company, open) => `${company} — ${open ? "collapse" : "details"}`,
     site: (company) => `${company} website`,
-    caseLink: (title) => `Case study: “${title}” →`,
+    caseLink: "Read case study →",
+    caseLabel: (title) => `Read case study “${title}”`,
   },
   skills: {
     title: "Stack and tools",

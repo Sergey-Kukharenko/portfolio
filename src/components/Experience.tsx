@@ -132,7 +132,7 @@ export default function Experience() {
                     aria-controls={linkedCase ? undefined : `exp-${exp.id}`}
                     aria-label={
                       linkedCase
-                        ? ui.experience.caseLink(t(linkedCase.title))
+                        ? ui.experience.caseLabel(t(linkedCase.title))
                         : ui.experience.toggle(exp.company, isOpen)
                     }
                     className="absolute inset-0 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-framer-purple/60"
@@ -157,8 +157,9 @@ export default function Experience() {
                       </div>
                       <p className="text-sm text-gray-400">{exp.role}</p>
                       {linkedCase && (
-                        <p className="mt-2 text-sm text-framer-teal">
-                          {ui.experience.caseLink(t(linkedCase.title))}
+                        // the stretched button above carries the full label for screen readers
+                        <p aria-hidden className="mt-2 text-sm text-framer-teal">
+                          {ui.experience.caseLink}
                         </p>
                       )}
                     </div>
