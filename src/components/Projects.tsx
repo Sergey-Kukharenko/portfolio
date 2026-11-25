@@ -210,8 +210,10 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto px-4 py-10 sm:items-center">
+      {/* fixed, not absolute: a long modal scrolls the overlay, and an absolute
+          backdrop scrolled away with it, uncovering the page below the dialog */}
       <m.div
-        className="absolute inset-0 bg-black/70 backdrop-blur-md"
+        className="fixed inset-0 bg-black/70 backdrop-blur-md"
         onClick={onClose}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
