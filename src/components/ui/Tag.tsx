@@ -5,7 +5,7 @@ export function Tag({ children, muted = false }: { children: ReactNode; muted?: 
   return (
     <span
       className={`rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] ${
-        muted ? "text-gray-400" : "text-gray-300"
+        muted ? "text-gray-300" : "text-gray-200"
       }`}
     >
       {children}

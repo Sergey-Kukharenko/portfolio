@@ -8,7 +8,7 @@ import { useLocale } from "../i18n";
 export default function Cases() {
   const { ui } = useLocale();
   return (
-    <section id="cases" className="relative mx-auto max-w-5xl px-4 py-24 sm:px-6">
+    <section id="cases" className="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24">
       <SectionHeading
         title={ui.cases.title}
         description={ui.cases.description}

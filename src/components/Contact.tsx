@@ -18,7 +18,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative mx-auto max-w-4xl px-4 py-24 sm:px-6">
+    <section id="contact" className="relative mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24">
       <SectionHeading
         title={ui.contact.title}
         description={ui.contact.description}

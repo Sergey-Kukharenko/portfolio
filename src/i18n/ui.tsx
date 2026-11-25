@@ -92,6 +92,7 @@ const ru = {
   skills: {
     title: "Стек и инструменты",
     description: "То, с чем я работаю каждый день.",
+    primary: "основной стек в продакшене",
   },
   code: {
     title: "JS, TS, Vue, React, Nuxt, Next — один стиль мышления",
@@ -108,7 +109,6 @@ const ru = {
     all: "Все",
     showAll: (n: number) => `Показать все ${n}`,
     showLess: "Свернуть",
-    more: "Подробнее",
     close: "Закрыть",
     features: "Что реализовано",
     demo: "Открыть демо",
@@ -210,6 +210,7 @@ const en: typeof ru = {
   skills: {
     title: "Stack and tools",
     description: "What I work with every day.",
+    primary: "main production stack",
   },
   code: {
     title: "JS, TS, Vue, React, Nuxt, Next — one way of thinking",
@@ -226,7 +227,6 @@ const en: typeof ru = {
     all: "All",
     showAll: (n) => `Show all ${n}`,
     showLess: "Show less",
-    more: "Details",
     close: "Close",
     features: "What's built",
     demo: "Open demo",

@@ -103,7 +103,7 @@ export default function Projects({ selected, onSelect, onClose }: Props) {
 
   return (
     <MotionConfig transition={{ layout: MODAL_LAYOUT }}>
-    <section id="projects" className="relative mx-auto max-w-6xl px-4 py-24 sm:px-6">
+    <section id="projects" className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
       <SectionHeading
         title={ui.projects.title}
         description={ui.projects.description}
@@ -158,7 +158,7 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
   index: number;
   onOpen: () => void;
 }>(function ProjectCard({ project, index, onOpen }, ref) {
-  const { t, ui } = useLocale();
+  const { t } = useLocale();
   return (
     <m.button
       ref={ref}
@@ -181,26 +181,18 @@ const ProjectCard = forwardRef<HTMLButtonElement, {
         className={`glow-soft absolute -right-[104px] -top-[104px] h-64 w-64 bg-gradient-to-br ${project.gradient} opacity-20 transition-opacity group-hover:opacity-40`}
       />
 
-      <m.div
-        layoutId={`card-icon-${project.id}`}
-        className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${project.gradient} text-white shadow-sm`}
-      >
-        <FolderIcon width={18} height={18} />
-      </m.div>
+      <ProjectPreview project={project} className="mb-4" />
 
       <m.h3 layoutId={`card-title-${project.id}`} className="text-base font-semibold text-white">
         {project.title}
       </m.h3>
       <p className="mt-1 text-sm text-gray-400">{t(project.tagline)}</p>
 
-      <div className="mt-4 flex items-start justify-between gap-3">
+      {/* pushed to the bottom so tags and years line up across a row */}
+      <div className="mt-auto flex items-start justify-between gap-3 pt-4">
         <TagList items={project.stack.slice(0, 3)} muted />
         <span className="pt-0.5 text-xs tabular-nums text-gray-500">{project.year}</span>
       </div>
-
-      <span className="mt-4 flex items-center gap-1 text-xs font-medium text-framer-teal opacity-0 transition-opacity group-hover:opacity-100">
-        {ui.projects.more} <ExternalLinkIcon width={11} height={11} />
-      </span>
 
       {/* the border sits on top: drawn on the card itself it vanished under the
           corner glow (and Safari let the blur bleed over the rounded corner) */}
@@ -240,16 +232,11 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
           className={`glow-soft absolute -right-48 -top-48 h-[480px] w-[480px] bg-gradient-to-br ${project.gradient} opacity-25`}
         />
 
-        {/* icon + title share a layoutId with the card, so they must stay fully opaque
+        {/* preview + title share a layoutId with the card, so they must stay fully opaque
             and keep animating position/size for the whole shrink-back-into-the-grid
             transition — they live outside the fade wrapper below on purpose */}
         <div className="relative px-6 pt-6 sm:px-8 sm:pt-8">
-          <m.div
-            layoutId={`card-icon-${project.id}`}
-            className={`mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${project.gradient} text-white shadow-glow`}
-          >
-            <FolderIcon width={22} height={22} />
-          </m.div>
+          <ProjectPreview project={project} active className="mb-5" />
 
           <m.h3 layoutId={`card-title-${project.id}`} className="text-2xl font-bold text-white">
             {project.title}
@@ -267,7 +254,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
           <button
             type="button"
             onClick={onClose}
-            className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/10 text-gray-300 hover:bg-white/20"
+            className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white hover:bg-black/80"
             aria-label={ui.projects.close}
           >
             <XIcon width={14} height={14} />
@@ -331,5 +318,62 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         </m.div>
       </m.div>
     </div>
+  );
+}
+
+/**
+ * The app's screenshot framed in the brand: it sits as a window on the
+ * project's gradient, its bottom edge running off the tile, so the grid reads
+ * as one palette while each project stays recognizable. In the grid it rests
+ * slightly dimmed and comes up on hover; in the modal (`active`) it is shown
+ * at full strength. Same composition in both, in percentages, so the
+ * shared-layout morph between them only scales. Only opacity and transform
+ * animate — no filters, which cost WebKit dearly.
+ */
+function ProjectPreview({
+  project,
+  active = false,
+  className = "",
+}: {
+  project: Project;
+  active?: boolean;
+  className?: string;
+}) {
+  return (
+    <m.div
+      layoutId={`card-preview-${project.id}`}
+      className={`relative aspect-[16/10] w-full overflow-hidden rounded-xl border border-white/10 bg-[#16161c] ${className}`}
+    >
+      <div
+        aria-hidden
+        className={`absolute inset-0 bg-gradient-to-br ${project.gradient} transition-opacity duration-500 ${
+          active ? "opacity-40" : "opacity-25 group-hover:opacity-40"
+        }`}
+      />
+      {project.preview ? (
+        <img
+          src={project.preview}
+          alt=""
+          width={800}
+          height={500}
+          loading="lazy"
+          decoding="async"
+          className={`absolute left-[5%] top-[15%] w-[90%] rounded-t-lg object-cover object-top shadow-2xl ring-1 ring-white/15 transition duration-500 ease-out ${
+            active
+              ? "opacity-100"
+              : // touch screens never hover, so there it starts out revealed
+                "translate-y-1.5 opacity-75 group-hover:translate-y-0 group-hover:opacity-100 [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100"
+          }`}
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center">
+          <span
+            className={`relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${project.gradient} text-white shadow-glow`}
+          >
+            <FolderIcon width={20} height={20} />
+          </span>
+        </div>
+      )}
+    </m.div>
   );
 }

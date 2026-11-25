@@ -16,7 +16,7 @@ export default function CodeShowcase() {
   const active = codeSnippets.find((s) => s.id === activeId)!;
 
   return (
-    <section id="code" className="relative mx-auto max-w-4xl px-4 py-24 sm:px-6">
+    <section id="code" className="relative mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24">
       <SectionHeading
         title={ui.code.title}
         description={ui.code.description}

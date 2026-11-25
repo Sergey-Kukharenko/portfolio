@@ -7,7 +7,7 @@ import { useLocale } from "../i18n";
 export default function About() {
   const { ui } = useLocale();
   return (
-    <section id="about" className="relative mx-auto max-w-5xl px-4 py-24 sm:px-6">
+    <section id="about" className="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24">
       <SectionHeading title={ui.about.title} />
 
       <div className="grid gap-8 md:grid-cols-5">

@@ -12,6 +12,9 @@ export type Project = {
   link: string;
   /** what `link` opens: a live demo (default) or the source code */
   linkType?: "demo" | "code";
+  /** screenshot of the live app in public/projects (800×500); without one the
+      card falls back to a gradient tile */
+  preview?: string;
   /** year the repository went up on GitHub */
   year: number;
   category: ProjectCategory;
@@ -46,6 +49,7 @@ export const projects: Project[] = [
     stack: ["React", "TypeScript", "Framer Motion", "Vite", "Tailwind"],
     link: "https://github.com/Sergey-Kukharenko/portfolio",
     linkType: "code",
+    preview: "/projects/portfolio.jpg",
     year: 2026,
     category: "React / Next.js",
     gradient: "from-framer-pink to-framer-blue",
@@ -64,6 +68,7 @@ export const projects: Project[] = [
     },
     stack: ["React", "Next.js"],
     link: "https://dev-flow-eight-sepia.vercel.app",
+    preview: "/projects/dev-flow.jpg",
     year: 2026,
     category: "React / Next.js",
     gradient: "from-framer-blue to-framer-purple",
@@ -82,6 +87,7 @@ export const projects: Project[] = [
     },
     stack: ["Next.js", "React"],
     link: "https://next-pizza-silk.vercel.app",
+    preview: "/projects/next-pizza.jpg",
     year: 2025,
     category: "React / Next.js",
     gradient: "from-framer-red to-framer-orange",
@@ -100,6 +106,7 @@ export const projects: Project[] = [
     },
     stack: ["React", "Redux", "REST API"],
     link: "https://proshop-three.vercel.app",
+    preview: "/projects/proshop.jpg",
     year: 2022,
     category: "React / Next.js",
     gradient: "from-framer-purple to-framer-pink",
@@ -118,6 +125,7 @@ export const projects: Project[] = [
     },
     stack: ["React", "Firebase"],
     link: "https://house-marketplace-kohl-tau.vercel.app",
+    preview: "/projects/house-marketplace.jpg",
     year: 2022,
     category: "React / Next.js",
     gradient: "from-framer-pink to-framer-red",
@@ -136,6 +144,7 @@ export const projects: Project[] = [
     },
     stack: ["React"],
     link: "https://github-finder-app-one-woad.vercel.app",
+    preview: "/projects/github-finder.jpg",
     year: 2022,
     category: "React / Next.js",
     gradient: "from-framer-orange to-framer-teal",
@@ -154,6 +163,7 @@ export const projects: Project[] = [
     },
     stack: ["React"],
     link: "https://feedback-fed.netlify.app",
+    preview: "/projects/feedback-app.jpg",
     year: 2022,
     category: "React / Next.js",
     gradient: "from-framer-teal to-framer-blue",
@@ -172,6 +182,7 @@ export const projects: Project[] = [
     },
     stack: ["Nuxt 4", "Vue 3", "Pinia", "TypeScript", "Vitest"],
     link: "https://nebus-eta.vercel.app",
+    preview: "/projects/notes.jpg",
     year: 2026,
     category: "Vue / Nuxt",
     gradient: "from-framer-blue to-framer-teal",
@@ -190,6 +201,7 @@ export const projects: Project[] = [
     },
     stack: ["Vue 3"],
     link: "https://vue-online-bank-e52b4.web.app",
+    preview: "/projects/online-bank.jpg",
     year: 2021,
     category: "Vue / Nuxt",
     gradient: "from-framer-purple to-framer-blue",
@@ -208,6 +220,7 @@ export const projects: Project[] = [
     },
     stack: ["Vue 3", "Firebase"],
     link: "https://live-chat-3994e.web.app",
+    preview: "/projects/live-chat.jpg",
     year: 2021,
     category: "Vue / Nuxt",
     gradient: "from-framer-pink to-framer-purple",

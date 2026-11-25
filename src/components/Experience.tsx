@@ -15,7 +15,11 @@ const caseFor = (id: string) => cases.find((c) => c.id === id);
 
 export default function Experience() {
   const { locale, t, ui } = useLocale();
-  const [openId, setOpenId] = useState<string | null>(experience[0]?.id ?? null);
+  // jobs with a case study aren't expanded here — the case tells that story, so
+  // the first one opened by default is the first job without one
+  const [openId, setOpenId] = useState<string | null>(
+    experience.find((e) => !caseFor(e.id))?.id ?? null
+  );
   const timelineRef = useRef<HTMLDivElement>(null);
   const firstIconRef = useRef<HTMLSpanElement>(null);
   const lastIconRef = useRef<HTMLSpanElement>(null);
@@ -61,7 +65,7 @@ export default function Experience() {
   const lineProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 0.3 });
 
   return (
-    <section id="experience" className="relative mx-auto max-w-4xl px-4 py-24 sm:px-6">
+    <section id="experience" className="relative mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24">
       <SectionHeading
         title={ui.experience.title(stats.years)}
         description={ui.experience.description}
@@ -83,7 +87,8 @@ export default function Experience() {
 
         <ul className="flex flex-col gap-3">
           {experience.map((exp, i) => {
-            const isOpen = openId === exp.id;
+            const linkedCase = caseFor(exp.id);
+            const isOpen = !linkedCase && openId === exp.id;
             return (
               <m.li
                 key={exp.id}
@@ -106,6 +111,8 @@ export default function Experience() {
                   className={`relative w-full rounded-2xl border px-4 py-4 text-left transition-colors sm:px-5 ${
                     isOpen
                       ? "border-white/15 bg-white/[0.06]"
+                      : linkedCase
+                      ? "border-white/10 bg-white/[0.02] hover:border-framer-teal/30 hover:bg-white/[0.04]"
                       : "border-white/10 bg-white/[0.02] hover:bg-white/[0.04]"
                   }`}
                 >
@@ -114,12 +121,20 @@ export default function Experience() {
                       anywhere still toggles — while the external link stays a real,
                       separately clickable <a> instead of being nested in a <button>
                       (invalid HTML, confusing for screen readers) */}
+                  {/* with a case study the card leads there instead of unfolding a
+                      shorter copy of the same story */}
                   <button
                     type="button"
-                    onClick={() => setOpenId(isOpen ? null : exp.id)}
-                    aria-expanded={isOpen}
-                    aria-controls={`exp-${exp.id}`}
-                    aria-label={ui.experience.toggle(exp.company, isOpen)}
+                    onClick={() =>
+                      linkedCase ? scrollToSection(`case-${exp.id}`) : setOpenId(isOpen ? null : exp.id)
+                    }
+                    aria-expanded={linkedCase ? undefined : isOpen}
+                    aria-controls={linkedCase ? undefined : `exp-${exp.id}`}
+                    aria-label={
+                      linkedCase
+                        ? ui.experience.caseLink(t(linkedCase.title))
+                        : ui.experience.toggle(exp.company, isOpen)
+                    }
                     className="absolute inset-0 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-framer-purple/60"
                   />
                   <div className="pointer-events-none relative flex flex-wrap items-center justify-between gap-2">
@@ -141,6 +156,11 @@ export default function Experience() {
                         )}
                       </div>
                       <p className="text-sm text-gray-400">{exp.role}</p>
+                      {linkedCase && (
+                        <p className="mt-2 text-sm text-framer-teal">
+                          {ui.experience.caseLink(t(linkedCase.title))}
+                        </p>
+                      )}
                     </div>
                     <div className="text-left text-xs text-gray-500 sm:text-right">
                       <p>{periodOf(exp, locale)}</p>
@@ -160,16 +180,6 @@ export default function Experience() {
                         className="pointer-events-none relative overflow-hidden"
                       >
                         <BulletList items={t(exp.points)} className="mt-4 border-t border-white/10 pt-4" />
-                        {/* the full story lives in the case study — link instead of repeating it */}
-                        {caseFor(exp.id) && (
-                          <button
-                            type="button"
-                            onClick={() => scrollToSection(`case-${exp.id}`)}
-                            className="pointer-events-auto mt-3 text-sm text-framer-teal hover:underline"
-                          >
-                            {ui.experience.caseLink(t(caseFor(exp.id)!.title))}
-                          </button>
-                        )}
                         <div className="mt-4">
                           <TagList items={exp.stack} />
                         </div>
